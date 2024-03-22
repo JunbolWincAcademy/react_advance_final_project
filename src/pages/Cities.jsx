@@ -6,9 +6,9 @@ import { Heading, UnorderedList, ListItem, Image, Button } from '@chakra-ui/reac
 import { Link } from 'react-router-dom';
 
 const CityList = () => {
+  
   //this is the component not the useSate
   const { cityList, selectedCity, setSelectedCity } = useCitiesContext(); // Consuming the context to get the citylist and setSelectedCity
-  let citySelected = selectedCity;
   return (
     <UnorderedList listStyleType="none">
       {cityList.map((city) => (
@@ -16,9 +16,9 @@ const CityList = () => {
           <Link
             to={`/city/${city.name}`}
             onClick={() => {
-              setSelectedCity(city.name);// Update the selectedCity state with the clicked city's name
+              setSelectedCity(city.name); // Update the selectedCity state with the clicked city's name
               console.log('city image clicked');
-                      
+              console.log(cityList);
             }}
           >
             {/*// this link will take you to the city or image you click. The city HTML page is */}
@@ -28,8 +28,6 @@ const CityList = () => {
             </Heading>
             {city.image && <Image src={city.image} alt={city.name} style={{ width: '300px', height: 'auto' }} />}
           </Link>
-          {selectedCity}
-          {citySelected}
 
           {/* <Button size="xs" onClick={() => setSelectedCity(city)}>
             city Data
