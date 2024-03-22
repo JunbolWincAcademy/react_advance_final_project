@@ -1,5 +1,5 @@
 import React from 'react';
-import { ActivityProvider, useActivitiesGamesContext } from './ActivityContext'; // Adjust the import
+// import { ActivityProvider, useActivitiesGamesContext } from './ActivityContext'; // Adjust the import
 // import { UserForm } from '../components/UserForm';
 // import { Activity } from './Activity';
 import { Heading, UnorderedList, ListItem, Image } from '@chakra-ui/react';

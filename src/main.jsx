@@ -1,14 +1,17 @@
 import { ChakraProvider } from '@chakra-ui/react';
 import React from 'react';
 import ReactDOM from 'react-dom/client';
-import { ActivityDetail } from './pages/Activity';
+import { Cities } from './pages/Cities';
+import { City } from './pages/City';
 import { Activities } from './pages/Activities';
 import { ActivitiesGames } from './pages/ActivitiesGames';
+import { Activity } from './pages/Activity';
 import { createBrowserRouter, RouterProvider } from 'react-router-dom';
 import { Root } from './components/Root';
 import { ActivityProvider } from './pages/ActivityContext'; // Adjust the import path as needed
-import { ActivityForm} from './pages/ActivityForm'; 
-
+import { CityForm } from './components/CityForm';
+import { ActivityForm } from './components/ActivityForm';
+import { CategoryForm } from './components/CategoryForm';
 
 const router = createBrowserRouter([
   {
@@ -17,20 +20,39 @@ const router = createBrowserRouter([
     children: [
       {
         path: '/',
+        element: <Cities />,
+        // loader: postListLoader,
+      },
+      {
+        path: '/cityForm/', //activity is virtual location set by the router
+        element: <CityForm />,
+      },
+      {
+        path: '/city/:cityName',
+        element: <City />,
+        // loader: postListLoader,
+      },
+      {
+        path: '/categoryForm/', //activity is virtual location set by the router
+        element: <CategoryForm />,
+      },
+      {
+        path: '/city/:cityName/activities/:activityTitle',
         element: <Activities />,
         // loader: postListLoader,
       },
       {
-        path: '/games/:gamesId',
-        element: <ActivitiesGames />,
-        // loader: postListLoader,
-      },
-      {
-        path: '/activity/:activityId', //activity is virtual location set by the router
-        element: <ActivityDetail />,
+        path: '/city/:cityName/activities/:activityTitle/activity/:eventTitle', //activity is virtual location set by the router
+        element: <Activity />,
         // loader: postLoader,
         // action: addComment,
       },
+      {
+        path: '/activityForm/', //activity is virtual location set by the router
+        element: <ActivityForm />,
+      },
+
+    
       {
         path: '/activityForm/', //activity is virtual location set by the router
         element: <ActivityForm />,

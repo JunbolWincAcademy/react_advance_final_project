@@ -1,29 +1,36 @@
-import React, { useEffect, useState } from 'react';
-import { useActivitiesContext } from './ActivityContext'; // Ensure this import is correct
-import { useParams } from 'react-router-dom'; // ✅ Import useParams
+import { useEffect, useState } from 'react';
+import { useCitiesContext } from './ActivityContext'; // Adjusted to use a context that includes city data
+import { useParams } from 'react-router-dom';
 import { Box, Text, Image } from '@chakra-ui/react';
 
-export const ActivityDetail = () => {
-  const { activityId } = useParams(); // ✅ Use useParams to get activityId from the route. I need to study this❗🚩
+export const Activity = () => {
+  const { cityName, activityTitle, eventTitle } = useParams();
+  const { cityList } = useCitiesContext(); // This context now assumed to hold all city data
   const [activityDetails, setActivityDetails] = useState(null);
 
   useEffect(() => {
-    const fetchActivityDetails = async () => {
-      try {
-        const activityDetailsResponse = await fetch(`http://localhost:3000/events/${activityId}`); // ✅ Use activityId from useParams
-        const activityDetailsData = await activityDetailsResponse.json();
-        console.log(activityDetailsData); // Add this line
-        setActivityDetails(activityDetailsData);
-      } catch (error) {
-        console.error('Failed to fetch activity details:', error);
-      }
-    };
-
-    if (activityId) {
-      // ✅ Ensure there's an id to fetch
-      fetchActivityDetails();
+    if (cityList.length === 0) {
+      //this was the solution for the asynchronous issue fo cityList been undefined when needed there was a BIG 🐞 here
+      // Render a loading indicator or return null while data is being fetched
+      return <div>Loading...</div>;
     }
-  }, [activityId]); // ✅ Depend on activityId from the route
+
+    console.log('URL Params:', { cityName, activityTitle });
+    console.log('City List:', cityList);
+
+    const city = cityList.find((city) => city.name === cityName);
+    console.log('Found City:', city);
+
+    const category = city ? city.categories[activityTitle][0] : null; //here was a BIG 🐞 here this [0] was missing like saying games[0]
+    console.log('Found Category:', category);
+
+    const activity = category ? category.activities.find((a) => a.title === eventTitle) : null; // If using title as ID, ensure matching is correct
+    console.log('Found Activity:', activity);
+
+    if (activity) {
+      setActivityDetails(activity);
+    }
+  }, [cityList, cityName, activityTitle]);
 
   if (!activityDetails) return null;
 
