@@ -7,7 +7,7 @@ export const CityForm = () => {
   const [name, setName] = useState('');
   const [image, setImage] = useState('');
 
-  const { createCity } = useCitiesContext(); // Use context to access createUser
+  const { createCity } = useCitiesContext(); // Use context to access createCity
 
   // Reset form fields
   const resetFormFields = () => {

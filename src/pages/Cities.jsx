@@ -8,7 +8,7 @@ import { Link } from 'react-router-dom';
 const CityList = () => {
   
   //this is the component not the useSate
-  const { cityList, selectedCity, setSelectedCity } = useCitiesContext(); // Consuming the context to get the citylist and setSelectedCity
+  const { cityList, deleteCity, setSelectedCity } = useCitiesContext(); // Consuming the context to get the citylist and setSelectedCity
   return (
     <UnorderedList listStyleType="none">
       {cityList.map((city) => (
@@ -28,6 +28,9 @@ const CityList = () => {
             </Heading>
             {city.image && <Image src={city.image} alt={city.name} style={{ width: '300px', height: 'auto' }} />}
           </Link>
+          <Button size="sm" onClick={() => deleteCity(city.name)}>{/*it was city.id before*/}
+            Delete
+          </Button>
 
           {/* <Button size="xs" onClick={() => setSelectedCity(city)}>
             city Data

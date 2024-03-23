@@ -7,7 +7,7 @@ import { Heading, UnorderedList, ListItem, Image, Button } from '@chakra-ui/reac
 import { Link } from 'react-router-dom';
 
 export const City = () => {
-  const { cityList, selectedCity } = useCitiesContext(); // Use cityList from context
+  const { cityList } = useCitiesContext(); // Use cityList from context
   const { cityName } = useParams(); // Extracting the city name from the URL
 
   if (cityList.length === 0) {

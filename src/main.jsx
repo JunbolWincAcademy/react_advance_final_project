@@ -10,8 +10,8 @@ import { createBrowserRouter, RouterProvider } from 'react-router-dom';
 import { Root } from './components/Root';
 import { ActivityProvider } from './pages/ActivityContext'; // Adjust the import path as needed
 import { CityForm } from './components/CityForm';
-import { ActivityForm } from './components/ActivityForm';
-import { CategoryForm } from './components/CategoryForm';
+// import { ActivityForm } from './components/ActivityForm';
+// import { CategoryForm } from './components/CategoryForm';
 
 const router = createBrowserRouter([
   {
@@ -32,10 +32,10 @@ const router = createBrowserRouter([
         element: <City />,
         // loader: postListLoader,
       },
-      {
-        path: '/categoryForm/', //activity is virtual location set by the router
-        element: <CategoryForm />,
-      },
+      // {
+      //   path: '/categoryForm/', //activity is virtual location set by the router
+      //   element: <CategoryForm />,
+      // },
       {
         path: '/city/:cityName/activities/:activityTitle',
         element: <Activities />,
@@ -47,16 +47,7 @@ const router = createBrowserRouter([
         // loader: postLoader,
         // action: addComment,
       },
-      {
-        path: '/activityForm/', //activity is virtual location set by the router
-        element: <ActivityForm />,
-      },
-
     
-      {
-        path: '/activityForm/', //activity is virtual location set by the router
-        element: <ActivityForm />,
-      },
     ],
   },
 ]);
