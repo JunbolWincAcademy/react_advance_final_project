@@ -6,9 +6,9 @@ import { Heading, UnorderedList, ListItem, Image, Button } from '@chakra-ui/reac
 import { Link } from 'react-router-dom';
 
 const CityList = () => {
-  
   //this is the component not the useSate
-  const { cityList, deleteCity, setSelectedCity } = useCitiesContext(); // Consuming the context to get the citylist and setSelectedCity
+  const { cityList, deleteCity, selectedCity, setSelectedCity } = useCitiesContext(); // Consuming the context to get the cityList and setSelectedCity
+  console.log('selectedCity before  been set in Cities:', selectedCity); //city name
   return (
     <UnorderedList listStyleType="none">
       {cityList.map((city) => (
@@ -17,8 +17,8 @@ const CityList = () => {
             to={`/city/${city.name}`}
             onClick={() => {
               setSelectedCity(city.name); // Update the selectedCity state with the clicked city's name
-              console.log('city image clicked');
-              console.log(cityList);
+              console.log('selectedCity after click:', city.name);
+              console.log('selectedCity after been set in Cities:', selectedCity); //this should return Paris
             }}
           >
             {/*// this link will take you to the city or image you click. The city HTML page is */}
@@ -28,8 +28,9 @@ const CityList = () => {
             </Heading>
             {city.image && <Image src={city.image} alt={city.name} style={{ width: '300px', height: 'auto' }} />}
           </Link>
-          <Button size="sm" onClick={() => deleteCity(city.name)}>{/*it was city.id before*/}
-            Delete
+          <Button size="sm" onClick={() => deleteCity(city.name)}>
+            {/*it was city.id before*/}
+            Delete this city
           </Button>
 
           {/* <Button size="xs" onClick={() => setSelectedCity(city)}>
@@ -44,7 +45,7 @@ const CityList = () => {
   );
 };
 
-//-------This the part of the Homegpae-------------
+//-------This the part of the Homegpage-------------
 
 export const Cities = () => {
   return (

@@ -1,55 +1,59 @@
-// import { useState } from 'react';
-// import { useActivitiesContext } from '../pages/ActivityContext';
-// import { Input, Button } from '@chakra-ui/react';
+import { useState } from 'react';
+import { useActivitiesContext } from '../pages/ActivityContext';
+import { Input, Button } from '@chakra-ui/react';
+import { useParams } from 'react-router-dom';
 
-// export const ActivityForm = () => {
-//   // State for each form field
-//   const [name, setName] = useState('');
-//   const [image, setImage] = useState('');
+export const ActivityForm = () => {
+  // State for each form field
+  const [name, setName] = useState('');
+  const [image, setImage] = useState('');
 
-//   const { createActivity } = useActivitiesContext(); // Use context to access createUser
+  // Extract cityName and categoryName from the URL
+  const { cityName, categoryName } = useParams();
 
-//   // Reset form fields
-//   const resetFormFields = () => {
-//     setName('');
-//     setImage('');
-//   };
+  const { createActivity } = useActivitiesContext(); // Use context to access createUser
 
-//   const handleSubmit = async (event) => {
-//     event.preventDefault();
+  // Reset form fields
+  const resetFormFields = () => {
+    setName('');
+    setImage('');
+  };
 
-//     // Regex for validating name: allows letters and spaces but not only spaces
-//     const nameRegex = /^[A-Za-z]+(?: [A-Za-z]+)*$/;
-//     if (!nameRegex.test(name)) {
-//       alert('Please enter a valid name (letters only, first and last name required).');
-//       return;
-//     }
+  const handleSubmit = async (event) => {
+    event.preventDefault();
 
-//     // Assuming createUser is correctly defined and accessible
-//     try {
-//       await createActivity({
-//         name,
-//         image,
-//       });
-//       resetFormFields();
-//     } catch (error) {
-//       console.error('Error creating user:', error);
-//       // Handle the error appropriately
-//     }
-//   };
+    // Regex for validating name: allows letters and spaces but not only spaces
+    const nameRegex = /^[A-Za-z]+(?: [A-Za-z]+)*$/;
+    if (!nameRegex.test(name)) {
+      alert('Please enter a valid name (letters only, first and last name required).');
+      return;
+    }
+    console.log({ cityName, categoryName });
 
-//   return (
-//     <form onSubmit={handleSubmit}>
-//       <Input mb="1rem" type="text" required placeholder="Name" value={name} onChange={(e) => setName(e.target.value)} />
+    // Assuming createUser is correctly defined and accessible
+    try {
+      await createActivity(cityName, categoryName, {
+        name,
+        image,
+      });
+      resetFormFields();
+    } catch (error) {
+      console.error('Error creating activity:', error);
+    }
+  };
 
-//       <Input mb="1rem" type="url" required placeholder="URL to image" value={image} onChange={(e) => setImage(e.target.value)} />
+  return (
+    <form onSubmit={handleSubmit}>
+      <Input mb="1rem" type="text" required placeholder="Name" value={name} onChange={(e) => setName(e.target.value)} />
 
-//       <Button mb="2rem" mr="2rem" type="submit">
-//         Add Activity
-//       </Button>
-//       <Button type="button" mb="2rem" onClick={resetFormFields}>
-//         Reset
-//       </Button>
-//     </form>
-//   );
-// };
+      <Input mb="1rem" type="url" required placeholder="URL to image" value={image} onChange={(e) => setImage(e.target.value)} />
+
+      <Button mb="2rem" mr="2rem" type="submit">
+        Add an event
+      </Button>
+      <Button type="button" mb="2rem" onClick={resetFormFields}>
+        Reset
+      </Button>
+    </form>
+  );
+};

@@ -3,15 +3,16 @@ import React from 'react';
 import ReactDOM from 'react-dom/client';
 import { Cities } from './pages/Cities';
 import { City } from './pages/City';
+import { Categories } from './pages/Categories';
 import { Activities } from './pages/Activities';
-import { ActivitiesGames } from './pages/ActivitiesGames';
 import { Activity } from './pages/Activity';
 import { createBrowserRouter, RouterProvider } from 'react-router-dom';
 import { Root } from './components/Root';
 import { ActivityProvider } from './pages/ActivityContext'; // Adjust the import path as needed
 import { CityForm } from './components/CityForm';
+import { CategoryForm } from './components/CategoryForm';
+import { ActivityForm } from './components/ActivityForm';
 // import { ActivityForm } from './components/ActivityForm';
-// import { CategoryForm } from './components/CategoryForm';
 
 const router = createBrowserRouter([
   {
@@ -32,22 +33,31 @@ const router = createBrowserRouter([
         element: <City />,
         // loader: postListLoader,
       },
-      // {
-      //   path: '/categoryForm/', //activity is virtual location set by the router
-      //   element: <CategoryForm />,
-      // },
       {
-        path: '/city/:cityName/activities/:activityTitle',
-        element: <Activities />,
+        path: '/city/:cityName/categories/:categoryName',
+        element: <Categories />,
         // loader: postListLoader,
       },
       {
-        path: '/city/:cityName/activities/:activityTitle/activity/:eventTitle', //activity is virtual location set by the router
+        path: '/city/:cityName/categories/categoryForm', // Note: Adjusted to reflect a more appropriate URL structure
+        element: <CategoryForm />,
+      },
+      // {
+      //   path: '/city/:cityName/categories/:categoryName/activities/:activityTitle', //activity is virtual location set by the router
+      //   element: <Activities />,
+      //   // loader: postLoader,
+      //   // action: addComment,
+      // },
+      {
+        path: '/city/:cityName/categories/:categoryName/activities/activityForm', //activity is virtual location set by the router
+        element: <ActivityForm />,
+      },
+      {
+        path: '/city/:cityName/categories/:categoryName/activity/:activityTitle', //activity is virtual location set by the router
         element: <Activity />,
         // loader: postLoader,
         // action: addComment,
       },
-    
     ],
   },
 ]);

@@ -4,7 +4,7 @@ import { Input, Button } from '@chakra-ui/react';
 
 export const CityForm = () => {
   // State for each form field
-  const [name, setName] = useState('');
+  const [name, setName] = useState('');//this is to have a controlled component.Remember to add value={name} and the onChange event handler in the input element.
   const [image, setImage] = useState('');
 
   const { createCity } = useCitiesContext(); // Use context to access createCity
@@ -14,29 +14,39 @@ export const CityForm = () => {
     setName('');
     setImage('');
   };
+  
+
+
 
   const handleSubmit = async (event) => {
     event.preventDefault();
-
-    // Regex for validating name: allows letters and spaces but not only spaces
+  
+    // Function to capitalize the first letter of the city name
+    const capitalizeCityName = (name) => {
+      return name.charAt(0).toUpperCase() + name.slice(1).toLowerCase();
+    };
+  
+    // Validate and then capitalize the city name
     const nameRegex = /^[A-Za-z]+(?: [A-Za-z]+)*$/;
     if (!nameRegex.test(name)) {
       alert('Please enter a valid name (letters only, first and last name required).');
       return;
     }
-
-    // Assuming createUser is correctly defined and accessible
+    const capitalizedCityName = capitalizeCityName(name);
+  
+    // Assuming createCity is correctly defined and accessible
     try {
       await createCity({
-        name,
+        name: capitalizedCityName,
         image,
       });
       resetFormFields();
     } catch (error) {
-      console.error('Error creating user:', error);
+      console.error('Error creating city:', error);
       // Handle the error appropriately
     }
   };
+  
 
   return (
     <form onSubmit={handleSubmit}>
