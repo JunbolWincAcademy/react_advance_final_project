@@ -4,7 +4,7 @@ import ReactDOM from 'react-dom/client';
 import { Cities } from './pages/Cities';
 import { City } from './pages/City';
 import { Categories } from './pages/Categories';
-import { Activities } from './pages/Activities';
+// import { Activities } from './pages/Activities';
 import { Activity } from './pages/Activity';
 import { createBrowserRouter, RouterProvider } from 'react-router-dom';
 import { Root } from './components/Root';

@@ -68,6 +68,7 @@ export const Categories = () => {
       <Heading mb="2rem">
         {capitalizedCategoryName} to do in {cityName}
       </Heading>
+      
       <Button>
         <Link to={`/city/${cityName}/categories/${categoryName}/activities/activityForm`}>Add an activity</Link>
         {/*to get the right breadcrumb you nee to use good template literals.*/}

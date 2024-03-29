@@ -5,7 +5,7 @@ import { useParams } from 'react-router-dom';
 
 export const ActivityForm = () => {
   // State for each form field
-  const [name, setName] = useState('');
+  const [title, setTitle] = useState('');
   const [image, setImage] = useState('');
 
   // Extract cityName and categoryName from the URL
@@ -15,7 +15,7 @@ export const ActivityForm = () => {
 
   // Reset form fields
   const resetFormFields = () => {
-    setName('');
+    setTitle('');
     setImage('');
   };
 
@@ -24,7 +24,7 @@ export const ActivityForm = () => {
 
     // Regex for validating name: allows letters and spaces but not only spaces
     const nameRegex = /^[A-Za-z]+(?: [A-Za-z]+)*$/;
-    if (!nameRegex.test(name)) {
+    if (!nameRegex.test(title)) {
       alert('Please enter a valid name (letters only, first and last name required).');
       return;
     }
@@ -32,8 +32,8 @@ export const ActivityForm = () => {
 
     // Assuming createUser is correctly defined and accessible
     try {
-      await createActivity(cityName, categoryName, {
-        name,
+      await createActivity(cityName, categoryName, {//this add the new content inside categoryName
+        title,
         image,
       });
       resetFormFields();
@@ -44,7 +44,7 @@ export const ActivityForm = () => {
 
   return (
     <form onSubmit={handleSubmit}>
-      <Input mb="1rem" type="text" required placeholder="Name" value={name} onChange={(e) => setName(e.target.value)} />
+      <Input mb="1rem" type="text" required placeholder="Name" value={title} onChange={(e) => setTitle(e.target.value)} />
 
       <Input mb="1rem" type="url" required placeholder="URL to image" value={image} onChange={(e) => setImage(e.target.value)} />
 

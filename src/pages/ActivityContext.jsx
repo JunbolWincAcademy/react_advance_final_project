@@ -289,21 +289,21 @@ export const ActivityProvider = ({ children }) => {
       const citiesResponse = await fetch('http://localhost:3000/cities');
       if (!citiesResponse.ok) throw new Error('Failed to fetch cities');
       let citiesData = await citiesResponse.json();
-  
+
       if (!citiesData[cityName]) {
         console.error('City does not exist');
         return; // Exit if city not found
       }
-  
+
       // Accessing the specific category within the city
       const category = citiesData[cityName].categories[categoryName];
       if (!category || !category[0] || !category[0].activities) {
         console.error('Category or activities not found');
         return; // Exit if category or activities not found
       }
-  
+
       // Finding the activity by ID and removing it
-      const activityIndex = category[0].activities.findIndex(activity => activity.id === activityId);
+      const activityIndex = category[0].activities.findIndex((activity) => activity.id === activityId);
       if (activityIndex !== -1) {
         // Activity found, now remove it
         category[0].activities.splice(activityIndex, 1); // 🛠 Remove the activity
@@ -311,14 +311,14 @@ export const ActivityProvider = ({ children }) => {
         console.error('Activity does not exist within the category');
         return; // Exit if activity not found
       }
-  
+
       // Update the cities object back to the server
       await fetch('http://localhost:3000/cities', {
         method: 'PUT',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify(citiesData),
       });
-  
+
       // Optionally, update local state to reflect the change
       const updatedCityList = Object.values(citiesData);
       setCityList(updatedCityList); // 🛠 Update local state to reflect the activity deletion
@@ -326,7 +326,6 @@ export const ActivityProvider = ({ children }) => {
       console.error('Error deleting activity:', error);
     }
   };
-  
 
   return (
     <ActivityContext.Provider value={{ selectedCity, activityList, setActivityList, selectedActivity, setSelectedActivity, createActivity }}>

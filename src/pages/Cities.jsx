@@ -51,7 +51,7 @@ export const Cities = () => {
   return (
     <ActivityProvider>
       <div className="App">
-        <Heading mb="1rem">Activities to do around the world</Heading>
+        {/* <Heading mb="1rem">Activities to do around the world</Heading> */}
         <Button mb="1rem">
           <Link to={`/cityForm/`}> Add a city</Link>
         </Button>
