@@ -1,16 +1,22 @@
 import { useEffect, useState } from 'react';
 import { useCitiesContext } from './ActivityContext'; // Adjusted to use a context that includes city data
-import { useParams } from 'react-router-dom';
 import { Flex, Box, Heading, Text, Image, Button } from '@chakra-ui/react';
+import { Link } from 'react-router-dom'; //🚩 is you use Link router dont use Link from ChakraUI
+import { useParams } from 'react-router-dom';
 
 export const Activity = () => {
-  const { cityName, categoryName, activityTitle } = useParams();
+  const { cityName, categoryName, activityId, activityTitle } = useParams();
+
   const { cityList } = useCitiesContext(); // This context now assumed to hold all city data
   const [activityDetails, setActivityDetails] = useState(null);
+  const [isLoading, setIsLoading] = useState(true);
 
   useEffect(() => {
     if (cityList.length === 0) {
-      return <div>Loading...</div>;
+      setIsLoading(true);
+      return; // just return, don't render anything here
+    } else {
+      setIsLoading(false);
     }
 
     console.log('URL Params:', { cityName, categoryName, activityTitle });
@@ -25,11 +31,20 @@ export const Activity = () => {
     // ✅ Correctly find the activity using its title within the activities array of the found category
     const activity = category ? category[0].activities.find((a) => a.title === activityTitle) : null; //🚩here was a BIG 🐞 here this [0] was missing like saying category[0]
     console.log('Found Activity:', activity);
+    console.log(activityTitle);
 
     if (activity) {
       setActivityDetails(activity);
     }
+
+    if (activityTitle) {
+      // If the activity is found and possibly updated
+    }
   }, [cityList, cityName, categoryName, activityTitle]);
+
+  if (isLoading) {
+    return <div>Loading...</div>;
+  }
 
   if (!activityDetails) return null;
 
@@ -39,24 +54,26 @@ export const Activity = () => {
         Activity to do in {cityName}
       </Heading>
       <div>
-        <Text as='b'>Activity Title:</Text> {activityDetails.title}
+        <Text as="b">Activity Title:</Text> {activityDetails.title}
       </div>
       <div>
-        <Text as='b'>Description:</Text> {activityDetails.description}
+        <Text as="b">Description:</Text> {activityDetails.description}
       </div>
       <div>
-        <Text as='b'>Start time:</Text> {activityDetails.starttime}
+        <Text as="b">Location:</Text> {activityDetails.location}
       </div>
       <div>
-        <Text as='b'>End time:</Text> {activityDetails.endTime}
+        <Text as="b">Start time:</Text> {activityDetails.starttime}
+      </div>
+      <div>
+        <Text as="b">End time:</Text> {activityDetails.endTime}
       </div>
       {activityDetails.image && <Image src={activityDetails.image} alt={activityDetails.title} style={{ width: '300px', height: 'auto' }} />}
       <Flex flexDir="horizontal">
         <Box marginTop="1rem">
-          <Button marginLeft="1rem" marginRight="2rem">
-            Edit Details
-          </Button>{' '}
-          <Button>Add Details</Button>
+          <Link to={`/city/${cityName}/categories/${categoryName}/activity/${activityDetails.id}/${activityDetails.title}/activityDetailsForm`}>
+            <Button>Edit Details</Button>
+          </Link>
         </Box>
       </Flex>
     </Box>

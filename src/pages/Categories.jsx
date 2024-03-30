@@ -36,7 +36,7 @@ const CategoryList = () => {
         <ListItem key={index} mb="2rem">
           {' '}
           {/* Consider using a more unique key if available */}
-          <Link to={`/city/${cityName}/categories/${categoryName}/activity/${activity.title}`}>
+          <Link to={`/city/${cityName}/categories/${categoryName}/activity/${activity.id}/${activity.title}`}>
             <Heading size="md" mb="1rem">
               {activity.title}
             </Heading>
@@ -68,11 +68,11 @@ export const Categories = () => {
       <Heading mb="2rem">
         {capitalizedCategoryName} to do in {cityName}
       </Heading>
-      
-      <Button>
-        <Link to={`/city/${cityName}/categories/${categoryName}/activities/activityForm`}>Add an activity</Link>
-        {/*to get the right breadcrumb you nee to use good template literals.*/}
-      </Button>
+
+      <Link to={`/city/${cityName}/categories/${categoryName}/activity/activityForm`}>
+        <Button>Add an activity</Button>
+      </Link>
+      {/*to get the right breadcrumb you nee to use good template literals.*/}
       {<CategoryList />}
     </div>
   );

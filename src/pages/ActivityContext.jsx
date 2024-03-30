@@ -4,6 +4,7 @@ const CityContext = createContext();
 const ActivityContext = createContext();
 const CategoryContext = createContext();
 const SelectedActivityContext = createContext();
+const ActivityDetailsContext = createContext();
 
 // This is the useCitiesContext custom HOOK:❗
 export const useCitiesContext = () => {
@@ -35,6 +36,16 @@ export const useActivitiesContext = () => {
   return context;
 };
 
+// This is the useActivityDetailsContext custom HOOK:❗
+export const useActivityDetailsContext = () => {
+  // this consume 'context' values: cityList, etc...
+  const context = useContext(ActivityDetailsContext);
+  if (!context) {
+    throw new Error('useActivityDetailsContext must be used within an CategoryContext.Provider');
+  }
+  return context;
+};
+
 //LOGIC TO CREATE THE GLOBAL ACTIVITY PROVIDER -------------------------------
 export const ActivityProvider = ({ children }) => {
   const [cityList, setCityList] = useState([]); // this is this the state not the component
@@ -42,6 +53,8 @@ export const ActivityProvider = ({ children }) => {
   const [categoryList, setCategoryList] = useState([]);
   const [activityList, setActivityList] = useState([]);
   const [selectedActivity, setSelectedActivity] = useState(null);
+  const [activityDetails, setActivityDetails] = useState([]);
+
   // const [activityGamesList, setActivityGamesList] = useState([]);
   // const [userPosts, setUserPosts] = useState([]); // State to hold the posts of the selected user
 
@@ -327,12 +340,65 @@ export const ActivityProvider = ({ children }) => {
     }
   };
 
+  // LOGIC TO ADD DETAILS TO AN EXISTING ACTIVITY
+  const createActivityDetails = async (cityName, categoryName, activityId, detailsData) => {
+    try {
+      // Fetch the current state of cities from your database
+      const response = await fetch('http://localhost:3000/cities');
+      if (!response.ok) throw new Error('Failed to fetch cities');
+      const citiesData = await response.json();
+
+      // Ensure the city and category exist
+      if (!citiesData[cityName] || !citiesData[cityName].categories[categoryName]) {
+        throw new Error('City or category does not exist');
+      }
+
+      // Find the specific activity within the category
+      const category = citiesData[cityName].categories[categoryName][0];
+      const activityIndex = category.activities.findIndex((activity) => activity.id.toString() === activityId);
+
+      if (activityIndex === -1) {
+        throw new Error('Activity does not exist');
+      }
+
+      // Update the activity with new details
+      const updatedActivity = {
+        ...category.activities[activityIndex],
+        ...detailsData,
+      };
+
+      citiesData[cityName].categories[categoryName][0].activities[activityIndex] = updatedActivity;//🚩❓
+
+      // Update the entire cities object back to the server
+      await fetch('http://localhost:3000/cities', {
+        method: 'PUT',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(citiesData),
+      });
+
+      //   if (updatedActivity) {
+      //     setActivityDetails(updatedActivity);
+      // }
+
+      // ✅ Update cityList state to reflect the new activity details in the UI
+      const newCityList = Object.values(citiesData);//🚩❓How cityList gets extracted form newCityList if only [cityName] is the value of each city?
+      setCityList(newCityList);
+
+      console.log('Activity details added successfully');
+      return updatedActivity; // Optionally return the updated activity object
+    } catch (error) {
+      console.error('Error updating activity details:', error);
+    }
+  };
+
   return (
     <ActivityContext.Provider value={{ selectedCity, activityList, setActivityList, selectedActivity, setSelectedActivity, createActivity }}>
       <CityContext.Provider value={{ cityList, setCityList, selectedCity, setSelectedCity, createCity, deleteCity }}>
         <CategoryContext.Provider value={{ selectedCity, deleteCategory, categoryList, setCategoryList, createCategory }}>
           <ActivityContext.Provider value={{ createActivity, deleteActivity, setSelectedActivity }}>
-            <SelectedActivityContext.Provider value={{ selectedActivity }}>{children}</SelectedActivityContext.Provider>
+            <SelectedActivityContext.Provider value={{ selectedActivity }}>
+              <ActivityDetailsContext.Provider value={{ createActivityDetails }}>{children}</ActivityDetailsContext.Provider>
+            </SelectedActivityContext.Provider>
           </ActivityContext.Provider>
         </CategoryContext.Provider>
       </CityContext.Provider>

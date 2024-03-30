@@ -12,6 +12,7 @@ import { ActivityProvider } from './pages/ActivityContext'; // Adjust the import
 import { CityForm } from './components/CityForm';
 import { CategoryForm } from './components/CategoryForm';
 import { ActivityForm } from './components/ActivityForm';
+import { ActivityDetailsForm } from './components/ActivityDetailsForm';
 // import { ActivityForm } from './components/ActivityForm';
 
 const router = createBrowserRouter([
@@ -49,15 +50,18 @@ const router = createBrowserRouter([
       //   // action: addComment,
       // },
       {
-        path: '/city/:cityName/categories/:categoryName/activities/activityForm', //activity is virtual location set by the router
+        path: '/city/:cityName/categories/:categoryName/activity/activityForm', //activity is virtual location set by the router
         element: <ActivityForm />,
       },
       {
-        path: '/city/:cityName/categories/:categoryName/activity/:activityTitle', //activity is virtual location set by the router
-        element: <Activity />,
-        // loader: postLoader,
-        // action: addComment,
+        path: '/city/:cityName/categories/:categoryName/activity/:activityId/:activityTitle',
+        element: <Activity key={window.location.pathname} />,
+      }, 
+      {
+        path: '/city/:cityName/categories/:categoryName/activity/:activityId/:activityTitle/activityDetailsForm',
+        element: <ActivityDetailsForm />,
       },
+      
     ],
   },
 ]);
