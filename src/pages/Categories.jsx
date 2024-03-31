@@ -1,12 +1,12 @@
 import React from 'react';
 import { useCitiesContext, useActivitiesContext } from './ActivityContext'; // Adjust import as needed
 import { useParams } from 'react-router-dom';
-import { Heading, UnorderedList, ListItem, Image, Button } from '@chakra-ui/react';
+import { Flex, Heading, UnorderedList, ListItem, Image, Button } from '@chakra-ui/react';
 import { Link } from 'react-router-dom';
 
 const CategoryList = () => {
   const { cityList } = useCitiesContext(); // Assume cityList includes cities with their categories and activities
-  const { deleteActivity, setSelectedActivity } = useActivitiesContext();
+  const { deleteActivity, setSelectedActivity, editActivity } = useActivitiesContext();
   const { cityName, categoryName } = useParams(); // Use activityTitle or categoryName based on your routing parameter
   console.log('URL cityName:', cityName); // Verifying this matches exactly with your data's city names
   // Find the selected city data
@@ -31,22 +31,31 @@ const CategoryList = () => {
   console.log('Activities:', activities); // Debugging
 
   return (
-    <UnorderedList listStyleType="none">
-      {activities.map((activity, index) => (
-        <ListItem key={index} mb="2rem">
-          {' '}
-          {/* Consider using a more unique key if available */}
-          <Link to={`/city/${cityName}/categories/${categoryName}/activity/${activity.id}/${activity.title}`}>
-            <Heading size="md" mb="1rem">
-              {activity.title}
-            </Heading>
-            {activity.image && <Image src={activity.image} alt={activity.title} style={{ width: '300px', height: 'auto' }} />}
-          </Link>
-          <Button onClick={() => deleteActivity(cityName, categoryName, activity.id)}>Delete this Activity</Button>
-          {/*✅ categoryName was missing*/}
-        </ListItem>
-      ))}
-    </UnorderedList>
+    <Flex flexDir="column" mt="1rem" bg="green" align="center" width="100%" pl="0">
+      <UnorderedList listStyleType="none">
+        {activities.map((activity, index) => (
+          <ListItem key={index} mb="2rem">
+            {' '}
+            {/* Consider using a more unique key if available */}
+            <Link to={`/city/${cityName}/categories/${categoryName}/activity/${activity.id}/${activity.title}`}>
+              <Heading size="md" mb="1rem">
+                {activity.title}
+              </Heading>
+              {activity.image && <Image src={activity.image} alt={activity.title} style={{ width: '300px', height: 'auto' }} />}
+            </Link>
+            <Button size="sm" width="100%" onClick={() => deleteActivity(cityName, categoryName, activity.id)}>
+              Delete this Activity
+            </Button>
+            <Link to={`/city/${cityName}/categories/${categoryName}/activity/${activity.id}/${activity.title}/editActivityForm`}>
+              <Button size="sm" width="100%">
+                Edit this Activity
+              </Button>
+            </Link>
+            {/*✅ categoryName was missing*/}
+          </ListItem>
+        ))}
+      </UnorderedList>
+    </Flex>
   );
 };
 
@@ -64,7 +73,7 @@ export const Categories = () => {
   const capitalizedCategoryName = capitalizeWords(categoryName);
 
   return (
-    <div className="App">
+    <Flex flexDir="column" className="App" align="center" width="100%">
       <Heading mb="2rem">
         {capitalizedCategoryName} to do in {cityName}
       </Heading>
@@ -74,7 +83,7 @@ export const Categories = () => {
       </Link>
       {/*to get the right breadcrumb you nee to use good template literals.*/}
       {<CategoryList />}
-    </div>
+    </Flex>
   );
 };
 

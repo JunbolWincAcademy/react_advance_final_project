@@ -34,11 +34,15 @@ export const City = () => {
   /*  Using the ternary operator to check if selectedCityData exists. If it does, extract the keys from selectedCityData.categories (which are the category names) and create an array of these keys. If selectedCityData does not exist, assign an empty array to categories. This ensures categories is always an array, preventing errors during array operations like map. */
   return (
     <>
-      <Heading mb="2rem">Activities to do in {cityName}</Heading>
-      <Button>
-        {/* // Assuming cityName and categoryName are variables holding the actual names */}
-        <Link to={`/city/${cityName}/categories/categoryForm`}>Add a category</Link>
-      </Button>
+      <Heading size="8" mb="md">
+        Activities to do in {cityName}
+      </Heading>
+      <Link to={`/city/${cityName}/categories/categoryForm`}>
+        <Button size="sm" width="100%">
+          {/* // Assuming cityName and categoryName are variables holding the actual names */}
+          Add a category
+        </Button>
+      </Link>
       <UnorderedList listStyleType="none">
         {categories.length > 0 &&
           categories.map((categoryName) => {
@@ -57,7 +61,14 @@ export const City = () => {
                     </Heading>
                     {detail.image && <Image src={detail.image} alt={detail.name} style={{ width: '300px', height: 'auto' }} />}
                   </Link>
-                  <Button onClick={() => deleteCategory(cityName, categoryName)}>Delete this category</Button>
+                  <Button size="sm" width="100%" onClick={() => deleteCategory(cityName, categoryName)}>
+                    Delete this category
+                  </Button>
+                  <Link to={`/city/${cityName}/categories/${categoryName}/editCategoryForm`}>
+                    <Button size="sm" width="100%">
+                      Edit this Category
+                    </Button>
+                  </Link>
                 </ListItem>
               )
             );

@@ -227,13 +227,15 @@
             "image": "https://www.ctvnews.ca/polopoly_fs/1.5118552.1600965663!/httpImage/image.jpg_gen/derivatives/landscape_1020/image.jpg",
             "activities": [
               {
-                "title": "TrampolinParis",
+                "title": "Trampolin_Paris",
                 "image": "https://i.pinimg.com/736x/3d/2f/af/3d2faf4e3188d34a9fcdc00df59e77b0.jpg",
                 "id": 1711798474355,
                 "description": "A greate place to jump",
                 "location": "Center",
                 "startTime": "2024-03-08T16:24",
-                "endTime": "2024-03-31T16:24"
+                "endTime": "2024-03-31T16:24",
+                "userName": "Junier",
+                "lastName": "Bolivar"
               }
             ]
           }

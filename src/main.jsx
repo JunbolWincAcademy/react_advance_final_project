@@ -12,7 +12,9 @@ import { ActivityProvider } from './pages/ActivityContext'; // Adjust the import
 import { CityForm } from './components/CityForm';
 import { CategoryForm } from './components/CategoryForm';
 import { ActivityForm } from './components/ActivityForm';
-import { ActivityDetailsForm } from './components/ActivityDetailsForm';
+import { EditActivityForm } from './components/EditActivityForm';
+import { EditCategoryForm } from './components/EditCategoryForm';
+import { EditActivityDetailsForm } from './components/EditActivityDetailsForm';
 // import { ActivityForm } from './components/ActivityForm';
 
 const router = createBrowserRouter([
@@ -43,6 +45,12 @@ const router = createBrowserRouter([
         path: '/city/:cityName/categories/categoryForm', // Note: Adjusted to reflect a more appropriate URL structure
         element: <CategoryForm />,
       },
+      {
+        path: '/city/:cityName/categories/:categoryName/editCategoryForm', // Note: Adjusted to reflect a more appropriate URL structure
+        element: <EditCategoryForm />,
+      },
+   
+   
       // {
       //   path: '/city/:cityName/categories/:categoryName/activities/:activityTitle', //activity is virtual location set by the router
       //   element: <Activities />,
@@ -51,17 +59,22 @@ const router = createBrowserRouter([
       // },
       {
         path: '/city/:cityName/categories/:categoryName/activity/activityForm', //activity is virtual location set by the router
+
         element: <ActivityForm />,
       },
       {
-        path: '/city/:cityName/categories/:categoryName/activity/:activityId/:activityTitle',
+        path: '/city/:cityName/categories/:categoryName/activity/:activityId/:activityTitle', //look how is not  activity.id but activityId
         element: <Activity key={window.location.pathname} />,
-      }, 
-      {
-        path: '/city/:cityName/categories/:categoryName/activity/:activityId/:activityTitle/activityDetailsForm',
-        element: <ActivityDetailsForm />,
       },
-      
+      {
+        path: '/city/:cityName/categories/:categoryName/activity/:activityId/:activityTitle/editActivityForm', //activity is virtual location set by the router
+        element: <EditActivityForm />,
+      },
+    
+      {
+        path: '/city/:cityName/categories/:categoryName/activity/:activityId/:activityTitle/editActivityDetailsForm',
+        element: <EditActivityDetailsForm />,
+      },
     ],
   },
 ]);

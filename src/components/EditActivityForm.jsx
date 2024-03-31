@@ -3,7 +3,7 @@ import { useActivityDetailsContext } from '../pages/ActivityContext';
 import { Input, Button, Textarea } from '@chakra-ui/react';
 import { useParams, useNavigate } from 'react-router-dom';
 
-export const ActivityDetailsForm = () => {
+export const EditActivityForm = () => {
   const navigate = useNavigate();
   const { cityName, categoryName, activityId, activityTitle } = useParams();
 
@@ -98,10 +98,6 @@ export const ActivityDetailsForm = () => {
   return (
     <form onSubmit={handleSubmit}>
       <Input mb="1rem" type="text" required placeholder="Title" value={title} onChange={(e) => setTitle(e.target.value)} />
-      <Textarea mb="1rem" placeholder="Description" value={description} onChange={(e) => setDescription(e.target.value)} />
-      <Input mb="1rem" type="text" required placeholder="Location" value={location} onChange={(e) => setLocation(e.target.value)} />
-      <Input mb="1rem" type="datetime-local" required placeholder="Start Time" value={startTime} onChange={(e) => setStartTime(e.target.value)} />
-      <Input mb="1rem" type="datetime-local" required placeholder="End Time" value={endTime} onChange={(e) => setEndTime(e.target.value)} />
       <Input mb="1rem" type="url" required placeholder="URL to image" value={image} onChange={(e) => setImage(e.target.value)} />
       <Button mb="2rem" mr="2rem" type="submit">
         Update Details

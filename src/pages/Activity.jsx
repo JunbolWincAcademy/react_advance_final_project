@@ -68,11 +68,20 @@ export const Activity = () => {
       <div>
         <Text as="b">End time:</Text> {activityDetails.endTime}
       </div>
+      <div>
+      <div>
+        <Text as="b">Edited by:</Text> 
+      </div>
+        <Text as="b">Name:</Text> {activityDetails.userName}
+      </div>
+      <div>
+        <Text as="b">Lastname:</Text> {activityDetails.lastName}
+      </div>
       {activityDetails.image && <Image src={activityDetails.image} alt={activityDetails.title} style={{ width: '300px', height: 'auto' }} />}
       <Flex flexDir="horizontal">
         <Box marginTop="1rem">
-          <Link to={`/city/${cityName}/categories/${categoryName}/activity/${activityDetails.id}/${activityDetails.title}/activityDetailsForm`}>
-            <Button>Edit Details</Button>
+          <Link to={`/city/${cityName}/categories/${categoryName}/activity/${activityDetails.id}/${activityDetails.title}/EditActivityDetailsForm`}>
+            <Button>Edit this Activity Details</Button>
           </Link>
         </Box>
       </Flex>
