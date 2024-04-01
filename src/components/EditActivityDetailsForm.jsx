@@ -1,6 +1,6 @@
 import { useState, useEffect } from 'react';
 import { useActivityDetailsContext } from '../pages/ActivityContext';
-import { Input, Button, Textarea } from '@chakra-ui/react';
+import { Input, Button, Box, Textarea, Text, FormControl, Select } from '@chakra-ui/react';
 import { useParams, useNavigate } from 'react-router-dom';
 
 export const EditActivityDetailsForm = () => {
@@ -14,8 +14,9 @@ export const EditActivityDetailsForm = () => {
   const [startTime, setStartTime] = useState('');
   const [endTime, setEndTime] = useState('');
   const [image, setImage] = useState('');
-  const [userName, setUserName] = useState('');
-  const [lastName, setLastName] = useState('');
+  const [rating, setRating] = useState(3); // ✅ Added field
+  const [userName, setUserName] = useState(''); // ✅ For editedBy
+  const [userLastName, setUserLastName] = useState(''); // ✅ For editedBy
 
   const { createActivityDetails } = useActivityDetailsContext();
 
@@ -53,15 +54,19 @@ export const EditActivityDetailsForm = () => {
       console.log(`activities id:${activity}`);
       console.log(`activities id:${category[0].activities[0].id}`);
 
+      // Convert ISO date string to local datetime format for form compatibility
+      const startDateTime = new Date(activity.startTime).toISOString().slice(0, 16); // ✅
+      const endDateTime = new Date(activity.endTime).toISOString().slice(0, 16); // ✅
+
       // When setting the state, use a fallback value like an empty string if the fetched data might be undefined or null
       setTitle(activity.title || '');
       setImage(activity.image || '');
       setDescription(activity.description || '');
       setLocation(activity.location || '');
-      setStartTime(activity.startTime || '');
-      setEndTime(activity.endTime || '');
+      setStartTime(startDateTime);
+      setEndTime(endDateTime);
       setUserName('');
-      setLastName('');
+      setUserLastName('');
     };
 
     if (activityId) {
@@ -77,22 +82,25 @@ export const EditActivityDetailsForm = () => {
     setEndTime('');
     setImage('');
     setUserName('');
-    setLastName('');
+    setUserLastName('');
   };
 
   const handleSubmit = async (event) => {
     event.preventDefault();
+    // Convert form datetime to ISO string if necessary for database
+    const startDateTimeISO = new Date(startTime).toISOString(); // ✅
+    const endDateTimeISO = new Date(endTime).toISOString(); // ✅
 
     try {
       await createActivityDetails(cityName, categoryName, activityId, {
         title,
         description,
         location,
-        startTime,
-        endTime,
+        startTime: startDateTimeISO,
+        endTime: endDateTimeISO,
         image,
-        userName,
-        lastName,
+        rating,
+        editedBy: { userName, userLastName },
       });
 
       resetFormFields();
@@ -104,21 +112,150 @@ export const EditActivityDetailsForm = () => {
   };
 
   return (
-    <form onSubmit={handleSubmit}>
-      <Input mb="1rem" type="text" required placeholder="Title" value={title} onChange={(e) => setTitle(e.target.value)} />
-      <Textarea mb="1rem" placeholder="Description" value={description} onChange={(e) => setDescription(e.target.value)} />
-      <Input mb="1rem" type="text" required placeholder="Location" value={location} onChange={(e) => setLocation(e.target.value)} />
-      <Input mb="1rem" type="datetime-local" required placeholder="Start Time" value={startTime} onChange={(e) => setStartTime(e.target.value)} />
-      <Input mb="1rem" type="datetime-local" required placeholder="End Time" value={endTime} onChange={(e) => setEndTime(e.target.value)} />
-      <Input mb="1rem" type="url" required placeholder="URL to image" value={image} onChange={(e) => setImage(e.target.value)} />
-      <Input mb="1rem" type="text" required placeholder="Name" value={userName} onChange={(e) => setUserName(e.target.value)} />
-      <Input mb="1rem" type="text" required placeholder="Lastname" value={lastName} onChange={(e) => setLastName(e.target.value)} />
-      <Button mb="2rem" mr="2rem" type="submit">
-        Update Details
-      </Button>
-      <Button type="button" mb="2rem" onClick={resetFormFields}>
-        Reset
-      </Button>
-    </form>
+    <FormControl
+      display="flex"
+      flexDir="column"
+      borderRadius="10"
+      p="1rem"
+      m="1.5rem"
+      bg="red.600"
+      color="white"
+      width="auto"
+      onSubmit={handleSubmit}
+    >
+      <label htmlFor="location">
+        <Text as="b">Title:</Text>
+      </label>
+      <Input
+        bg="gray.200"
+        color="black"
+        mb="1rem"
+        type="text"
+        required
+        placeholder="Title"
+        value={title}
+        onChange={(e) => setTitle(e.target.value)}
+      />
+      <label htmlFor="location">
+        <Text as="b">Description:</Text>
+      </label>
+      <Textarea
+        bg="gray.200"
+        color="black"
+        mb="1rem"
+        placeholder="Description"
+        value={description}
+        onChange={(e) => setDescription(e.target.value)}
+      />
+      <label htmlFor="location">
+        <Text as="b">Location:</Text>
+      </label>
+      <Input
+        bg="gray.200"
+        color="black"
+        id="location"
+        mb="1rem"
+        type="text"
+        required
+        placeholder="Location"
+        value={location}
+        onChange={(e) => setLocation(e.target.value)}
+        _placeholder={{ color: 'gray.400' }}
+      />
+      <label htmlFor="location">
+        <Text as="b">Start Time:</Text>
+      </label>
+      <Input
+        bg="gray.200"
+        color="black"
+        id="startTime"
+        mb="1rem"
+        type="datetime-local"
+        required
+        placeholder="Start Time"
+        value={startTime}
+        onChange={(e) => setStartTime(e.target.value)}
+        _placeholder={{ color: 'gray.400' }}
+      />
+      <label htmlFor="location">
+        <Text as="b">End Time:</Text>
+      </label>
+      <Input
+        bg="gray.200"
+        color="black"
+        id="endTime"
+        mb="1rem"
+        type="datetime-local"
+        required
+        placeholder="End Time"
+        value={endTime}
+        onChange={(e) => setEndTime(e.target.value)}
+        _placeholder={{ color: 'gray.400' }}
+      />
+      <label htmlFor="location">
+        <Text as="b">Image URL:</Text>
+      </label>
+      <Input
+        bg="gray.200"
+        color="black"
+        id="image"
+        mb="1rem"
+        type="url"
+        required
+        placeholder="URL to image"
+        value={image}
+        onChange={(e) => setImage(e.target.value)}
+        _placeholder={{ color: 'gray.400' }}
+      />
+      <label htmlFor="location">
+        <Text as="b">Give a rating</Text>
+      </label>
+      <Select
+        bg="gray.200"
+        color="black"
+        mb="1rem"
+        placeholder="Rating"
+        value={rating}
+        onChange={(e) => setRating(Number(e.target.value))}
+        _placeholder={{ color: 'gray.400' }}
+      >
+        {[1, 2, 3, 4, 5].map((number) => (
+          <option key={number} value={number}>
+            {number}
+          </option>
+        ))}
+      </Select>
+      <label htmlFor="location">
+        <Text as="b">Edited by:</Text>
+      </label>
+      <Input
+        bg="gray.200"
+        color="black"
+        mb="1rem"
+        type="text"
+        placeholder="Name"
+        value={userName}
+        onChange={(e) => setUserName(e.target.value)}
+        _placeholder={{ color: 'gray.400' }}
+      />
+      <Input
+        bg="gray.200"
+        color="black"
+        mb="1rem"
+        type="text"
+        placeholder="Lastname"
+        value={userLastName}
+        onChange={(e) => setUserLastName(e.target.value)}
+        _placeholder={{ color: 'gray.400' }}
+      />
+      <Box align="center" mt="2rem">
+        <Button type="submit" width="80%" mb="2rem" color="white" bg="gray" _hover={{ bg: 'white', color: 'black' }}>
+          Update Details
+        </Button>
+        <Button type="button" width="80%" mb="2rem" color="white" bg="gray" _hover={{ bg: 'white', color: 'black' }} onClick={resetFormFields}>
+          Reset Input Fields
+        </Button>
+      </Box>
+    </FormControl>
   );
 };
