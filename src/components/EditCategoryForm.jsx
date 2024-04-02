@@ -1,5 +1,5 @@
 import { useState, useEffect } from 'react';
-import { Input, Button } from '@chakra-ui/react';
+import { FormControl, Input, Button, Box} from '@chakra-ui/react';
 import { useParams, useNavigate } from 'react-router-dom';
 
 export const EditCategoryForm = () => {
@@ -62,15 +62,37 @@ export const EditCategoryForm = () => {
   };
 
   return (
-    <form onSubmit={handleSubmit}>
-      <Input mb="1rem" type="text" required placeholder="Category Name" value={name} onChange={(e) => setName(e.target.value)} />
-      <Input mb="1rem" type="url" required placeholder="URL to image" value={image} onChange={(e) => setImage(e.target.value)} />
-      <Button mb="2rem" mr="2rem" type="submit">
+    <FormControl display="flex" flexDir="column" borderRadius="8" p="1rem" m="1.5rem" bg="red.600" color="white" width="auto" onSubmit={handleSubmit}>
+      <Input
+        bg="gray.200"
+        color="black"
+        mb="1rem"
+        type="text"
+        required
+        placeholder="Category Name"
+        value={name}
+        onChange={(e) => setName(e.target.value)}
+      />
+      <Input
+        bg="gray.200"
+        color="black"
+        mb="1rem"
+        type="url"
+        required
+        placeholder="URL to image"
+        value={image}
+        onChange={(e) => setImage(e.target.value)}
+      />
+      <Box display="flex" flexDir="column" alignItems="center" mt="2rem">
+      <Button type="submit" width="50%" mb="1rem" color="white" bg="gray" _hover={{ bg: 'white', color: 'black' }}>
         Update Category
       </Button>
-      <Button type="button" mb="2rem" onClick={resetFormFields}>
+      <Button type="button" width="50%" mb="2rem" color="white" bg="gray" _hover={{ bg: 'white', color: 'black' }} onClick={resetFormFields}>
         Reset
       </Button>
-    </form>
+
+      </Box>
+   
+    </FormControl>
   );
 };

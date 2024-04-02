@@ -4,7 +4,7 @@ import { ActivityProvider, useCitiesContext, useCategoriesContext } from './Acti
 import { useParams } from 'react-router-dom';
 // import { UserForm } from '../components/UserForm';
 // import { category } from './category';
-import { Heading, UnorderedList, ListItem, Image, Button } from '@chakra-ui/react';
+import { Flex, Heading, UnorderedList, ListItem, Image, Button } from '@chakra-ui/react';
 import { Link } from 'react-router-dom';
 
 export const City = () => {
@@ -33,17 +33,17 @@ export const City = () => {
   const categories = selectedCityData ? Object.keys(selectedCityData.categories) : []; // 🚩creating the array categories
   /*  Using the ternary operator to check if selectedCityData exists. If it does, extract the keys from selectedCityData.categories (which are the category names) and create an array of these keys. If selectedCityData does not exist, assign an empty array to categories. This ensures categories is always an array, preventing errors during array operations like map. */
   return (
-    <>
-      <Heading size="8" mb="md">
+    <Flex flexDir="column" align="center" width="100%">
+      <Heading size="xl" mb="2" mt="2">
         Activities to do in {cityName}
       </Heading>
       <Link to={`/city/${cityName}/categories/categoryForm`}>
-        <Button size="sm" width="100%">
+        <Button borderRadius="8"size="sm" width="100%" mt="0.5rem"  bg="red.300"  color="black" _hover={{ bg: 'red', color: 'white' }}  size="sm">
           {/* // Assuming cityName and categoryName are variables holding the actual names */}
           Add a category
         </Button>
       </Link>
-      <UnorderedList listStyleType="none">
+      <UnorderedList display="flex" flexDir="column"listStyleType="none" align="left">
         {categories.length > 0 &&
           categories.map((categoryName) => {
             const categoryDetailsArray = selectedCityData.categories[categoryName]; //using [] remember categories is an array here
@@ -52,29 +52,31 @@ export const City = () => {
                 detail,
                 index //❓ ✅ Use map on the array of details
               ) => (
-                <ListItem key={detail.id} mb="2rem">
+                <ListItem key={detail.id} mb="2rem" flexDir="column" >
                   {' '}
                   {/* ✅ Ensure key is unique by using detail.id*/}
-                  <Link to={`/city/${cityName}/categories/${detail.name}`}>
-                    <Heading size="md" mb="1rem">
+                  <Link to={`/city/${cityName}/categories/${detail.name}`} align="left">
+                    <Heading size="lg" mb="1rem">
                       {detail.name}
                     </Heading>
                     {detail.image && <Image src={detail.image} alt={detail.name} style={{ width: '300px', height: 'auto' }} />}
                   </Link>
-                  <Button size="sm" width="100%" onClick={() => deleteCategory(cityName, categoryName)}>
-                    Delete this category
-                  </Button>
-                  <Link to={`/city/${cityName}/categories/${categoryName}/editCategoryForm`}>
-                    <Button size="sm" width="100%">
-                      Edit this Category
+                  <Flex flexDir="column">
+                    <Button borderRadius="8"size="sm" width="100%" mt="0.5rem"  bg="red.300"  color="black" _hover={{ bg: 'red', color: 'white' }} onClick={() => deleteCategory(cityName, categoryName)}>
+                      Delete this category
                     </Button>
-                  </Link>
+                    <Link to={`/city/${cityName}/categories/${categoryName}/editCategoryForm`} borderRadius="8"size="sm" width="100%" mt="0.5rem"  bg="red.300"  color="black" _hover={{ bg: 'red', color: 'white' }}>
+                      <Button borderRadius="8"size="sm" width="100%" mt="0.5rem"  bg="red.300"  color="black" _hover={{ bg: 'red', color: 'white' }} >
+                        Edit this Category
+                      </Button>
+                    </Link>
+                  </Flex>
                 </ListItem>
               )
             );
           })}
       </UnorderedList>
-    </>
+    </Flex>
   );
 };
 ///-------

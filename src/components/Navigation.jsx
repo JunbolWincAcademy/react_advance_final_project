@@ -10,7 +10,7 @@ export const Navigation = () => {
     // Ensure the Flex container has width set to 100%
     <Flex flexDir="row" alignItems="center" justifyContent="space-between" width="100%" bg="red.500" p="2">
       <Link to="/">
-        <Heading size="lg" color="white">
+        <Heading size="2xl" color="white">
           Activities around the world {/* ✅ Header title */}
         </Heading>
       </Link>

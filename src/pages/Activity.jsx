@@ -49,61 +49,65 @@ export const Activity = () => {
   //   const { rating = 3, reviewCount = 0 } = activityDetails;
 
   return (
-    <Box maxW="sm" borderWidth="1px" borderRadius="lg" overflow="hidden">
+    <Flex  justifyContent="center" >
+    <Box maxW="sm" borderWidth="1px" borderRadius="lg" overflow="hidden" align="center">
       <Image src={activityDetails.image} alt={activityDetails.title} />
-
-      <Box p="6" flexDir="column">
-        <Box display="flex" borderRadius="lg" bg="red" color="white" w="14" h="8" alignItems="center" justifyContent="center">
-          <Text as="b" align="center">
-            New
-          </Text>
+      <Flex width="80%">
+        <Box display="flex" borderRadius="lg" bg="red" color="white" w="14" h="8" alignItems="center" justifyContent="center"  mt="1rem">
+          <Text as="b">New</Text>
         </Box>
-
-        <Heading mt="1" fontWeight="semibold" as="h5" lineHeight="tight" noOfLines={1}>
+      </Flex>
+      <Box flexDir="column" align="center" >
+        <Heading mt="0.1rem" fontWeight="semibold" as="h5" lineHeight="tight" noOfLines="1">
           {activityDetails.title}
         </Heading>
-        <Flex>
+        <Flex flexDir="column" textAlign="left"  width="80%">
           <Text as="b">Description:</Text>
           <Text>{activityDetails.description}</Text>
-        </Flex>
-        <Flex>
           <Text as="b">Location:</Text>
           <Text>{activityDetails.location}</Text>
-        </Flex>
-        <Flex>
           <Text as="b">Start Time:</Text>
           <Text>{activityDetails.startTime}</Text>
-        </Flex>
-        <Flex>
           <Text as="b">End Time:</Text>
           <Text>{activityDetails.endTime}</Text>
-        </Flex>
-        <Box display="flex" mt="2" mb="6" alignItems="center">
-          {Array(5)
-            .fill('')
-            .map((_, i) => (
-              <StarIcon key={i} color={i < activityDetails.rating ? 'red' : 'gray.300'} />
-            ))}
-          <Box as="span" ml="2" color="gray.600" fontSize="sm">
-            {activityDetails.reviewCount} reviews
-          </Box>
-        </Box>
-        <Flex flexDir="column">
-          <Text as="b">Edited by:</Text>
-          <Box flexDir="row">
-            <Text as="b">Name:</Text> {activityDetails.editedBy.userName}
-          </Box>
-          <Box flexDir="row">
-            <Text as="b">Lastname:</Text> {activityDetails.editedBy.userLastName}
+
+          <Box display="flex" mt="2" mb="6" alignItems="center">
+            {Array(5)
+              .fill('')
+              .map((_, i) => (
+                <StarIcon key={i} color={i < activityDetails.rating ? 'red' : 'gray.300'} />
+              ))}
+            <Box as="span" ml="2" color="gray.600" fontSize="sm">
+              {activityDetails.reviewCount} reviews
+            </Box>
           </Box>
         </Flex>
 
+        <Box display="flex" align="left" width="80%">
+          <Flex flexDir="column">
+            <Text as="b">Edited by:</Text>
+            <Box flexDir="row">
+              <Text as="b">Name:</Text> {activityDetails.editedBy.userName}
+            </Box>
+            <Box flexDir="row">
+              <Text as="b">Lastname:</Text> {activityDetails.editedBy.userLastName}
+            </Box>
+          </Flex>
+        </Box>
+
         <Link to={`/city/${cityName}/categories/${categoryName}/activity/${activityDetails.id}/${activityDetails.title}/EditActivityDetailsForm`}>
-          <Button mt="2" color="white" bg="red.300" _hover={{ bg: 'red' }}>
+          <Button borderRadius="8" size="sm" width="10
+        
+        50%" mt="1rem" bg="red.300" mb="2rem"color="black" _hover={{ bg: 'red', color: 'white' }}>
             Edit this Activity Details
           </Button>
         </Link>
       </Box>
     </Box>
+
+
+
+    </Flex>
+
   );
 };

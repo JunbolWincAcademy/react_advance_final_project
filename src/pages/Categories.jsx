@@ -31,24 +31,33 @@ const CategoryList = () => {
   console.log('Activities:', activities); // Debugging
 
   return (
-    <Flex flexDir="column" mt="1rem" bg="green" align="center" width="100%" pl="0">
+    <Flex flexDir="column" mt="1rem" align="center" width="100%" pl="0">
       <UnorderedList listStyleType="none">
         {activities.map((activity, index) => (
           <ListItem key={index} mb="2rem">
             {' '}
             {/* Consider using a more unique key if available */}
             <Link to={`/city/${cityName}/categories/${categoryName}/activity/${activity.id}/${activity.title}`}>
-              <Heading size="md" mb="1rem">
+              <Heading size="md" mb="1rem" align="center">
                 {activity.title}
               </Heading>
-              {activity.image && <Image src={activity.image} alt={activity.title} style={{ width: '300px', height: 'auto' }} />}
+              {activity.image && <Image borderRadius="4" src={activity.image} alt={activity.title} style={{ width: '300px', height: 'auto' }} />}
             </Link>
-            <Button size="sm" width="100%" onClick={() => deleteActivity(cityName, categoryName, activity.id)}>
-              Delete this Activity
+            <Button
+              borderRadius="8"
+              size="sm"
+              width="100%"
+              mt="1rem"
+              bg="red.300"
+              color="black"
+              _hover={{ bg: 'red', color: 'white' }}
+              onClick={() => deleteActivity(cityName, categoryName, activity.id)}
+            >
+              Delete this activity
             </Button>
             <Link to={`/city/${cityName}/categories/${categoryName}/activity/${activity.id}/${activity.title}/editActivityForm`}>
-              <Button size="sm" width="100%">
-                Edit this Activity
+              <Button borderRadius="8" size="sm" width="100%" mt="0.5rem" bg="red.300" color="black" _hover={{ bg: 'red', color: 'white' }}>
+                Edit this category
               </Button>
             </Link>
             {/*✅ categoryName was missing*/}
@@ -73,13 +82,15 @@ export const Categories = () => {
   const capitalizedCategoryName = capitalizeWords(categoryName);
 
   return (
-    <Flex flexDir="column" className="App" align="center" width="100%">
-      <Heading mb="2rem">
+    <Flex flexDir="column"  align="center" width="100%" pl="0">
+      <Heading size="lg" mb="2rem">
         {capitalizedCategoryName} to do in {cityName}
       </Heading>
 
       <Link to={`/city/${cityName}/categories/${categoryName}/activity/activityForm`}>
-        <Button>Add an activity</Button>
+        <Button borderRadius="8" size="sm" width="100%" mt="0.5rem" bg="red.300" color="black" _hover={{ bg: 'red', color: 'white' }}>
+          Add an activity
+        </Button>
       </Link>
       {/*to get the right breadcrumb you nee to use good template literals.*/}
       {<CategoryList />}

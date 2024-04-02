@@ -1,6 +1,6 @@
 import { useState, useEffect } from 'react';
 import { useActivityDetailsContext } from '../pages/ActivityContext';
-import { Input, Button, Textarea } from '@chakra-ui/react';
+import { Box, Input, Button, Textarea, FormControl, Text } from '@chakra-ui/react';
 import { useParams, useNavigate } from 'react-router-dom';
 
 export const EditActivityForm = () => {
@@ -96,15 +96,43 @@ export const EditActivityForm = () => {
   };
 
   return (
-    <form onSubmit={handleSubmit}>
-      <Input mb="1rem" type="text" required placeholder="Title" value={title} onChange={(e) => setTitle(e.target.value)} />
-      <Input mb="1rem" type="url" required placeholder="URL to image" value={image} onChange={(e) => setImage(e.target.value)} />
-      <Button mb="2rem" mr="2rem" type="submit">
-        Update Details
-      </Button>
-      <Button type="button" mb="2rem" onClick={resetFormFields}>
-        Reset
-      </Button>
-    </form>
+    <FormControl display="flex" flexDir="column" borderRadius="8" p="1rem" m="1.5rem" bg="red.600" color="white" width="auto" onSubmit={handleSubmit}>
+      <label htmlFor="location">
+        <Text as="b">Title:</Text>
+      </label>
+      <Input
+        bg="gray.200"
+        color="black"
+        mb="1rem"
+        type="text"
+        required
+        placeholder="Title"
+        value={title}
+        borderRadius="4"
+        onChange={(e) => setTitle(e.target.value)}
+      />
+      <Input
+        bg="gray.200"
+        color="black"
+        id="image"
+        mb="1rem"
+        type="url"
+        required
+        placeholder="URL to image"
+        value={image}
+        borderRadius="4"
+        onChange={(e) => setImage(e.target.value)}
+        _placeholder={{ color: 'gray.400' }}
+      />
+
+      <Box  display="flex" flexDir="column" alignItems="center" mt="2rem">
+        <Button type="submit" width="50%" mb="1rem" color="white" bg="gray" _hover={{ bg: 'white', color: 'black' }}>
+          Update Details
+        </Button>
+        <Button type="button" width="50%" mb="2rem" color="white" bg="gray" _hover={{ bg: 'white', color: 'black' }} onClick={resetFormFields}>
+          Reset Input Fields
+        </Button>
+      </Box>
+    </FormControl>
   );
 };

@@ -112,24 +112,14 @@ export const EditActivityDetailsForm = () => {
   };
 
   return (
-    <FormControl
-      display="flex"
-      flexDir="column"
-      borderRadius="10"
-      p="1rem"
-      m="1.5rem"
-      bg="red.600"
-      color="white"
-      width="auto"
-      onSubmit={handleSubmit}
-    >
+    <FormControl display="flex" flexDir="column" borderRadius="8" p="1rem" m="1.5rem" bg="red.600" color="white" width="auto"  justifyContent="center" onSubmit={handleSubmit}>
       <label htmlFor="location">
         <Text as="b">Title:</Text>
       </label>
       <Input
         bg="gray.200"
         color="black"
-        mb="1rem"
+        mb="2rem"
         type="text"
         required
         placeholder="Title"
@@ -142,7 +132,7 @@ export const EditActivityDetailsForm = () => {
       <Textarea
         bg="gray.200"
         color="black"
-        mb="1rem"
+        mb="2rem"
         placeholder="Description"
         value={description}
         onChange={(e) => setDescription(e.target.value)}
@@ -154,7 +144,7 @@ export const EditActivityDetailsForm = () => {
         bg="gray.200"
         color="black"
         id="location"
-        mb="1rem"
+        mb="2rem"
         type="text"
         required
         placeholder="Location"
@@ -169,7 +159,7 @@ export const EditActivityDetailsForm = () => {
         bg="gray.200"
         color="black"
         id="startTime"
-        mb="1rem"
+        mb="2rem"
         type="datetime-local"
         required
         placeholder="Start Time"
@@ -184,7 +174,7 @@ export const EditActivityDetailsForm = () => {
         bg="gray.200"
         color="black"
         id="endTime"
-        mb="1rem"
+        mb="2rem"
         type="datetime-local"
         required
         placeholder="End Time"
@@ -199,7 +189,7 @@ export const EditActivityDetailsForm = () => {
         bg="gray.200"
         color="black"
         id="image"
-        mb="1rem"
+        mb="2rem"
         type="url"
         required
         placeholder="URL to image"
@@ -213,7 +203,7 @@ export const EditActivityDetailsForm = () => {
       <Select
         bg="gray.200"
         color="black"
-        mb="1rem"
+        mb="2rem"
         placeholder="Rating"
         value={rating}
         onChange={(e) => setRating(Number(e.target.value))}
@@ -248,11 +238,11 @@ export const EditActivityDetailsForm = () => {
         onChange={(e) => setUserLastName(e.target.value)}
         _placeholder={{ color: 'gray.400' }}
       />
-      <Box align="center" mt="2rem">
-        <Button type="submit" width="80%" mb="2rem" color="white" bg="gray" _hover={{ bg: 'white', color: 'black' }}>
+      <Box display="flex" flexDir="column"  alignItems="center" mt="2rem" >
+        <Button type="submit" width="50%" mb="1rem" color="white" bg="gray" _hover={{ bg: 'white', color: 'black' }}>
           Update Details
         </Button>
-        <Button type="button" width="80%" mb="2rem" color="white" bg="gray" _hover={{ bg: 'white', color: 'black' }} onClick={resetFormFields}>
+        <Button type="button" width="50%" mb="2rem" color="white" bg="gray" _hover={{ bg: 'white', color: 'black' }} onClick={resetFormFields}>
           Reset Input Fields
         </Button>
       </Box>

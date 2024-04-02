@@ -2,7 +2,7 @@ import React from 'react';
 import { ActivityProvider, useCitiesContext } from './ActivityContext'; // Adjust the import
 // import { UserForm } from '../components/UserForm';
 // import { city } from './city';
-import { Heading, UnorderedList, ListItem, Image, Button } from '@chakra-ui/react';
+import { Flex, Box, Heading, UnorderedList, ListItem, Image, Button } from '@chakra-ui/react';
 import { Link } from 'react-router-dom';
 
 const CityList = () => {
@@ -28,10 +28,9 @@ const CityList = () => {
             </Heading>
             {city.image && <Image src={city.image} alt={city.name} style={{ width: '300px', height: 'auto' }} />}
           </Link>
-          <Button size="sm" onClick={() => deleteCity(city.name)}>
-            {/*it was city.id before*/}
-            Delete this city
-          </Button>
+         <Button borderRadius="8"size="sm" width="100%" mt="0.5rem"  bg="red.300"  color="black" _hover={{ bg: 'red', color: 'white' }} onClick={() => deleteCategory(cityName, categoryName)}>
+                      Delete this category
+                    </Button>
 
           {/* <Button size="xs" onClick={() => setSelectedCity(city)}>
             city Data
@@ -50,15 +49,19 @@ const CityList = () => {
 export const Cities = () => {
   return (
     <ActivityProvider>
-      <div className="App">
-        {/* <Heading mb="1rem">Activities to do around the world</Heading> */}
-        <Button mb="1rem">
-          <Link to={`/cityForm/`}> Add a city</Link>
-        </Button>
-        {/* <UserForm /> */}
-        <CityList />
-        {/* this is showing all the cities*/}
-      </div>
+      <Flex  flexDir="column" >
+        <Flex  flexDir="column" className="App"  align="center" >
+          {/* <Heading mb="1rem">Activities to do around the world</Heading> */}
+        
+            {' '}
+            {/* <UserForm /> */}
+            <Link to={`/cityForm/`}>  <Button borderRadius="8"size="sm" width="100%" mt="2rem" mb="1rem" bg="red.300"  color="black" _hover={{ bg: 'red', color: 'white' }}> Add a city</Button></Link>
+          <Flex flexDir="column" width="100%"  align="center">
+            <CityList />
+            {/* this is showing all the cities*/}
+          </Flex>
+        </Flex>
+      </Flex>
     </ActivityProvider>
   );
 };
