@@ -12,6 +12,7 @@ import { ActivityProvider } from './pages/ActivityContext'; // Adjust the import
 import { CityForm } from './components/CityForm';
 import { CategoryForm } from './components/CategoryForm';
 import { ActivityForm } from './components/ActivityForm';
+import { EditCityForm } from './components/EditCityForm';
 import { EditActivityForm } from './components/EditActivityForm';
 import { EditCategoryForm } from './components/EditCategoryForm';
 import { EditActivityDetailsForm } from './components/EditActivityDetailsForm';
@@ -32,10 +33,15 @@ const router = createBrowserRouter([
         element: <CityForm />,
       },
       {
+        path: '//city/:cityName/editCityForm', // Note: Adjusted to reflect a more appropriate URL structure
+        element: <EditCityForm />,
+      },
+      {
         path: '/city/:cityName',
         element: <City />,
         // loader: postListLoader,
       },
+     
       {
         path: '/city/:cityName/categories/:categoryName',
         element: <Categories />,

@@ -392,7 +392,7 @@ export const ActivityProvider = ({ children }) => {
   };
 
   return (
-    <ActivityContext.Provider value={{ selectedCity, activityList, setActivityList, selectedActivity, setSelectedActivity, createActivity }}>
+    <ActivityContext.Provider value={{ selectedCity, activityList, deleteCity, setActivityList, selectedActivity, setSelectedActivity, createActivity }}>
       <CityContext.Provider value={{ cityList, setCityList, selectedCity, setSelectedCity, createCity, deleteCity }}>
         <CategoryContext.Provider value={{ selectedCity, deleteCategory, categoryList, setCategoryList, createCategory }}>
           <ActivityContext.Provider value={{ createActivity, deleteActivity, setSelectedActivity }}>

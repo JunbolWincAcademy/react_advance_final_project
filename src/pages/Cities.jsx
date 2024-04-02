@@ -28,9 +28,31 @@ const CityList = () => {
             </Heading>
             {city.image && <Image src={city.image} alt={city.name} style={{ width: '300px', height: 'auto' }} />}
           </Link>
-         <Button borderRadius="8"size="sm" width="100%" mt="0.5rem"  bg="red.300"  color="black" _hover={{ bg: 'red', color: 'white' }} onClick={() => deleteCategory(cityName, categoryName)}>
-                      Delete this category
-                    </Button>
+          <Button
+            size="sm"
+            width="100%"
+            mt="0.5rem"
+            bg="red.300"
+            color="black"
+            _hover={{ bg: 'red', color: 'white' }}
+            onClick={() => deleteCity(city.name)}
+          >
+            {/* Using city.name to refer to the current city's name*/}
+            Delete this city
+          </Button>
+          <Link
+            to={`/city/${city.name}/editCityForm`}
+            size="sm"
+            width="100%"
+            mt="0.5rem"
+            bg="red.300"
+            color="black"
+            _hover={{ bg: 'red', color: 'white' }}
+          >
+            <Button size="sm" width="100%" mt="0.5rem" bg="red.300" color="black" _hover={{ bg: 'red', color: 'white' }}>
+              Edit this Category
+            </Button>
+          </Link>
 
           {/* <Button size="xs" onClick={() => setSelectedCity(city)}>
             city Data
@@ -49,14 +71,17 @@ const CityList = () => {
 export const Cities = () => {
   return (
     <ActivityProvider>
-      <Flex  flexDir="column" >
-        <Flex  flexDir="column" className="App"  align="center" >
-          {/* <Heading mb="1rem">Activities to do around the world</Heading> */}
-        
+      <Flex flexDir="column">
+        <Flex flexDir="column" className="App" align="center">
+          {/* <Heading mb="1rem">Activities to do around the world</Heading> */} {/* <UserForm /> */}
+          <Link to={`/cityForm/`}>
             {' '}
-            {/* <UserForm /> */}
-            <Link to={`/cityForm/`}>  <Button borderRadius="8"size="sm" width="100%" mt="2rem" mb="1rem" bg="red.300"  color="black" _hover={{ bg: 'red', color: 'white' }}> Add a city</Button></Link>
-          <Flex flexDir="column" width="100%"  align="center">
+            <Button borderRadius="8" size="sm" width="100%" mt="2rem" mb="1rem" bg="red.300" color="black" _hover={{ bg: 'red', color: 'white' }}>
+              {' '}
+              Add a city
+            </Button>
+          </Link>
+          <Flex flexDir="column" width="100%" align="center">
             <CityList />
             {/* this is showing all the cities*/}
           </Flex>

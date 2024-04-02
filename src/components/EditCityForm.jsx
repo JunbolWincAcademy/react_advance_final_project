@@ -2,9 +2,9 @@ import { useState, useEffect } from 'react';
 import { FormControl, Input, Button, Box, Text } from '@chakra-ui/react';
 import { useParams, useNavigate } from 'react-router-dom';
 
-export const EditCategoryForm = () => {
+export const EditCityForm = () => {
   const navigate = useNavigate();
-  const { cityName, categoryName } = useParams();
+  const { cityName } = useParams();
 
   const [name, setName] = useState('');
   const [image, setImage] = useState('');
@@ -19,7 +19,7 @@ export const EditCategoryForm = () => {
       const citiesData = await response.json();
 
       console.log('City Name:', cityName);
-      console.log('Category Name:', categoryName);
+
       console.log('Fetching data from URL:', url);
       console.log('Response from fetch:', response);
 
@@ -29,25 +29,20 @@ export const EditCategoryForm = () => {
       if (!cityData) {
         throw new Error('City not found');
       }
-      console.log('Name in CityData:', cityData);
-      // Access the category object directly
-      /*  const category = cityData.categories[categoryName];
-      if (!category) {
-        throw new Error('Category not found');
-      } */
+      console.log('CityData:', cityData);
+      console.log('City Name:', cityName);
 
-      // Assuming category details are directly accessible in the category object
-      setName(cityData.categories[categoryName][0].name || ''); //🚩🐞ONCE AGAIN [0] was the missing code
-      setImage(cityData.categories[categoryName][0].image || '');
+      setName(cityData.name || ''); //🚩🐞
+      setImage(cityData.image || '');
     };
 
     console.log('name:', name);
     console.log('image:', image);
 
-    if (cityName && categoryName) {
+    if (cityName) {
       fetchCategoryData();
     }
-  }, [cityName, categoryName]);
+  }, [cityName]);
 
   const resetFormFields = () => {
     setName('');
@@ -64,9 +59,8 @@ export const EditCategoryForm = () => {
   return (
     <FormControl display="flex" flexDir="column" borderRadius="8" p="1rem" m="1.5rem" bg="red.600" color="white" width="auto" onSubmit={handleSubmit}>
       <label htmlFor="location">
-        <Text as="b">Title:</Text>
+        <Text as="b">City name:</Text>
       </label>
-
       <Input
         bg="gray.200"
         color="black"

@@ -38,12 +38,12 @@ export const City = () => {
         Activities to do in {cityName}
       </Heading>
       <Link to={`/city/${cityName}/categories/categoryForm`}>
-        <Button borderRadius="8"size="sm" width="100%" mt="0.5rem"  bg="red.300"  color="black" _hover={{ bg: 'red', color: 'white' }}  size="sm">
+        <Button borderRadius="8" size="sm" width="100%" mt="0.5rem" bg="red.300" color="black" _hover={{ bg: 'red', color: 'white' }} size="sm">
           {/* // Assuming cityName and categoryName are variables holding the actual names */}
           Add a category
         </Button>
       </Link>
-      <UnorderedList display="flex" flexDir="column"listStyleType="none" align="left">
+      <UnorderedList display="flex" flexDir="column" listStyleType="none" align="left">
         {categories.length > 0 &&
           categories.map((categoryName) => {
             const categoryDetailsArray = selectedCityData.categories[categoryName]; //using [] remember categories is an array here
@@ -52,7 +52,7 @@ export const City = () => {
                 detail,
                 index //❓ ✅ Use map on the array of details
               ) => (
-                <ListItem key={detail.id} mb="2rem" flexDir="column" >
+                <ListItem key={detail.id} mb="2rem" flexDir="column">
                   {' '}
                   {/* ✅ Ensure key is unique by using detail.id*/}
                   <Link to={`/city/${cityName}/categories/${detail.name}`} align="left">
@@ -62,11 +62,29 @@ export const City = () => {
                     {detail.image && <Image src={detail.image} alt={detail.name} style={{ width: '300px', height: 'auto' }} />}
                   </Link>
                   <Flex flexDir="column">
-                    <Button borderRadius="8"size="sm" width="100%" mt="0.5rem"  bg="red.300"  color="black" _hover={{ bg: 'red', color: 'white' }} onClick={() => deleteCategory(cityName, categoryName)}>
+                    <Button
+                      borderRadius="8"
+                      size="sm"
+                      width="100%"
+                      mt="0.5rem"
+                      bg="red.300"
+                      color="black"
+                      _hover={{ bg: 'red', color: 'white' }}
+                      onClick={() => deleteCategory(cityName, categoryName)}
+                    >
                       Delete this category
                     </Button>
-                    <Link to={`/city/${cityName}/categories/${categoryName}/editCategoryForm`} borderRadius="8"size="sm" width="100%" mt="0.5rem"  bg="red.300"  color="black" _hover={{ bg: 'red', color: 'white' }}>
-                      <Button borderRadius="8"size="sm" width="100%" mt="0.5rem"  bg="red.300"  color="black" _hover={{ bg: 'red', color: 'white' }} >
+                    <Link
+                      to={`/city/${cityName}/categories/${categoryName}/editCategoryForm`}
+                      borderRadius="8"
+                      size="sm"
+                      width="100%"
+                      mt="0.5rem"
+                      bg="red.300"
+                      color="black"
+                      _hover={{ bg: 'red', color: 'white' }}
+                    >
+                      <Button borderRadius="8" size="sm" width="100%" mt="0.5rem" bg="red.300" color="black" _hover={{ bg: 'red', color: 'white' }}>
                         Edit this Category
                       </Button>
                     </Link>

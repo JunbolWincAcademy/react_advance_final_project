@@ -111,6 +111,9 @@ export const EditActivityForm = () => {
         borderRadius="4"
         onChange={(e) => setTitle(e.target.value)}
       />
+      <label htmlFor="location">
+        <Text as="b">URL to image:</Text>
+      </label>
       <Input
         bg="gray.200"
         color="black"
@@ -125,7 +128,7 @@ export const EditActivityForm = () => {
         _placeholder={{ color: 'gray.400' }}
       />
 
-      <Box  display="flex" flexDir="column" alignItems="center" mt="2rem">
+      <Box display="flex" flexDir="column" alignItems="center" mt="2rem">
         <Button type="submit" width="50%" mb="1rem" color="white" bg="gray" _hover={{ bg: 'white', color: 'black' }}>
           Update Details
         </Button>

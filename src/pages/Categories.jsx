@@ -57,7 +57,7 @@ const CategoryList = () => {
             </Button>
             <Link to={`/city/${cityName}/categories/${categoryName}/activity/${activity.id}/${activity.title}/editActivityForm`}>
               <Button borderRadius="8" size="sm" width="100%" mt="0.5rem" bg="red.300" color="black" _hover={{ bg: 'red', color: 'white' }}>
-                Edit this category
+                Edit this activity
               </Button>
             </Link>
             {/*✅ categoryName was missing*/}
