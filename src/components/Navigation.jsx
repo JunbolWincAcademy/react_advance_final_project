@@ -8,7 +8,7 @@ export const Navigation = () => {
 
   return (
     // Ensure the Flex container has width set to 100%
-    <Flex flexDir="row" alignItems="center" justifyContent="space-between" width="100%" bg="red.500" p="2">
+    <Flex flexDir="row" alignItems="center" justifyContent="space-between" width="100%" bg="red.600" p="2">
       <Link to="/">
         <Heading size="2xl" color="white">
           Activities around the world {/* ✅ Header title */}
@@ -20,7 +20,6 @@ export const Navigation = () => {
           icon={<HamburgerIcon />}
           variant="outline"
           mr="1rem"
-          variant="ghost"
           _hover={{ bg: '#FF7074' }}
           _active={{
             bg: 'red.500',

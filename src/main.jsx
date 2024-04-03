@@ -41,7 +41,7 @@ const router = createBrowserRouter([
         element: <City />,
         // loader: postListLoader,
       },
-     
+
       {
         path: '/city/:cityName/categories/:categoryName',
         element: <Categories />,
@@ -55,8 +55,7 @@ const router = createBrowserRouter([
         path: '/city/:cityName/categories/:categoryName/editCategoryForm', // Note: Adjusted to reflect a more appropriate URL structure
         element: <EditCategoryForm />,
       },
-   
-   
+
       // {
       //   path: '/city/:cityName/categories/:categoryName/activities/:activityTitle', //activity is virtual location set by the router
       //   element: <Activities />,
@@ -76,7 +75,7 @@ const router = createBrowserRouter([
         path: '/city/:cityName/categories/:categoryName/activity/:activityId/:activityTitle/editActivityForm', //activity is virtual location set by the router
         element: <EditActivityForm />,
       },
-    
+
       {
         path: '/city/:cityName/categories/:categoryName/activity/:activityId/:activityTitle/editActivityDetailsForm',
         element: <EditActivityDetailsForm />,
