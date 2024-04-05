@@ -1,7 +1,7 @@
 import React from 'react';
 import { useState } from 'react';
 import { useCitiesContext, useActivitiesContext } from './ActivityContext'; // Adjust import as needed
-import { useParams } from 'react-router-dom';
+import { useParams, Link } from 'react-router-dom';
 import {
   Flex,
   Heading,
@@ -18,7 +18,7 @@ import {
   ModalBody,
   ModalCloseButton,
 } from '@chakra-ui/react';
-import { Link } from 'react-router-dom';
+
 
 const CategoryList = () => {
   const { cityList } = useCitiesContext(); // Assume cityList includes cities with their categories and activities

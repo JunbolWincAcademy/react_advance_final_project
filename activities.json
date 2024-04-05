@@ -287,9 +287,9 @@
         "eating": []
       }
     },
-    "Paris": {
+    "Rome": {
       "id": 4,
-      "name": "Paris",
+      "name": "Rome",
       "image": "https://images.unsplash.com/photo-1502602898657-3e91760cbb34?q=80&w=1746&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D",
       "categories": {
         "games": [
@@ -304,13 +304,13 @@
                 "id": 1711798474355,
                 "description": "A greate place to jump",
                 "location": "Center",
-                "startTime": "2024-03-08T16:24",
-                "endTime": "2024-03-31T16:24",
+                "startTime": "2024-03-08T07:24:00.000Z",
+                "endTime": "2024-03-31T00:24:00.000Z",
                 "reviewCount": 0,
-                "rating": 3,
+                "rating": 1,
                 "editedBy": {
-                  "userName": "John",
-                  "userLastName": "Doe"
+                  "userName": "",
+                  "userLastName": ""
                 }
               }
             ]

@@ -33,7 +33,7 @@ const router = createBrowserRouter([
         element: <CityForm />,
       },
       {
-        path: '//city/:cityName/editCityForm', // Note: Adjusted to reflect a more appropriate URL structure
+        path: '/city/:cityName/editCityForm', // Note: Adjusted to reflect a more appropriate URL structure
         element: <EditCityForm />,
       },
       {

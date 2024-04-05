@@ -62,6 +62,19 @@ onOpen: A function that sets `isOpen` to true, used to open the modal/drawer.
           >
             Delete this city
           </Button>
+          <Link
+            to={`/city/${city.name}/editCityForm`}
+            size="sm"
+            width="100%"
+            mt="0.5rem"
+            bg="red.300"
+            color="black"
+            _hover={{ bg: 'red', color: 'white' }}
+          >
+            <Button size="sm" width="100%" mt="0.5rem" bg="red.300" color="black" _hover={{ bg: 'red', color: 'white' }}>
+              Edit this City
+            </Button>
+          </Link>
         </ListItem>
       ))}
 

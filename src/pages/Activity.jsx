@@ -25,7 +25,11 @@ export const Activity = () => {
   const { cityList } = useCitiesContext();
   const [activityDetails, setActivityDetails] = useState(null);
   const [isLoading, setIsLoading] = useState(true);
-  const { isOpen, onOpen, onClose } = useDisclosure(); // ✅ useDisclosure for modal
+  const { isOpen, onOpen, onClose: baseOnClose } = useDisclosure(); // Renaming to avoid naming conflict
+
+  const updateActivityDetails = (updatedDetails) => {
+    setActivityDetails(updatedDetails);
+  };
 
   useEffect(() => {
     if (cityList.length === 0) {
@@ -63,7 +67,10 @@ export const Activity = () => {
   // function ActivityCard() {
   //   // Assume rating is a new field in your activityDetails
   //   const { rating = 3, reviewCount = 0 } = activityDetails;
-
+  const onClose = () => {
+    console.log('Closing modal'); // This line will log when onClose is triggered
+    baseOnClose(); // Call the original onClose function from useDisclosure
+  };
   return (
     <Flex justifyContent="center">
       <Box maxW="sm" borderWidth="1px" borderRadius="lg" overflow="hidden" align="center">
@@ -111,7 +118,6 @@ export const Activity = () => {
             </Flex>
           </Box>
           <Button
-            borderRadius="8"
             size="sm"
             width="50%"
             mt="1rem"
@@ -125,12 +131,13 @@ export const Activity = () => {
           </Button>
         </Box>
       </Box>
+      {/* The Modal component uses isOpen and onClose props to control its visibility. isOpen is a boolean that determines if the modal is visible on the screen. onClose is a function that updates the isOpen state to false, closing the modal.These props are typically managed in the parent component's state (Activity.jsx in this case), allowing the modal to open/close based on user interactions. 'These are meant to be use here locally not like prop drilling */}
       <Modal isOpen={isOpen} onClose={onClose}>
         <ModalOverlay />
         <ModalContent>
           <ModalHeader>Edit Activity Details</ModalHeader>
           <ModalCloseButton />
-          <EditActivityDetailsForm activityDetails={activityDetails} onClose={onClose} />
+          <EditActivityDetailsForm activityDetails={activityDetails} onClose={onClose} onUpdate={updateActivityDetails} />
         </ModalContent>
       </Modal>
     </Flex>

@@ -1,7 +1,7 @@
 import React from 'react';
 import { useEffect, useState } from 'react';
 import { ActivityProvider, useCitiesContext, useCategoriesContext } from './ActivityContext'; // Adjust the import
-import { useParams } from 'react-router-dom';
+import { useParams, Link } from 'react-router-dom';
 // import { UserForm } from '../components/UserForm';
 // import { category } from './category';
 import {
@@ -20,11 +20,11 @@ import {
   ModalBody,
   ModalCloseButton,
 } from '@chakra-ui/react';
-import { Link } from 'react-router-dom';
+
 
 export const City = () => {
   const { cityList, selectedCity, setSelectedCity } = useCitiesContext(); // Use cityList from context
-  const { deleteCategory } = useCategoriesContext();
+  const { deleteCategory,  editCategoryDetails  } = useCategoriesContext();
   const { cityName, categoryName } = useParams(); // Extracting the city name from the URL
   const { isOpen, onOpen, onClose } = useDisclosure(); // ✅ useDisclosure hook manages the state for opening and closing the modal
   const [selectedCategoryForDelete, setSelectedCategoryForDelete] = useState(null); // ✅ Track category selected for deletion
@@ -87,7 +87,6 @@ export const City = () => {
                   </Link>
                   <Flex flexDir="column">
                     <Button
-                      borderRadius="8"
                       size="sm"
                       width="100%"
                       mt="0.5rem"
@@ -101,7 +100,6 @@ export const City = () => {
 
                     <Link
                       to={`/city/${cityName}/categories/${categoryName}/editCategoryForm`}
-                      borderRadius="8"
                       size="sm"
                       width="100%"
                       mt="0.5rem"
@@ -109,7 +107,7 @@ export const City = () => {
                       color="black"
                       _hover={{ bg: 'red', color: 'white' }}
                     >
-                      <Button borderRadius="8" size="sm" width="100%" mt="0.5rem" bg="red.300" color="black" _hover={{ bg: 'red', color: 'white' }}>
+                      <Button size="sm" width="100%" mt="0.5rem" bg="red.300" color="black" _hover={{ bg: 'red', color: 'white' }}>
                         Edit this Category
                       </Button>
                     </Link>

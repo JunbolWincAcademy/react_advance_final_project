@@ -116,6 +116,49 @@ export const ActivityProvider = ({ children }) => {
     }
   };
 
+  //lOGIC TO EDIT A CITY-------------------------------
+
+  // 🟢Logic to edit a city
+  const editCityDetails = async (cityId, updatedCityData) => {
+    try {
+      const response = await fetch('http://localhost:3000/cities');
+      if (!response.ok) throw new Error('Failed to fetch cities');
+      const citiesData = await response.json();
+
+      // Finding  the specific city within the cities data
+      let cityKey = Object.keys(citiesData).find((key) => citiesData[key].id === cityId);
+      if (!cityKey) {
+        throw new Error('City does not exist');
+      }
+
+      // Create a new object with the updated city name as the key
+      const updatedCitiesData = { ...citiesData };
+      delete updatedCitiesData[cityKey]; // Remove the old city key
+
+      // Using the updated city name as the new key
+      const newCityKey = updatedCityData.name;
+      updatedCitiesData[newCityKey] = {
+        ...citiesData[cityKey],
+        ...updatedCityData,
+        name: newCityKey, // Ensure the city's name property is also updated
+      };
+
+      // Updating the entire cities object back to the server
+      await fetch('http://localhost:3000/cities', {
+        method: 'PUT',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(updatedCitiesData),
+      });
+
+      // Updating cityList state to reflect the new city details and key in the UI
+      setCityList(Object.values(updatedCitiesData)); // 🟢 Update cityList to reflect changes
+
+      console.log('City details and key updated successfully');
+    } catch (error) {
+      console.error('Error updating city details:', error);
+    }
+  };
+
   //lOGIC TO DELETE A CITY -------------------------------
   const deleteCity = async (cityName) => {
     try {
@@ -189,6 +232,38 @@ export const ActivityProvider = ({ children }) => {
       setCityList(updatedCityList);
     } catch (error) {
       console.error('Error creating category:', error);
+    }
+  };
+
+  //lOGIC TO EDIT A CATEGORY-------------------------------
+
+  const editCategoryDetails = async (cityName, categoryName, updatedCategoryData) => {
+    try {
+      const response = await fetch('http://localhost:3000/cities');
+      if (!response.ok) throw new Error('Failed to fetch cities');
+      const citiesData = await response.json();
+
+      // Check if the city and category exist
+      if (!citiesData[cityName]) throw new Error('City does not exist');
+      if (!citiesData[cityName].categories[categoryName]) throw new Error('Category does not exist');
+
+      // Update the category with the new details
+      citiesData[cityName].categories[categoryName][0] = {
+        ...citiesData[cityName].categories[categoryName][0],
+        ...updatedCategoryData,
+      };
+
+      // Send the updated cities data back to the server
+      await fetch('http://localhost:3000/cities', {
+        method: 'PUT',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(citiesData),
+      });
+
+      // Update local state to reflect the changes
+      setCityList(Object.values(citiesData));
+    } catch (error) {
+      console.error('Error updating category details:', error);
     }
   };
 
@@ -296,6 +371,50 @@ export const ActivityProvider = ({ children }) => {
     }
   };
 
+  //lOGIC TO EDIT AN ACTIVITY-------------------------------
+
+  const editActivityDetails = async (cityName, categoryName, activityId, updatedActivityData) => {
+    try {
+      const response = await fetch('http://localhost:3000/cities');
+      if (!response.ok) throw new Error('Failed to fetch cities');
+      const citiesData = await response.json();
+
+      // Ensure the city and category exist
+      if (!citiesData[cityName] || !citiesData[cityName].categories[categoryName]) {
+        throw new Error('City or category does not exist');
+      }
+
+      // Find the specific activity within the category
+      const category = citiesData[cityName].categories[categoryName][0];
+      const activityIndex = category.activities.findIndex((activity) => activity.id.toString() === activityId);
+
+      if (activityIndex === -1) {
+        throw new Error('Activity does not exist');
+      }
+
+      // Update the activity with new details
+      category.activities[activityIndex] = {
+        // 📌 Selects the specific activity to update
+        ...category.activities[activityIndex], // 📌 Merges new activity details into the existing activity object
+        ...updatedActivityData,
+      };
+
+      // Update the entire cities object back to the server
+      await fetch('http://localhost:3000/cities', {
+        method: 'PUT',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(citiesData),
+      });
+
+      // Update cityList state to reflect the new activity details in the UI
+      setCityList(Object.values(citiesData));
+
+      console.log('Activity details updated successfully');
+    } catch (error) {
+      console.error('Error updating activity details:', error);
+    }
+  };
+
   //lOGIC TO DELETE AN ACTIVITY-------------------------------
   const deleteActivity = async (cityName, categoryName, activityId) => {
     try {
@@ -361,13 +480,13 @@ export const ActivityProvider = ({ children }) => {
         throw new Error('Activity does not exist');
       }
 
-      // Update the activity with new details
+      // Finds and updates the specific activity within the city's category
       const updatedActivity = {
-        ...category.activities[activityIndex],
-        ...detailsData,
+        ...category.activities[activityIndex], //this select the activity within the list (...) of categories
+        ...detailsData, // detailsData comes from the parameter of the createActivityDetails, which is in fact the object in the form. The spread operator ...detailsData merges these new details into the existing activity object, effectively updating it.
       };
 
-      citiesData[cityName].categories[categoryName][0].activities[activityIndex] = updatedActivity;//🚩❓
+      citiesData[cityName].categories[categoryName][0].activities[activityIndex] = updatedActivity; //🚩❓
 
       // Update the entire cities object back to the server
       await fetch('http://localhost:3000/cities', {
@@ -381,7 +500,7 @@ export const ActivityProvider = ({ children }) => {
       // }
 
       // ✅ Update cityList state to reflect the new activity details in the UI
-      const newCityList = Object.values(citiesData);//🚩❓How cityList gets extracted form newCityList if only [cityName] is the value of each city?
+      const newCityList = Object.values(citiesData); //🚩❓How cityList gets extracted form newCityList if only [cityName] is the value of each city?
       setCityList(newCityList);
 
       console.log('Activity details added successfully');
@@ -392,12 +511,14 @@ export const ActivityProvider = ({ children }) => {
   };
 
   return (
-    <ActivityContext.Provider value={{ selectedCity, activityList, deleteCity, setActivityList, selectedActivity, setSelectedActivity, createActivity }}>
-      <CityContext.Provider value={{ cityList, setCityList, selectedCity, setSelectedCity, createCity, deleteCity }}>
-        <CategoryContext.Provider value={{ selectedCity, deleteCategory, categoryList, setCategoryList, createCategory }}>
+    <ActivityContext.Provider
+      value={{ selectedCity, activityList, deleteCity, setActivityList, selectedActivity, setSelectedActivity, createActivity }}
+    >
+      <CityContext.Provider value={{ cityList, setCityList, selectedCity, setSelectedCity, createCity, deleteCity, editCityDetails }}>
+        <CategoryContext.Provider value={{ selectedCity, deleteCategory, categoryList, setCategoryList, createCategory, editCategoryDetails }}>
           <ActivityContext.Provider value={{ createActivity, deleteActivity, setSelectedActivity }}>
             <SelectedActivityContext.Provider value={{ selectedActivity }}>
-              <ActivityDetailsContext.Provider value={{ createActivityDetails }}>{children}</ActivityDetailsContext.Provider>
+              <ActivityDetailsContext.Provider value={{ createActivityDetails, editActivityDetails }}>{children}</ActivityDetailsContext.Provider>
             </SelectedActivityContext.Provider>
           </ActivityContext.Provider>
         </CategoryContext.Provider>

@@ -1,5 +1,6 @@
 import { useState, useEffect } from 'react';
-import { FormControl, Input, Button, Box, Text } from '@chakra-ui/react';
+import { useCategoriesContext } from '../pages/ActivityContext';
+import { Flex, FormControl, Input, Button, Box, Text } from '@chakra-ui/react';
 import { useParams, useNavigate } from 'react-router-dom';
 
 export const EditCategoryForm = () => {
@@ -8,6 +9,8 @@ export const EditCategoryForm = () => {
 
   const [name, setName] = useState('');
   const [image, setImage] = useState('');
+
+  const { editCategoryDetails } = useCategoriesContext();
 
   useEffect(() => {
     const fetchCategoryData = async () => {
@@ -56,48 +59,63 @@ export const EditCategoryForm = () => {
 
   const handleSubmit = async (event) => {
     event.preventDefault();
-    // Logic to update the category details
-    resetFormFields();
-    navigate(`/city/${cityName}`);
+
+    try {
+      await editCategoryDetails(cityName, categoryName, {
+        name,
+        image,
+      });
+
+      // Logic to update the category details
+      resetFormFields();
+      navigate(`/city/${cityName}`);
+    } catch (error) {
+      console.error('Error updating activity details:', error);
+    }
   };
 
   return (
-    <FormControl display="flex" flexDir="column" borderRadius="8" p="1rem" m="1.5rem" bg="red.600" color="white" width="auto" onSubmit={handleSubmit}>
-      <label htmlFor="location">
-        <Text as="b">Title:</Text>
-      </label>
+    <Flex //🚩🐞to fix the issue of not been able to use FormControl I has to wrap it inside Flex and put the onSubmit here instead
+      as="form"
+      onSubmit={handleSubmit}
+    >
+      <FormControl display="flex" flexDir="column" p="1rem" m="1.5rem" bg="red.600" color="white" width="100%">
+        <label htmlFor="title">
+          <Text as="b">Name:</Text>
+        </label>
 
-      <Input
-        bg="gray.200"
-        color="black"
-        mb="1rem"
-        type="text"
-        required
-        placeholder="Category Name"
-        value={name}
-        onChange={(e) => setName(e.target.value)}
-      />
-      <label htmlFor="location">
-        <Text as="b">URL to image:</Text>
-      </label>
-      <Input
-        bg="gray.200"
-        color="black"
-        mb="1rem"
-        type="url"
-        required
-        placeholder="URL to image"
-        value={image}
-        onChange={(e) => setImage(e.target.value)}
-      />
-      <Box display="flex" flexDir="column" alignItems="center" mt="2rem">
-        <Button type="submit" width="50%" mb="1rem" color="white" bg="gray" _hover={{ bg: 'white', color: 'black' }}>
-          Update Category
-        </Button>
-        <Button type="button" width="50%" mb="2rem" color="white" bg="gray" _hover={{ bg: 'white', color: 'black' }} onClick={resetFormFields}>
-          Reset
-        </Button>
-      </Box>
-    </FormControl>
+        <Input
+          bg="gray.200"
+          color="black"
+          mb="1rem"
+          type="text"
+          required
+          placeholder="Category Name"
+          value={name}
+          onChange={(e) => setName(e.target.value)}
+        />
+        <label htmlFor="image url">
+          <Text as="b">URL to image:</Text>
+        </label>
+        <Input
+          bg="gray.200"
+          color="black"
+          mb="1rem"
+          type="url"
+          required
+          placeholder="URL to image"
+          value={image}
+          onChange={(e) => setImage(e.target.value)}
+        />
+        <Box display="flex" flexDir="column" alignItems="center" mt="2rem">
+          <Button type="submit" width="50%" mb="1rem" color="white" bg="gray" _hover={{ bg: 'white', color: 'black' }}>
+            Update Category
+          </Button>
+          <Button type="button" width="50%" mb="2rem" color="white" bg="gray" _hover={{ bg: 'white', color: 'black' }} onClick={resetFormFields}>
+            Reset
+          </Button>
+        </Box>
+      </FormControl>
+    </Flex>
   );
 };
