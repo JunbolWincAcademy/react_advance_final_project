@@ -118,29 +118,43 @@ export const ActivityProvider = ({ children }) => {
 
   //lOGIC TO EDIT A CITY-------------------------------
 
-  // 🟢Logic to edit a city
   const editCityDetails = async (cityId, updatedCityData) => {
+    // these props come from the form EditCity.jsx
     try {
       const response = await fetch('http://localhost:3000/cities');
       if (!response.ok) throw new Error('Failed to fetch cities');
       const citiesData = await response.json();
 
       // Finding  the specific city within the cities data
-      let cityKey = Object.keys(citiesData).find((key) => citiesData[key].id === cityId);
+      let cityKey = Object.keys(citiesData).find((key) => citiesData[key].id === cityId); //Object. keys(citiesData) is selecting all the key properties names within the database 'cities' object
       if (!cityKey) {
         throw new Error('City does not exist');
       }
 
-      // Create a new object with the updated city name as the key
+      // ✅Create a new object with the updated city name as the key
       const updatedCitiesData = { ...citiesData };
       delete updatedCitiesData[cityKey]; // Remove the old city key
 
-      // Using the updated city name as the new key
-      const newCityKey = updatedCityData.name;
+      const newCityKey = updatedCityData.name; //✅ This  assigns the new city name provided by the user to 'newCityKey'.
+      // 'updatedCityData.name' is expected to be the updated name of the city from the form input.
+
+      // T✅his next line creates or updates a key property in 'updatedCitiesData' object with the key as 'newCityKey'.
+      // It means it's adding or updating the city entry in our database object with the new city name as the key.
+      // whatever
       updatedCitiesData[newCityKey] = {
+        //✅🚩In this next line the spread operator copies all existing key properties like its (name and image) are been added to the new key city object.
+        // It ensures that any properties not explicitly changed will remain the same in the updated city object.
+        //This spread operator includes all the existing properties of the city object that we are updating. It ensures that any properties not explicitly changed in the update (like categories or any other information tied to the city) are carried over to the new object.
         ...citiesData[cityKey],
-        ...updatedCityData,
-        name: newCityKey, // Ensure the city's name property is also updated
+
+        // ✅In this next line the spread operator then copies/overwrites properties from 'updatedCityData' into the city object.
+        // It ensures that any properties the user wants to update or add are correctly reflected in the updated city object.
+        //This spread operator applies the changes or addition (name and url image) specified in updatedCityData to the new city object.
+        ...updatedCityData, // Overwrites existing properties with the updated properties from the form
+
+        //✅In this next line it explicitly sets the 'name' property of the city to be the new city name.
+        // It ensures that the city's 'name' property inside the object also matches the new key in 'updatedCitiesData'.
+        name: newCityKey,
       };
 
       // Updating the entire cities object back to the server
@@ -237,35 +251,49 @@ export const ActivityProvider = ({ children }) => {
 
   //lOGIC TO EDIT A CATEGORY-------------------------------
 
-  const editCategoryDetails = async (cityName, categoryName, updatedCategoryData) => {
+  const editCategoryDetails = async (cityName, oldCategoryName, updatedCategoryData) => {
     try {
       const response = await fetch('http://localhost:3000/cities');
       if (!response.ok) throw new Error('Failed to fetch cities');
-      const citiesData = await response.json();
-
-      // Check if the city and category exist
+      let citiesData = await response.json();
+  
+      // Check if the city exists
       if (!citiesData[cityName]) throw new Error('City does not exist');
-      if (!citiesData[cityName].categories[categoryName]) throw new Error('Category does not exist');
-
-      // Update the category with the new details
-      citiesData[cityName].categories[categoryName][0] = {
-        ...citiesData[cityName].categories[categoryName][0],
+  
+      // Find the existing category
+      const oldCategory = citiesData[cityName].categories[oldCategoryName];
+      if (!oldCategory) throw new Error('Category does not exist');
+  
+      // Determine the new category name, either updated or the same as before
+      const newCategoryName = updatedCategoryData.name || oldCategoryName;
+  
+      // If the category name has changed, we need to update the key in the categories object
+      if (newCategoryName !== oldCategoryName) {
+        delete citiesData[cityName].categories[oldCategoryName]; // Remove the old category key
+        citiesData[cityName].categories[newCategoryName] = oldCategory; // Assign the category to the new key
+      }
+  
+      // Update the category details
+      citiesData[cityName].categories[newCategoryName][0] = {
+        ...oldCategory[0],
         ...updatedCategoryData,
+        name: newCategoryName, // Ensure the category's name property is also updated
       };
-
+  
       // Send the updated cities data back to the server
       await fetch('http://localhost:3000/cities', {
         method: 'PUT',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify(citiesData),
       });
-
+  
       // Update local state to reflect the changes
       setCityList(Object.values(citiesData));
     } catch (error) {
       console.error('Error updating category details:', error);
     }
   };
+  
 
   //lOGIC TO DELETE A CATEGORY-------------------------------
 

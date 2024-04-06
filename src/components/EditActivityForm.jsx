@@ -1,22 +1,21 @@
 import { useState, useEffect } from 'react';
 import { useActivityDetailsContext } from '../pages/ActivityContext';
 import { Flex, Box, Input, Button, Textarea, FormControl, Text } from '@chakra-ui/react';
-import { useParams } from 'react-router-dom';
+import { useParams, useNavigate } from 'react-router-dom';
 
-export const EditActivityForm = ({ onClose }) => {// ✅ onClose prop is used to close the modal
-  //🚩to pass the prop I need to wrap the name with {....}
-  // const navigate = useNavigate();
+export const EditActivityForm = () => {
+  const navigate = useNavigate();
   const { cityName, categoryName, activityId, activityTitle } = useParams();
 
   // Initialize state with empty values; these will be updated by useEffect
   const [title, setTitle] = useState('');
-  const [description, setDescription] = useState('');
-  const [location, setLocation] = useState('');
-  const [startTime, setStartTime] = useState('');
-  const [endTime, setEndTime] = useState('');
   const [image, setImage] = useState('');
 
   const { editActivityDetails } = useActivityDetailsContext();
+
+  function capitalizeFirstLetter(string) {
+    return string.charAt(0).toUpperCase() + string.slice(1).toLowerCase();
+  }
 
   useEffect(() => {
     const fetchCityData = async () => {
@@ -55,10 +54,6 @@ export const EditActivityForm = ({ onClose }) => {// ✅ onClose prop is used to
       // When setting the state, use a fallback value like an empty string if the fetched data might be undefined or null
       setTitle(activity.title || '');
       setImage(activity.image || '');
-      setDescription(activity.description || '');
-      setLocation(activity.location || '');
-      setStartTime(activity.startTime || '');
-      setEndTime(activity.endTime || '');
     };
 
     if (activityId) {
@@ -68,29 +63,21 @@ export const EditActivityForm = ({ onClose }) => {// ✅ onClose prop is used to
 
   const resetFormFields = () => {
     setTitle('');
-    setDescription('');
-    setLocation('');
-    setStartTime('');
-    setEndTime('');
     setImage('');
   };
 
   const handleSubmit = async (event) => {
     event.preventDefault();
+    const capitalizedActivityName = capitalizeFirstLetter(title);
 
     try {
-      await editActivityDetails(cityName, categoryName, activityId, {//🛠❗❗❗ I might have to delete some states that are unesesaay hfee
-        title,
-        description,
-        location,
-        startTime,
-        endTime,
+      await editActivityDetails(cityName, categoryName, activityId, {
+        title: capitalizedActivityName,
         image,
       });
 
       resetFormFields();
-      onClose(); // ✅ Close the modal on successful form submission
-      // navigate(`/city/${cityName}/categories/${categoryName}`);
+      navigate(`/city/${cityName}/categories/${categoryName}`);
       // navigate(`/city/${cityName}/categories/${categoryName}/activity/${activityId}/${title}`);
       //🚩❓navigate is used to programmatically redirect the user, which should force the component to re-render with the updated URL parameters. The { replace: true } option replaces the current entry in the history stack, so it doesn’t create a new history entry.
     } catch (error) {

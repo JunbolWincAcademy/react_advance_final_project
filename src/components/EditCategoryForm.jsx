@@ -12,6 +12,10 @@ export const EditCategoryForm = () => {
 
   const { editCategoryDetails } = useCategoriesContext();
 
+  function capitalizeFirstLetter(string) {
+    return string.charAt(0).toUpperCase() + string.slice(1).toLowerCase();
+  }
+
   useEffect(() => {
     const fetchCategoryData = async () => {
       const url = `http://localhost:3000/cities`; //only fetch always cites nothing else.The server does not have a route handler set up for /cities/Amsterdam.
@@ -59,10 +63,11 @@ export const EditCategoryForm = () => {
 
   const handleSubmit = async (event) => {
     event.preventDefault();
+    const capitalizedCategoryName = capitalizeFirstLetter(name);
 
     try {
       await editCategoryDetails(cityName, categoryName, {
-        name,
+        name: capitalizedCategoryName,
         image,
       });
 

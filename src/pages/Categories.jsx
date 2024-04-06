@@ -19,7 +19,6 @@ import {
   ModalCloseButton,
 } from '@chakra-ui/react';
 
-
 const CategoryList = () => {
   const { cityList } = useCitiesContext(); // Assume cityList includes cities with their categories and activities
   const { deleteActivity, setSelectedActivity, editActivity } = useActivitiesContext();
@@ -100,6 +99,7 @@ const CategoryList = () => {
               colorScheme="red"
               onClick={() => {
                 deleteActivity(cityName, categoryName, selectedActivityForDelete); // 🚩Ensure to pass all the correct arguments to deleteActivity, they all needed. When I call deleteActivity from within the Categories component, you have the context of which city and category I am currently working with. By passing cityName and categoryName along with activityId to the deleteActivity function, you provide a complete path to the specific activity within the nested structure of your data. This way, the deleteActivity in ActivityContext function knows exactly where to look in the data to find and remove the activity. It needs to traverse through the city and category to get to the right activity array. This is why you need to pass these specific parameters from your component where the action is initiated, down to the context where the actual data manipulation happens.
+                onClose(); // This line closes the modal after the action
               }}
             >
               Delete

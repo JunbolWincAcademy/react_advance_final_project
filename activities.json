@@ -287,19 +287,19 @@
         "eating": []
       }
     },
-    "Rome": {
+    "Paris": {
       "id": 4,
-      "name": "Rome",
+      "name": "Paris",
       "image": "https://images.unsplash.com/photo-1502602898657-3e91760cbb34?q=80&w=1746&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D",
       "categories": {
-        "games": [
+        "Games": [
           {
             "id": 1711640470169,
-            "name": "games",
+            "name": "Games",
             "image": "https://www.ctvnews.ca/polopoly_fs/1.5118552.1600965663!/httpImage/image.jpg_gen/derivatives/landscape_1020/image.jpg",
             "activities": [
               {
-                "title": "Trampolin_Paris",
+                "title": "Trampolin_paris",
                 "image": "https://i.pinimg.com/736x/3d/2f/af/3d2faf4e3188d34a9fcdc00df59e77b0.jpg",
                 "id": 1711798474355,
                 "description": "A greate place to jump",
@@ -312,11 +312,30 @@
                   "userName": "",
                   "userLastName": ""
                 }
+              },
+              {
+                "title": "Laser",
+                "image": "https://www.ctvnews.ca/polopoly_fs/1.5118552.1600965663!/httpImage/image.jpg_gen/derivatives/landscape_1020/image.jpg",
+                "id": 1712417159492
               }
             ]
           }
+        ],
+        "Sports": [
+          {
+            "id": 1712414525581,
+            "name": "Sports",
+            "image": "https://s3.eu-west-2.amazonaws.com/ws-activestirling/production/Badminton/_1200x630_crop_center-center_none/Badminton-3.jpg",
+            "activities": []
+          }
         ]
       }
+    },
+    "Rome": {
+      "id": 5,
+      "name": "Rome",
+      "image": "https://images.unsplash.com/photo-1552832230-c0197dd311b5?q=80&w=2192&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D",
+      "categories": {}
     }
   },
   "users": [
