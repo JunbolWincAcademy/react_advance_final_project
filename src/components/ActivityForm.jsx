@@ -1,6 +1,6 @@
 import { useState, useEffect } from 'react';
 import { useActivitiesContext } from '../pages/ActivityContext';
-import { Flex, FormControl, Input, Button, Box } from '@chakra-ui/react';
+import { Flex, FormControl, Input, Button, Box, Text } from '@chakra-ui/react';
 import { useParams, useNavigate } from 'react-router-dom';
 
 export const ActivityForm = () => {
@@ -66,6 +66,9 @@ export const ActivityForm = () => {
         width="100%"
         justifyContent="center"
       >
+        <label htmlFor="title">
+          <Text as="b">Title:</Text>
+        </label>
         <Input
           bg="gray.200"
           color="black"
@@ -78,6 +81,9 @@ export const ActivityForm = () => {
           onChange={(e) => setTitle(e.target.value)}
           _placeholder={{ color: 'gray.400' }}
         />
+         <label htmlFor="image url">
+          <Text as="b">URL to image:</Text>
+        </label>
 
         <Input
           bg="gray.200"
@@ -93,7 +99,7 @@ export const ActivityForm = () => {
         />
         <Box display="flex" flexDir="column" alignItems="center" mt="2rem">
           <Button type="submit" width="50%" mb="1rem" color="white" bg="gray" _hover={{ bg: 'white', color: 'black' }}>
-            Add an event
+            Add an activity
           </Button>
           <Button type="button" width="50%" mb="2rem" color="white" bg="gray" _hover={{ bg: 'white', color: 'black' }} onClick={resetFormFields}>
             Reset

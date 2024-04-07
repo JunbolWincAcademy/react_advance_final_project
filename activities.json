@@ -17,13 +17,13 @@
                 "description": "Hit that shuttle!",
                 "image": "https://s3.eu-west-2.amazonaws.com/ws-activestirling/production/Badminton/_1200x630_crop_center-center_none/Badminton-3.jpg",
                 "location": "The Park",
-                "startTime": "2023-03-15T11:00:00.000Z",
-                "endTime": "2023-03-15T12:30:00.000Z",
+                "startTime": "2023-03-15T10:00:00.000Z",
+                "endTime": "2023-03-15T11:30:00.000Z",
                 "reviewCount": 0,
-                "rating": 3,
+                "rating": 4,
                 "editedBy": {
-                  "userName": "Junier",
-                  "userLastName": "Bolivar"
+                  "userName": "",
+                  "userLastName": ""
                 }
               }
             ]
@@ -335,7 +335,37 @@
       "id": 5,
       "name": "Rome",
       "image": "https://images.unsplash.com/photo-1552832230-c0197dd311b5?q=80&w=2192&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D",
-      "categories": {}
+      "categories": {
+        "Sports": [
+          {
+            "id": 1712482584182,
+            "name": "Sports",
+            "image": "https://s3.eu-west-2.amazonaws.com/ws-activestirling/production/Badminton/_1200x630_crop_center-center_none/Badminton-3.jpg",
+            "activities": []
+          }
+        ]
+      }
+    },
+    "Berlin": {
+      "id": 6,
+      "name": "Berlin",
+      "image": "https://s3.eu-west-2.amazonaws.com/ws-activestirling/production/Badminton/_1200x630_crop_center-center_none/Badminton-3.jpg",
+      "categories": {
+        "Sports": [
+          {
+            "id": 1712482763486,
+            "name": "Sports",
+            "image": "https://s3.eu-west-2.amazonaws.com/ws-activestirling/production/Badminton/_1200x630_crop_center-center_none/Badminton-3.jpg",
+            "activities": [
+              {
+                "title": "Badmington",
+                "image": "https://s3.eu-west-2.amazonaws.com/ws-activestirling/production/Badminton/_1200x630_crop_center-center_none/Badminton-3.jpg",
+                "id": 1712483656929
+              }
+            ]
+          }
+        ]
+      }
     }
   },
   "users": [

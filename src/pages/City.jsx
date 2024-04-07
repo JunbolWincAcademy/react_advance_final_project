@@ -21,10 +21,9 @@ import {
   ModalCloseButton,
 } from '@chakra-ui/react';
 
-
 export const City = () => {
   const { cityList, selectedCity, setSelectedCity } = useCitiesContext(); // Use cityList from context
-  const { deleteCategory,  editCategoryDetails  } = useCategoriesContext();
+  const { deleteCategory, editCategoryDetails } = useCategoriesContext();
   const { cityName, categoryName } = useParams(); // Extracting the city name from the URL
   const { isOpen, onOpen, onClose } = useDisclosure(); // ✅ useDisclosure hook manages the state for opening and closing the modal
   const [selectedCategoryForDelete, setSelectedCategoryForDelete] = useState(null); // ✅ Track category selected for deletion
@@ -61,10 +60,10 @@ export const City = () => {
       <Heading size="xl" mb="2" mt="2">
         Activities to do in {cityName}
       </Heading>
-      <Link to={`/city/${cityName}/categories/categoryForm`}>
+      <Link to={`/city/${cityName}/categories/:categoryName/activity/activityForm`}>
         <Button borderRadius="8" size="sm" width="100%" mt="0.5rem" bg="red.300" color="black" _hover={{ bg: 'red', color: 'white' }}>
           {/* // Assuming cityName and categoryName are variables holding the actual names */}
-          Add a category
+          Add an activity
         </Button>
       </Link>
       <UnorderedList display="flex" flexDir="column" listStyleType="none" align="left">

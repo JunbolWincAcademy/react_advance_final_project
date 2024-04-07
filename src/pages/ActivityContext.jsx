@@ -63,7 +63,7 @@ export const ActivityProvider = ({ children }) => {
       try {
         const response = await fetch('http://localhost:3000/cities');
         const citiesData = await response.json();
-        // console.log(citiesData);
+      
         // Assuming citiesData.cities is the object containing city keys
         const citiesArray = Object.values(citiesData); // Convert city objects to an array
         setCityList(citiesArray);
@@ -206,7 +206,7 @@ export const ActivityProvider = ({ children }) => {
       console.error('Error deleting city:', error);
     }
   };
-  console.log('Selected City in ActivityContext before createCategory been called with setSelectedCity in it in Cities:', selectedCity); //to check if setSelectedCity is doing its work in Cities.jsx
+  // console.log('Selected City in ActivityContext before createCategory been called with setSelectedCity in it in Cities:', selectedCity); //to check if setSelectedCity is doing its work in Cities.jsx
 
   //LOGIC TO CREATE A NEW CATEGORY -----------------------------
   //https://images.unsplash.com/photo-1633545491399-54a16aa6a871?q=80&w=2072&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D
@@ -308,14 +308,14 @@ export const ActivityProvider = ({ children }) => {
         // Render a loading indicator or return null while data is being fetched
         return <div>Loading...</div>;
       }
-      console.log('citiesData log:', citiesData);
-      console.log('cityName log inside citiesData:', citiesData[cityName]);
+      // console.log('citiesData log:', citiesData);
+      // console.log('cityName log inside citiesData:', citiesData[cityName]);
       // Check if the city exists
       if (!citiesData[cityName]) {
         console.error('City does not exist');
         return; // Exit if city not found
       }
-      console.log('categoryName inside categories inside cityName log:', citiesData[cityName].categories[categoryName]);
+      // console.log('categoryName inside categories inside cityName log:', citiesData[cityName].categories[categoryName]);
       // Check if the category exists within the city
       if (!citiesData[cityName].categories[categoryName]) {
         console.error('Category does not exist within the city');
@@ -354,8 +354,8 @@ export const ActivityProvider = ({ children }) => {
       const response = await fetch('http://localhost:3000/cities');
       if (!response.ok) throw new Error('Failed to fetch cities');
       const citiesData = await response.json();
-      console.log(citiesData);
-      console.log(citiesData[cityName]);
+      // console.log(citiesData);
+      // console.log(citiesData[cityName]);
       // Ensure the city exists
       if (!citiesData[cityName]) throw new Error('City does not exist');
       // ✅ Ensure the category exists within the city
@@ -368,8 +368,8 @@ export const ActivityProvider = ({ children }) => {
       };
 
       // Add the new activity to the selected category of the selected city
-      console.log('Before update - categories:', citiesData[cityName].categories);
-      console.log('Before update - activities in categoryName:', citiesData[cityName].categories[categoryName]?.activities);
+      // console.log('Before update - categories:', citiesData[cityName].categories);
+      // console.log('Before update - activities in categoryName:', citiesData[cityName].categories[categoryName]?.activities);
 
       // Correctly calculate updated activities with the new activity added.here was the big 🐞🚩 the addition of the [0] to tell the system to enter the only array that categoryName has. This was the s
       const updatedActivities = citiesData[cityName].categories[categoryName][0].activities
