@@ -11,9 +11,18 @@ export const EditCategoryForm = () => {
   const [image, setImage] = useState('');
 
   const { editCategoryDetails } = useCategoriesContext();
-
-  function capitalizeFirstLetter(string) {
-    return string.charAt(0).toUpperCase() + string.slice(1).toLowerCase();
+  // ✅ Updated function to capitalize the first letter of each word
+  function capitalizeTitle(string) {
+    return string
+      .split(' ') // Split the string into an array of words. For each word
+      .map(
+        (
+          word // The map() function is used to iterate over each word in the array. For each word, the following operations are performed:
+        ) =>
+          word.charAt(0).toUpperCase() + // Capitalize the first letter of each word
+          word.slice(1).toLowerCase() // Convert the rest of the word to lowercase
+      )
+      .join(' '); // Join the array of words back into a single string
   }
 
   useEffect(() => {
@@ -25,18 +34,12 @@ export const EditCategoryForm = () => {
       }
       const citiesData = await response.json();
 
-      console.log('City Name:', cityName);
-      console.log('Category Name:', categoryName);
-      console.log('Fetching data from URL:', url);
-      console.log('Response from fetch:', response);
-
       // Convert citiesData object to an array if necessary
       // Assuming citiesData is an object where each key is a city name
       const cityData = citiesData[cityName];
       if (!cityData) {
         throw new Error('City not found');
       }
-      console.log('Name in CityData:', cityData);
       // Access the category object directly
       /*  const category = cityData.categories[categoryName];
       if (!category) {
@@ -47,9 +50,6 @@ export const EditCategoryForm = () => {
       setName(cityData.categories[categoryName][0].name || ''); //🚩🐞ONCE AGAIN [0] was the missing code
       setImage(cityData.categories[categoryName][0].image || '');
     };
-
-    console.log('name:', name);
-    console.log('image:', image);
 
     if (cityName && categoryName) {
       fetchCategoryData();
@@ -63,7 +63,7 @@ export const EditCategoryForm = () => {
 
   const handleSubmit = async (event) => {
     event.preventDefault();
-    const capitalizedCategoryName = capitalizeFirstLetter(name);
+    const capitalizedCategoryName = capitalizeTitle(name);
 
     try {
       await editCategoryDetails(cityName, categoryName, {

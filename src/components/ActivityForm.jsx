@@ -22,7 +22,6 @@ export const ActivityForm = () => {
     // 🟢 Using useEffect to handle any initial setup if needed
     // This is where you would fetch existing data if this were an edit form
     // For now, we don't need to fetch anything, but it's here for consistency and future expansion
-    console.log(`Preparing to add activity for ${categoryName} in ${cityName}`);
   }, [cityName, categoryName]); // Depend on cityName and categoryName to re-run if these change
 
   // Reset form fields

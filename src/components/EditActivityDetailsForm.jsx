@@ -40,19 +40,13 @@ export const EditActivityDetailsForm = ({ onClose, onUpdate }) => {
       if (!category) {
         throw new Error('Category not found');
       }
-      console.log('Category data:', category);
-      console.log('Activities:', category[0].activities);
-      console.log('Looking for activity ID BEFORE:', activityId);
-      console.log(`activities array:${category[0].activities}`);
-      console.log(`activities id:${category[0].activities[0].id}`);
+
       // Assuming category is an array and finding the activity
       const activity = category[0].activities.find((a) => a.id === Number(activityId)); //🐞Number was necessary because activityId in the params is a string
-      console.log(`This is the activity VARIABLE:${activity}`);
+
       if (!activity) {
         throw new Error('Activity not found');
       }
-      console.log(`This is the activity title:${activity.title}`);
-      console.log(`activities id AFTER:${category[0].activities[0].id}`);
 
       // Convert ISO date string to local datetime format for form compatibility
       const startDateTime = new Date(activity.startTime).toISOString().slice(0, 16); // ✅
@@ -85,11 +79,8 @@ export const EditActivityDetailsForm = ({ onClose, onUpdate }) => {
     setUserLastName('');
   };
 
-  console.log('before the triggering of handleSubmit ');
-
   const handleSubmit = async (event) => {
     event.preventDefault();
-    console.log('handleSubmit triggered');
     // Convert form datetime to ISO string if necessary for database
     const startDateTimeISO = new Date(startTime).toISOString(); // ✅
     const endDateTimeISO = new Date(endTime).toISOString(); // ✅
@@ -110,11 +101,9 @@ export const EditActivityDetailsForm = ({ onClose, onUpdate }) => {
       resetFormFields();
       onUpdate(updatedDetails); // Update the updateActivityDetails  function in the Activity component with recent details from the form
 
-      console.log('About to close the modal');
       onClose();
-      console.log('Modal should be closed');
 
-      // navigate(`/city/${cityName}/categories/${categoryName}/activity/${activityId}/${title}`);
+      // navigate(`/city/${cityName}/categories/${categoryName}/activity/${activityId}/${title}`); NOT USED ANYMORE BECAUSEIM USING THE MODAL
       //🚩❓navigate is used to programmatically redirect the user, which should force the component to re-render with the updated URL parameters. The { replace: true } option replaces the current entry in the history stack, so it doesn’t create a new history entry.
     } catch (error) {
       console.error('Error updating activity details:', error);

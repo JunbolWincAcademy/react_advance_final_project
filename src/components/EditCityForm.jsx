@@ -9,36 +9,52 @@ export const EditCityForm = () => {
   const { editCityDetails, cityList } = useCitiesContext();
 
   const [name, setName] = useState('');
+  const [countryCode, setCountryCode] = useState('');
   const [image, setImage] = useState('');
   const [cityId, setCityId] = useState(null);
 
-  function capitalizeFirstLetter(string) {
-    return string.charAt(0).toUpperCase() + string.slice(1).toLowerCase();
+  function capitalizeCityName(string) {
+    return string
+      .split(' ') // Split the string into an array of words. For each word
+      .map(
+        (
+          word // The map() function is used to iterate over each word in the array. For each word, the following operations are performed:
+        ) =>
+          word.charAt(0).toUpperCase() + // Capitalize the first letter of each word
+          word.slice(1).toLowerCase() // Convert the rest of the word to lowercase
+      )
+      .join(' '); // Join the array of words back into a single string
   }
 
   useEffect(() => {
     const cityData = cityList.find((city) => city.name.toLowerCase() === cityName.toLowerCase());
     if (cityData) {
-      setName(capitalizeFirstLetter(cityData.name));
+      setName(cityData.name);
+      setCountryCode(cityData.countryCode.toUpperCase()); // ✅ Convert countryCode to uppercase
       setImage(cityData.image);
       setCityId(cityData.id);
     } else {
       console.error('City not found in the city list');
     }
-  }, [cityName, cityList]); // 🟢 Ensure dependencies are correct for useEffect
+  }, [cityName, cityList]);
 
   const resetFormFields = () => {
     setName('');
+    setCountryCode('');
     setImage('');
   };
 
   const handleSubmit = async (event) => {
     event.preventDefault();
 
-    const capitalizedCityName = capitalizeFirstLetter(name);
+    const capitalizedCityName = capitalizeCityName(name);
 
     try {
-      await editCityDetails(cityId, { name: capitalizedCityName, image });
+      await editCityDetails(cityId, {
+        name: capitalizedCityName,
+        countryCode, // ✅ Use the state value directly as it's already uppercase
+        image,
+      });
       resetFormFields();
       navigate(`/`);
     } catch (error) {
@@ -47,13 +63,10 @@ export const EditCityForm = () => {
   };
 
   return (
-    <Flex //🚩🐞to fix the issue of not been able to use FormControl I has to wrap it inside Flex and put the onSubmit here instead
-      as="form"
-      onSubmit={handleSubmit}
-    >
+    <Flex as="form" onSubmit={handleSubmit}>
       <FormControl display="flex" flexDir="column" p="1rem" m="1.5rem" bg="red.600" color="white" width="100%">
         <label htmlFor="city name">
-          <Text as="b">City name:</Text>
+          <Text as="b">City Name:</Text>
         </label>
         <Input
           bg="gray.200"
@@ -64,6 +77,19 @@ export const EditCityForm = () => {
           placeholder="City Name"
           value={name}
           onChange={(e) => setName(e.target.value)}
+        />
+        <label htmlFor="country code">
+          <Text as="b">Country Code:</Text>
+        </label>
+        <Input
+          bg="gray.200"
+          color="black"
+          mb="1rem"
+          type="text"
+          required
+          placeholder="Country Code"
+          value={countryCode}
+          onChange={(e) => setCountryCode(e.target.value.toUpperCase())} // ✅ Ensure input is uppercase by force
         />
         <label htmlFor="image url">
           <Text as="b">URL to image:</Text>
@@ -78,6 +104,7 @@ export const EditCityForm = () => {
           value={image}
           onChange={(e) => setImage(e.target.value)}
         />
+
         <Box display="flex" flexDir="column" alignItems="center" mt="2rem">
           <Button type="submit" width="50%" mb="1rem" color="white" bg="gray" _hover={{ bg: 'white', color: 'black' }}>
             Update City

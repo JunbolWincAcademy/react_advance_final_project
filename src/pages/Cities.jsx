@@ -3,8 +3,6 @@ import { ActivityProvider, useCitiesContext } from './ActivityContext';
 import {
   Flex,
   Heading,
-  UnorderedList,
-  ListItem,
   Image,
   Button,
   useDisclosure,
@@ -16,11 +14,12 @@ import {
   ModalBody,
   ModalCloseButton,
   Input,
+  SimpleGrid, // ✅ Import SimpleGrid for responsive grid layout
+  Box, // ✅ Import Box to use as a container
 } from '@chakra-ui/react';
 import { Link } from 'react-router-dom';
 
 const CityList = ({ searchQuery }) => {
-  // 🟢 Accept searchQuery as prop
   const { cityList, deleteCity, setSelectedCity } = useCitiesContext();
   const { isOpen, onOpen, onClose } = useDisclosure();
   const [selectedCityForDelete, setSelectedCityForDelete] = useState(null);
@@ -30,41 +29,34 @@ const CityList = ({ searchQuery }) => {
     onOpen();
   };
 
-  // 🟢 Filter cities based on search query
   const filteredCities = cityList.filter((city) => city.name.toLowerCase().includes(searchQuery.toLowerCase()));
 
   return (
-    <UnorderedList listStyleType="none">
-      {filteredCities.map(
-        (
-          city // 🟢 Use filteredCities for mapping
-        ) => (
-          <ListItem key={city.id} mb="2rem">
+    <>
+      <SimpleGrid columns={{ base: 1, md: 2, lg: 3 }} spacing="20px">
+        {filteredCities.map((city) => (
+          <Box key={city.id} mb="2rem" borderWidth="1px" borderRadius="lg" bg="red.800" overflow="hidden">
             <Link to={`/city/${city.name}`} onClick={() => setSelectedCity(city.name)}>
-              <Heading size="md" mb="1rem">
-                {city.name}
-              </Heading>
-              {city.image && <Image src={city.image} alt={city.name} style={{ width: '300px', height: 'auto' }} />}
+              <Flex direction="column" align="center">
+                <Heading size="md" mb="1rem" mt="1rem" color="white">
+                  {city.name} {city.countryCode}
+                </Heading>
+                {city.image && <Image src={city.image} alt={city.name} boxSize="300px" objectFit="cover" />}
+              </Flex>
             </Link>
-            <Button
-              size="sm"
-              width="100%"
-              mt="0.5rem"
-              bg="red.300"
-              color="black"
-              _hover={{ bg: 'red', color: 'white' }}
-              onClick={() => handleDelete(city.name)}
-            >
-              Delete this city
-            </Button>
-            <Link to={`/city/${city.name}/editCityForm`}>
-              <Button size="sm" width="100%" mt="0.5rem" bg="red.300" color="black" _hover={{ bg: 'red', color: 'white' }}>
-                Edit this City
+            <Flex direction="column" mt="1rem" align="center">
+              <Button size="sm" mt="0.5rem" bg="red.600" color="black" _hover={{ bg: 'red', color: 'white' }} onClick={() => handleDelete(city.name)}>
+                Delete this city
               </Button>
-            </Link>
-          </ListItem>
-        )
-      )}
+              <Link to={`/city/${city.name}/editCityForm`}>
+                <Button size="sm" mt="0.5rem" mb="2rem" bg="red.600" color="black" _hover={{ bg: 'red', color: 'white' }} paddingX="4">
+                  Edit this City
+                </Button>
+              </Link>
+            </Flex>
+          </Box>
+        ))}
+      </SimpleGrid>
 
       <Modal isOpen={isOpen} onClose={onClose}>
         <ModalOverlay />
@@ -82,41 +74,44 @@ const CityList = ({ searchQuery }) => {
             >
               Delete
             </Button>
-            <Button ml={3} onClick={onClose}>
+            <Button ml="3" onClick={onClose}>
               Cancel
             </Button>
           </ModalFooter>
         </ModalContent>
       </Modal>
-    </UnorderedList>
+    </>
   );
 };
 
 export const Cities = () => {
-  const [searchQuery, setSearchQuery] = useState(''); // 🟢 State for search query
+  const [searchQuery, setSearchQuery] = useState('');
 
   return (
     <ActivityProvider>
-      <Flex flexDir="column" align="center">
+      <Flex flexDir="column" align="center" width="full">
         <label htmlFor="city name">
           <Heading as="b" size="md">
             Search for a city:
           </Heading>
         </label>
-        <Input
-          width="50%"
-          placeholder="Search cities"
-          mb="1rem"
-          ml="1rem"
-          mt="1rem"
-          onChange={(e) => setSearchQuery(e.target.value)} // 🟢 Update searchQuery based on user input
-        />
+        <Input width={{ base: '80%', md: '50%' }} placeholder="Search cities" ml="1rem" mt="1rem" onChange={(e) => setSearchQuery(e.target.value)} />
         <Link to="/cityForm/">
-          <Button borderRadius="8" size="sm" width="100%" mt="2rem" mb="1rem" bg="red.300" color="black" _hover={{ bg: 'red', color: 'white' }}>
+          <Button
+            borderRadius="8"
+            size="md"
+            width={{ base: '80%' }}
+            mt="2rem"
+            mb="1rem"
+            padding="1.5rem"
+            bg="red.600"
+            color="black"
+            _hover={{ bg: 'red', color: 'white' }}
+          >
             Add a city
           </Button>
         </Link>
-        <CityList searchQuery={searchQuery} /> {/*// 🟢 Pass searchQuery to CityList*/}
+        <CityList searchQuery={searchQuery} />
       </Flex>
     </ActivityProvider>
   );

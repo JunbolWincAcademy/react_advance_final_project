@@ -1,6 +1,6 @@
 import { useState } from 'react';
 import { useCitiesContext } from '../pages/ActivityContext';
-import { Flex, FormControl, Box, Input, Button } from '@chakra-ui/react';
+import { Flex, FormControl, Box, Input, Button, Text } from '@chakra-ui/react';
 import { useNavigate } from 'react-router-dom';
 
 export const CityForm = () => {
@@ -8,40 +8,50 @@ export const CityForm = () => {
   // State for each form field
   const [name, setName] = useState(''); //this is to have a controlled component.Remember to add value={name} and the onChange event handler in the input element.
   const [image, setImage] = useState('');
+  const [countryCode, setCountryCode] = useState('');
 
   const { createCity } = useCitiesContext(); // Use context to access createCity
 
   // Reset form fields
   const resetFormFields = () => {
     setName('');
+    setCountryCode('');
     setImage('');
   };
-  console.log('before submitting the form');
+
   const handleSubmit = async (event) => {
     event.preventDefault();
-    console.log('before the capitalizing the name');
-    // Function to capitalize the first letter of the city name
-    const capitalizeCityName = (name) => {
-      return name.charAt(0).toUpperCase() + name.slice(1).toLowerCase();
-    };
 
+    function capitalizeCityWords(string) {
+      return string
+        .split(' ') // Split the string into an array of words
+        .map((word) => word.charAt(0).toUpperCase() + word.slice(1).toLowerCase()) // Capitalize the first letter of each word
+        .join(' '); // Join the array back into a single string, then append a comma
+    }
+
+    // Function to capitalize the first letter of the city name
+    const capitalizeCountryLetters = (name) => {
+      return name.toUpperCase();
+    };
     // Validate and then capitalize the city name
     const nameRegex = /^[A-Za-z]+(?: [A-Za-z]+)*$/;
     if (!nameRegex.test(name)) {
       alert('Please enter a valid name (letters only, first and last name required).');
       return;
     }
-    const capitalizedCityName = capitalizeCityName(name);
+    const capitalizedCityName = capitalizeCityWords(name);
+    const capitalizeCountryCode = capitalizeCountryLetters(countryCode);
 
     // Assuming createCity is correctly defined and accessible
     try {
       await createCity({
         name: capitalizedCityName,
+        countryCode: capitalizeCountryCode,
         image,
       });
-      console.log('before resetting  the form');
+
       resetFormFields();
-      console.log('City created, navigating to home');
+
       navigate(`/`); // ✅ Navigate to the homepage
     } catch (error) {
       console.error('Error creating city:', error);
@@ -64,6 +74,9 @@ export const CityForm = () => {
         width="100%"
         justifyContent="center"
       >
+        <label htmlFor="city name">
+          <Text as="b">City Name:</Text>
+        </label>
         <Input
           bg="gray.200"
           color="black"
@@ -71,15 +84,30 @@ export const CityForm = () => {
           mb="2rem"
           type="text"
           required
-          placeholder="Name"
+          placeholder="City Name"
           value={name}
           onChange={(e) => setName(e.target.value)}
         />
-
+        <label htmlFor="city name">
+          <Text as="b">Country Code:</Text>
+        </label>
         <Input
           bg="gray.200"
           color="black"
-          id="location"
+          mb="2rem"
+          type="text"
+          required
+          placeholder="Country Code "
+          value={countryCode}
+          onChange={(e) => setCountryCode(e.target.value)}
+        />
+        <label htmlFor="city name">
+          <Text as="b">Image URL:</Text>
+        </label>
+        <Input
+          bg="gray.200"
+          color="black"
+          id="Image URL"
           mb="2rem"
           type="url"
           required

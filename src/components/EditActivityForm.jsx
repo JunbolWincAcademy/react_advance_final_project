@@ -13,8 +13,18 @@ export const EditActivityForm = () => {
 
   const { editActivityDetails } = useActivityDetailsContext();
 
-  function capitalizeFirstLetter(string) {
-    return string.charAt(0).toUpperCase() + string.slice(1).toLowerCase();
+  // ✅ Updated function to capitalize the first letter of each word
+  function capitalizeTitle(string) {
+    return string
+      .split(' ') // Split the string into an array of words. For each word
+      .map(
+        (
+          word // The map() function is used to iterate over each word in the array. For each word, the following operations are performed:
+        ) =>
+          word.charAt(0).toUpperCase() + // Capitalize the first letter of each word
+          word.slice(1).toLowerCase() // Convert the rest of the word to lowercase
+      )
+      .join(' '); // Join the array of words back into a single string
   }
 
   useEffect(() => {
@@ -37,20 +47,13 @@ export const EditActivityForm = () => {
       if (!category) {
         throw new Error('Category not found');
       }
-      console.log('Category data:', category);
-      console.log('Activities:', category[0].activities);
-      console.log('Looking for activity ID before:', activityId);
-      console.log(`activities array:${category[0].activities}`);
-      console.log(`activities id before:${category[0].activities[0].id}`);
+
       // Assuming category is an array and finding the activity
       const activity = category[0].activities.find((a) => a.id === Number(activityId)); //🐞Number was necessary because activityId in the params is a string
-      console.log(`this is the activity variable${activity}`);
+
       if (!activity) {
         throw new Error('Activity not found');
       }
-
-      console.log(`activities id  after:${category[0].activities[0].id}`);
-
       // When setting the state, use a fallback value like an empty string if the fetched data might be undefined or null
       setTitle(activity.title || '');
       setImage(activity.image || '');
@@ -68,7 +71,7 @@ export const EditActivityForm = () => {
 
   const handleSubmit = async (event) => {
     event.preventDefault();
-    const capitalizedActivityName = capitalizeFirstLetter(title);
+    const capitalizedActivityName = capitalizeTitle(title);
 
     try {
       await editActivityDetails(cityName, categoryName, activityId, {

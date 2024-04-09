@@ -3,17 +3,19 @@
     "Amsterdam": {
       "id": 1,
       "name": "Amsterdam",
+      "countryCode": "NL",
       "image": "https://images.unsplash.com/photo-1605101100278-5d1deb2b6498?q=80&w=2070&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D",
       "categories": {
-        "sports": [
+        "eating": [],
+        "Sports": [
           {
             "id": 1,
-            "name": "sports",
+            "name": "Sports",
             "image": "https://s3.eu-west-2.amazonaws.com/ws-activestirling/production/Badminton/_1200x630_crop_center-center_none/Badminton-3.jpg",
             "activities": [
               {
                 "id": 3,
-                "title": "Badminton game",
+                "title": "Badminton Game",
                 "description": "Hit that shuttle!",
                 "image": "https://s3.eu-west-2.amazonaws.com/ws-activestirling/production/Badminton/_1200x630_crop_center-center_none/Badminton-3.jpg",
                 "location": "The Park",
@@ -29,49 +31,10 @@
             ]
           }
         ],
-        "games": [
-          {
-            "id": 2,
-            "name": "games",
-            "image": "https://www.ctvnews.ca/polopoly_fs/1.5118552.1600965663!/httpImage/image.jpg_gen/derivatives/landscape_1020/image.jpg",
-            "activities": [
-              {
-                "id": 1,
-                "title": "Trampoline_party",
-                "description": "Bounce around with your friends",
-                "image": "https://i.pinimg.com/736x/3d/2f/af/3d2faf4e3188d34a9fcdc00df59e77b0.jpg",
-                "location": "My back yard",
-                "startTime": "2023-03-10T18:00",
-                "endTime": "2023-03-10T17:00:00.000Z",
-                "reviewCount": 0,
-                "rating": 3,
-                "editedBy": {
-                  "userName": "John",
-                  "userLastName": "Doe"
-                }
-              },
-              {
-                "id": 2,
-                "title": "Laser_Tag_mania",
-                "description": "Let's play laser tag!",
-                "image": "https://www.ctvnews.ca/polopoly_fs/1.5118552.1600965663!/httpImage/image.jpg_gen/derivatives/landscape_1020/image.jpg",
-                "location": "Blinded by the Lights Laser Tag, 15 Main St.",
-                "startTime": "2023-04-06T18:46",
-                "endTime": "2023-04-06T17:46",
-                "reviewCount": 0,
-                "rating": 3,
-                "editedBy": {
-                  "userName": "John",
-                  "userLastName": "Doe"
-                }
-              }
-            ]
-          }
-        ],
-        "relaxation": [
+        "Relaxation": [
           {
             "id": 3,
-            "name": "relaxation",
+            "name": "Relaxation",
             "image": "https://static.wixstatic.com/media/a16847_9e4d149b05064f53824ef3e449f125b5~mv2.jpg/v1/crop/x_58,y_0,w_949,h_990/fill/w_264,h_275,al_c,q_80,usm_0.66_1.00_0.01,enc_auto/AA2I8910-scaled.jpg",
             "activities": [
               {
@@ -92,19 +55,118 @@
             ]
           }
         ],
-        "eating": []
+        "Games": [
+          {
+            "id": 2,
+            "name": "Games",
+            "image": "https://www.ctvnews.ca/polopoly_fs/1.5118552.1600965663!/httpImage/image.jpg_gen/derivatives/landscape_1020/image.jpg",
+            "activities": [
+              {
+                "id": 1,
+                "title": "Trampoline Party",
+                "description": "Bounce around with your friends",
+                "image": "https://i.pinimg.com/736x/3d/2f/af/3d2faf4e3188d34a9fcdc00df59e77b0.jpg",
+                "location": "My back yard",
+                "startTime": "2023-03-10T18:00",
+                "endTime": "2023-03-10T17:00:00.000Z",
+                "reviewCount": 0,
+                "rating": 3,
+                "editedBy": {
+                  "userName": "John",
+                  "userLastName": "Doe"
+                }
+              },
+              {
+                "id": 2,
+                "title": "Laser Tag Mania",
+                "description": "Let's play laser tag!",
+                "image": "https://www.ctvnews.ca/polopoly_fs/1.5118552.1600965663!/httpImage/image.jpg_gen/derivatives/landscape_1020/image.jpg",
+                "location": "Blinded by the Lights Laser Tag, 15 Main St.",
+                "startTime": "2023-04-06T18:46",
+                "endTime": "2023-04-06T17:46",
+                "reviewCount": 0,
+                "rating": 3,
+                "editedBy": {
+                  "userName": "John",
+                  "userLastName": "Doe"
+                }
+              }
+            ]
+          }
+        ]
       }
     },
-    "New_York": {
+    "Sidney": {
+      "id": 8,
+      "name": "Sidney",
+      "countryCode": "AU",
+      "image": "https://images.unsplash.com/photo-1528072164453-f4e8ef0d475a?q=80&w=2071&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D",
+      "categories": {}
+    },
+    "Berlin": {
+      "id": 6,
+      "name": "Berlin",
+      "countryCode": "GR",
+      "image": "https://images.unsplash.com/photo-1587330979470-3595ac045ab0?q=80&w=2070&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D",
+      "categories": {
+        "Sports": [
+          {
+            "id": 1712482763486,
+            "name": "Sports",
+            "image": "https://s3.eu-west-2.amazonaws.com/ws-activestirling/production/Badminton/_1200x630_crop_center-center_none/Badminton-3.jpg",
+            "activities": [
+              {
+                "title": "Badmington",
+                "image": "https://s3.eu-west-2.amazonaws.com/ws-activestirling/production/Badminton/_1200x630_crop_center-center_none/Badminton-3.jpg",
+                "id": 1712483656929
+              }
+            ]
+          }
+        ]
+      }
+    },
+    "London": {
+      "id": 7,
+      "name": "London",
+      "image": "https://images.unsplash.com/photo-1543832923-44667a44c804?q=80&w=1644&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D",
+      "categories": {},
+      "countryCode": "UK"
+    },
+    "Rome": {
+      "id": 5,
+      "name": "Rome",
+      "countryCode": "IT",
+      "image": "https://images.unsplash.com/photo-1552832230-c0197dd311b5?q=80&w=2192&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D",
+      "categories": {
+        "Sports": [
+          {
+            "id": 1712482584182,
+            "name": "Sports",
+            "image": "https://s3.eu-west-2.amazonaws.com/ws-activestirling/production/Badminton/_1200x630_crop_center-center_none/Badminton-3.jpg",
+            "activities": []
+          }
+        ]
+      }
+    },
+    "Tokio": {
+      "id": 9,
+      "name": "Tokio",
+      "countryCode": "JP",
+      "image": "https://images.unsplash.com/photo-1526481280693-3bfa7568e0f3?q=80&w=1742&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D",
+      "categories": {}
+    },
+    "New York": {
       "id": 2,
-      "name": "New_York",
+      "name": "New York",
+      "countryCode": "US",
       "image": "https://images.unsplash.com/photo-1445023086979-7244a12345a8?q=80&w=2048&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90oy1wYWdlfHx8fGVufDB8fHx8fA%3D%3D",
       "underConstruction": true,
       "categories": {
-        "sports": [
+        "eating": [],
+        "Sports": [
           {
             "id": 1,
-            "name": "sports",
+            "name": "Sports",
             "image": "https://s3.eu-west-2.amazonaws.com/ws-activestirling/production/Badminton/_1200x630_crop_center-center_none/Badminton-3.jpg",
             "activities": [
               {
@@ -125,10 +187,34 @@
             ]
           }
         ],
-        "games": [
+        "Relaxation": [
+          {
+            "id": 3,
+            "name": "Relaxation",
+            "image": "https://static.wixstatic.com/media/a16847_9e4d149b05064f53824ef3e449f125b5~mv2.jpg/v1/crop/x_58,y_0,w_949,h_990/fill/w_264,h_275,al_c,q_80,usm_0.66_1.00_0.01,enc_auto/AA2I8910-scaled.jpg",
+            "activities": [
+              {
+                "id": 4,
+                "title": "Yoga",
+                "description": "It's a bit of a stretch.",
+                "image": "https://static.wixstatic.com/media/a16847_9e4d149b05064f53824ef3e449f125b5~mv2.jpg/v1/crop/x_58,y_0,w_949,h_990/fill/w_264,h_275,al_c,q_80,usm_0.66_1.00_0.01,enc_auto/AA2I8910-scaled.jpg",
+                "location": "Shavasana Yoga School",
+                "startTime": "2023-03-09T06:00:00.000Z",
+                "endTime": "2023-03-09T07:00:00.000Z",
+                "reviewCount": 0,
+                "rating": 3,
+                "editedBy": {
+                  "userName": "John",
+                  "userLastName": "Doe"
+                }
+              }
+            ]
+          }
+        ],
+        "Games": [
           {
             "id": 2,
-            "name": "games",
+            "name": "Games",
             "image": "https://www.ctvnews.ca/polopoly_fs/1.5118552.1600965663!/httpImage/image.jpg_gen/derivatives/landscape_1020/image.jpg",
             "activities": [
               {
@@ -163,44 +249,21 @@
               }
             ]
           }
-        ],
-        "relaxation": [
-          {
-            "id": 3,
-            "name": "relaxation",
-            "image": "https://static.wixstatic.com/media/a16847_9e4d149b05064f53824ef3e449f125b5~mv2.jpg/v1/crop/x_58,y_0,w_949,h_990/fill/w_264,h_275,al_c,q_80,usm_0.66_1.00_0.01,enc_auto/AA2I8910-scaled.jpg",
-            "activities": [
-              {
-                "id": 4,
-                "title": "Yoga",
-                "description": "It's a bit of a stretch.",
-                "image": "https://static.wixstatic.com/media/a16847_9e4d149b05064f53824ef3e449f125b5~mv2.jpg/v1/crop/x_58,y_0,w_949,h_990/fill/w_264,h_275,al_c,q_80,usm_0.66_1.00_0.01,enc_auto/AA2I8910-scaled.jpg",
-                "location": "Shavasana Yoga School",
-                "startTime": "2023-03-09T06:00:00.000Z",
-                "endTime": "2023-03-09T07:00:00.000Z",
-                "reviewCount": 0,
-                "rating": 3,
-                "editedBy": {
-                  "userName": "John",
-                  "userLastName": "Doe"
-                }
-              }
-            ]
-          }
-        ],
-        "eating": []
+        ]
       }
     },
-    "San_Jose-CR": {
+    "San Jose": {
       "id": 3,
-      "name": "San_Jose-CR",
+      "name": "San Jose",
+      "countryCode": "CR",
       "image": "https://images.unsplash.com/photo-1673846949648-d6bbbc7c1886?q=80&w=1171&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90oy1wYWdlfHx8fGVufDB8fHx8fA%3D%3D",
       "underConstruction": true,
       "categories": {
-        "sports": [
+        "eating": [],
+        "Sports": [
           {
             "id": 1,
-            "name": "sports",
+            "name": "Sports",
             "image": "https://s3.eu-west-2.amazonaws.com/ws-activestirling/production/Badminton/_1200x630_crop_center-center_none/Badminton-3.jpg",
             "activities": [
               {
@@ -221,10 +284,34 @@
             ]
           }
         ],
-        "games": [
+        "Relaxation": [
+          {
+            "id": 3,
+            "name": "Relaxation",
+            "image": "https://static.wixstatic.com/media/a16847_9e4d149b05064f53824ef3e449f125b5~mv2.jpg/v1/crop/x_58,y_0,w_949,h_990/fill/w_264,h_275,al_c,q_80,usm_0.66_1.00_0.01,enc_auto/AA2I8910-scaled.jpg",
+            "activities": [
+              {
+                "id": 4,
+                "title": "Yoga",
+                "description": "It's a bit of a stretch.",
+                "image": "https://static.wixstatic.com/media/a16847_9e4d149b05064f53824ef3e449f125b5~mv2.jpg/v1/crop/x_58,y_0,w_949,h_990/fill/w_264,h_275,al_c,q_80,usm_0.66_1.00_0.01,enc_auto/AA2I8910-scaled.jpg",
+                "location": "Shavasana Yoga School",
+                "startTime": "2023-03-09T06:00:00.000Z",
+                "endTime": "2023-03-09T07:00:00.000Z",
+                "reviewCount": 0,
+                "rating": 3,
+                "editedBy": {
+                  "userName": "John",
+                  "userLastName": "Doe"
+                }
+              }
+            ]
+          }
+        ],
+        "Games": [
           {
             "id": 2,
-            "name": "games",
+            "name": "Games",
             "image": "https://www.ctvnews.ca/polopoly_fs/1.5118552.1600965663!/httpImage/image.jpg_gen/derivatives/landscape_1020/image.jpg",
             "activities": [
               {
@@ -259,37 +346,13 @@
               }
             ]
           }
-        ],
-        "relaxation": [
-          {
-            "id": 3,
-            "name": "relaxation",
-            "image": "https://static.wixstatic.com/media/a16847_9e4d149b05064f53824ef3e449f125b5~mv2.jpg/v1/crop/x_58,y_0,w_949,h_990/fill/w_264,h_275,al_c,q_80,usm_0.66_1.00_0.01,enc_auto/AA2I8910-scaled.jpg",
-            "activities": [
-              {
-                "id": 4,
-                "title": "Yoga",
-                "description": "It's a bit of a stretch.",
-                "image": "https://static.wixstatic.com/media/a16847_9e4d149b05064f53824ef3e449f125b5~mv2.jpg/v1/crop/x_58,y_0,w_949,h_990/fill/w_264,h_275,al_c,q_80,usm_0.66_1.00_0.01,enc_auto/AA2I8910-scaled.jpg",
-                "location": "Shavasana Yoga School",
-                "startTime": "2023-03-09T06:00:00.000Z",
-                "endTime": "2023-03-09T07:00:00.000Z",
-                "reviewCount": 0,
-                "rating": 3,
-                "editedBy": {
-                  "userName": "John",
-                  "userLastName": "Doe"
-                }
-              }
-            ]
-          }
-        ],
-        "eating": []
+        ]
       }
     },
     "Paris": {
       "id": 4,
       "name": "Paris",
+      "countryCode": "FR",
       "image": "https://images.unsplash.com/photo-1502602898657-3e91760cbb34?q=80&w=1746&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D",
       "categories": {
         "Games": [
@@ -299,7 +362,7 @@
             "image": "https://www.ctvnews.ca/polopoly_fs/1.5118552.1600965663!/httpImage/image.jpg_gen/derivatives/landscape_1020/image.jpg",
             "activities": [
               {
-                "title": "Trampolin_paris",
+                "title": "Trampolin paris",
                 "image": "https://i.pinimg.com/736x/3d/2f/af/3d2faf4e3188d34a9fcdc00df59e77b0.jpg",
                 "id": 1711798474355,
                 "description": "A greate place to jump",
@@ -321,48 +384,12 @@
             ]
           }
         ],
-        "Sports": [
+        "Sports best": [
           {
             "id": 1712414525581,
-            "name": "Sports",
+            "name": "Sports best",
             "image": "https://s3.eu-west-2.amazonaws.com/ws-activestirling/production/Badminton/_1200x630_crop_center-center_none/Badminton-3.jpg",
             "activities": []
-          }
-        ]
-      }
-    },
-    "Rome": {
-      "id": 5,
-      "name": "Rome",
-      "image": "https://images.unsplash.com/photo-1552832230-c0197dd311b5?q=80&w=2192&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D",
-      "categories": {
-        "Sports": [
-          {
-            "id": 1712482584182,
-            "name": "Sports",
-            "image": "https://s3.eu-west-2.amazonaws.com/ws-activestirling/production/Badminton/_1200x630_crop_center-center_none/Badminton-3.jpg",
-            "activities": []
-          }
-        ]
-      }
-    },
-    "Berlin": {
-      "id": 6,
-      "name": "Berlin",
-      "image": "https://s3.eu-west-2.amazonaws.com/ws-activestirling/production/Badminton/_1200x630_crop_center-center_none/Badminton-3.jpg",
-      "categories": {
-        "Sports": [
-          {
-            "id": 1712482763486,
-            "name": "Sports",
-            "image": "https://s3.eu-west-2.amazonaws.com/ws-activestirling/production/Badminton/_1200x630_crop_center-center_none/Badminton-3.jpg",
-            "activities": [
-              {
-                "title": "Badmington",
-                "image": "https://s3.eu-west-2.amazonaws.com/ws-activestirling/production/Badminton/_1200x630_crop_center-center_none/Badminton-3.jpg",
-                "id": 1712483656929
-              }
-            ]
           }
         ]
       }

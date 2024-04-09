@@ -63,7 +63,7 @@ export const ActivityProvider = ({ children }) => {
       try {
         const response = await fetch('http://localhost:3000/cities');
         const citiesData = await response.json();
-      
+
         // Assuming citiesData.cities is the object containing city keys
         const citiesArray = Object.values(citiesData); // Convert city objects to an array
         setCityList(citiesArray);
@@ -74,7 +74,7 @@ export const ActivityProvider = ({ children }) => {
     fetchCities();
   }, []);
 
-  //LOGIC TO CREATE A NEW CITY-------------------------------
+  //LOGIC TO ADD A NEW CITY-------------------------------
 
   //https://images.unsplash.com/photo-1502602898657-3e91760cbb34?q=80&w=1746&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D
 
@@ -94,6 +94,7 @@ export const ActivityProvider = ({ children }) => {
           // Add the new city using its name as the key
           id: newId,
           name: userData.name,
+          countryCode: userData.countryCode,
           image: userData.image,
           categories: {}, // Assuming new cities start with no categories. This is important to add in order to add new categories
         },
@@ -256,44 +257,43 @@ export const ActivityProvider = ({ children }) => {
       const response = await fetch('http://localhost:3000/cities');
       if (!response.ok) throw new Error('Failed to fetch cities');
       let citiesData = await response.json();
-  
+
       // Check if the city exists
       if (!citiesData[cityName]) throw new Error('City does not exist');
-  
+
       // Find the existing category
       const oldCategory = citiesData[cityName].categories[oldCategoryName];
       if (!oldCategory) throw new Error('Category does not exist');
-  
+
       // Determine the new category name, either updated or the same as before
       const newCategoryName = updatedCategoryData.name || oldCategoryName;
-  
+
       // If the category name has changed, we need to update the key in the categories object
       if (newCategoryName !== oldCategoryName) {
         delete citiesData[cityName].categories[oldCategoryName]; // Remove the old category key
         citiesData[cityName].categories[newCategoryName] = oldCategory; // Assign the category to the new key
       }
-  
+
       // Update the category details
       citiesData[cityName].categories[newCategoryName][0] = {
         ...oldCategory[0],
         ...updatedCategoryData,
         name: newCategoryName, // Ensure the category's name property is also updated
       };
-  
+
       // Send the updated cities data back to the server
       await fetch('http://localhost:3000/cities', {
         method: 'PUT',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify(citiesData),
       });
-  
+
       // Update local state to reflect the changes
       setCityList(Object.values(citiesData));
     } catch (error) {
       console.error('Error updating category details:', error);
     }
   };
-  
 
   //lOGIC TO DELETE A CATEGORY-------------------------------
 
@@ -444,7 +444,7 @@ export const ActivityProvider = ({ children }) => {
   };
 
   //lOGIC TO DELETE AN ACTIVITY-------------------------------
-  const deleteActivity = async (cityName, categoryName, activityId) => {
+  const deleteActivity = async (cityName, categoryName, activityTitle) => {
     try {
       const citiesResponse = await fetch('http://localhost:3000/cities');
       if (!citiesResponse.ok) throw new Error('Failed to fetch cities');
@@ -463,7 +463,7 @@ export const ActivityProvider = ({ children }) => {
       }
 
       // Finding the activity by ID and removing it
-      const activityIndex = category[0].activities.findIndex((activity) => activity.id === activityId);
+      const activityIndex = category[0].activities.findIndex((activity) => activity.title === activityTitle);
       if (activityIndex !== -1) {
         // Activity found, now remove it
         category[0].activities.splice(activityIndex, 1); // 🛠 Remove the activity

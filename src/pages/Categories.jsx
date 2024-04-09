@@ -1,12 +1,11 @@
-import React from 'react';
 import { useState } from 'react';
-import { useCitiesContext, useActivitiesContext } from './ActivityContext'; // Adjust import as needed
+import { useCitiesContext, useActivitiesContext } from './ActivityContext';
 import { useParams, Link } from 'react-router-dom';
 import {
   Flex,
+  Box, // ✅ Import Box to use as a container
   Heading,
-  UnorderedList,
-  ListItem,
+  SimpleGrid, // ✅ Import SimpleGrid for responsive grid layout
   Image,
   Button,
   useDisclosure,
@@ -17,78 +16,76 @@ import {
   ModalFooter,
   ModalBody,
   ModalCloseButton,
+  Input,
 } from '@chakra-ui/react';
 
-const CategoryList = () => {
-  const { cityList } = useCitiesContext(); // Assume cityList includes cities with their categories and activities
-  const { deleteActivity, setSelectedActivity, editActivity } = useActivitiesContext();
-  const { cityName, categoryName } = useParams(); // Use activityTitle or categoryName based on your routing parameter
-  const { isOpen, onOpen, onClose } = useDisclosure(); // ✅ useDisclosure hook manages the state for opening and closing the modal
-  const [selectedActivityForDelete, setSelectedActivityForDelete] = useState(null); // ✅ Track activity selected for deletion
-  console.log('URL cityName:', cityName); // Verifying this matches exactly with your data's city names
-  // Find the selected city data
+const CategoryList = ({ searchQuery }) => {
+  const { cityList } = useCitiesContext();
+  const { deleteActivity } = useActivitiesContext();
+  const { cityName, categoryName } = useParams();
+  const { isOpen, onOpen, onClose } = useDisclosure();
+  const [selectedActivityForDelete, setSelectedActivityForDelete] = useState(null);
+
+  const selectedCity = cityList.find((city) => city.name === cityName);
+  const activities = selectedCity ? selectedCity.categories[categoryName][0].activities || [] : [];
 
   if (cityList.length === 0) {
-    //this was the solution for the asynchronous issue fo cityList been undefined when needed there was a BIG 🐞 here
-    // Render a loading indicator or return null while data is being fetched
     return <div>Loading...</div>;
   }
 
-  console.log('cityList:', cityList); // Check the structure and content
+  const filteredActivities = activities.filter((activity) => activity.title.toLowerCase().includes(searchQuery.toLowerCase()));
 
-  const selectedCity = cityList.find((city) => city.name === cityName);
-  console.log('Selected City Categories:', selectedCity.categories);
-  console.log('Activity Title from URL:', categoryName);
-  console.log('Attempting to Access Categories for Category:', selectedCity.categories[categoryName]);
-
-  // Assuming activityTitle refers to the category name and that categories are objects with activity arrays
-  const activities = selectedCity ? selectedCity.categories[categoryName][0].activities || [] : []; //there was a BIG 🐞 here this [0] was missing like saying games[0]
-
-  console.log('Selected City:', selectedCity); // Debugging
-  console.log('Activities:', activities); // Debugging
-
-  // ✅ Handle opening the modal and setting the city to be deleted
-  const handleDelete = (activityId) => {
-    setSelectedActivityForDelete(activityId);
+  const handleDelete = (activityTitle) => {
+    setSelectedActivityForDelete(activityTitle);
     onOpen();
   };
 
+  // ✅Function to determine the number of columns in SimpleGrid based on the number of categories
+  const getColumnCount = () => {
+    const categoryCount = filteredActivities.length;
+    if (categoryCount === 1) return 1;
+    if (categoryCount === 2) return 2;
+    return 3;
+  };
+
   return (
-    <Flex flexDir="column" mt="1rem" align="center" width="100%" pl="0">
-      <UnorderedList listStyleType="none">
-        {activities.map((activity, index) => (
-          <ListItem key={index} mb="2rem">
-            {' '}
-            {/* Consider using a more unique key if available */}
+    <Box width="100%" padding="4" textAlign="center">
+      <SimpleGrid columns={getColumnCount()} spacing="4" width="100%">
+        {' '}
+        {/* ✅ Use SimpleGrid for responsive layout */}
+        {filteredActivities.map((activity) => (
+          <Box key={activity.id} borderWidth="1px" borderRadius="lg" overflow="hidden" bg="red.800">
             <Link to={`/city/${cityName}/categories/${categoryName}/activity/${activity.id}/${activity.title}`}>
-              <Heading size="md" mb="1rem" align="center">
+              <Image src={activity.image} alt={activity.title} />
+              <Heading size="lg" mt="2" mb="2" color="white">
                 {activity.title}
               </Heading>
-              {activity.image && <Image borderRadius="4" src={activity.image} alt={activity.title} style={{ width: '300px', height: 'auto' }} />}
             </Link>
-            <Button
-              borderRadius="8"
-              size="sm"
-              width="100%"
-              mt="1rem"
-              bg="red.300"
-              color="black"
-              _hover={{ bg: 'red', color: 'white' }}
-              onClick={() => handleDelete(activity.id)} // ✅ Trigger the modal for delete confirmation
-            >
-              Delete this activity
-            </Button>
-            <Link to={`/city/${cityName}/categories/${categoryName}/activity/${activity.id}/${activity.title}/editActivityForm`}>
-              <Button borderRadius="8" size="sm" width="100%" mt="0.5rem" bg="red.300" color="black" _hover={{ bg: 'red', color: 'white' }}>
-                Edit this activity
+            <Flex direction="column" mt="1rem" align="center">
+              <Button
+                size="sm"
+                bg="red.600"
+                color="black"
+                _hover={{ bg: 'red', color: 'white' }}
+                mt="1rem"
+                mb="0.5rem"
+                onClick={() => handleDelete(activity.title)}
+              >
+                Delete this activity
               </Button>
-            </Link>
-            {/*✅ categoryName was missing*/}
-          </ListItem>
+              <Link to={`/city/${cityName}/categories/${categoryName}/activity/${activity.id}/${activity.title}/editActivityForm`}>
+                <Button size="sm" mt="0.5rem" mb="2rem" bg="red.600" color="black" _hover={{ bg: 'red', color: 'white' }}>
+                  Edit this activity
+                </Button>
+              </Link>
+            </Flex>
+          </Box>
         ))}
-      </UnorderedList>
-      {/* ✅ Modal for delete confirmation */}
+      </SimpleGrid>
+
       <Modal isOpen={isOpen} onClose={onClose}>
+        {' '}
+        {/* ✅ Modal logic for delete confirmation */}
         <ModalOverlay />
         <ModalContent>
           <ModalHeader>Delete Activity</ModalHeader>
@@ -98,23 +95,26 @@ const CategoryList = () => {
             <Button
               colorScheme="red"
               onClick={() => {
-                deleteActivity(cityName, categoryName, selectedActivityForDelete); // 🚩Ensure to pass all the correct arguments to deleteActivity, they all needed. When I call deleteActivity from within the Categories component, you have the context of which city and category I am currently working with. By passing cityName and categoryName along with activityId to the deleteActivity function, you provide a complete path to the specific activity within the nested structure of your data. This way, the deleteActivity in ActivityContext function knows exactly where to look in the data to find and remove the activity. It needs to traverse through the city and category to get to the right activity array. This is why you need to pass these specific parameters from your component where the action is initiated, down to the context where the actual data manipulation happens.
-                onClose(); // This line closes the modal after the action
+                deleteActivity(cityName, categoryName, selectedActivityForDelete);
+                onClose();
               }}
             >
               Delete
             </Button>
-            <Button ml={3} onClick={onClose}>
+            <Button ml="3" onClick={onClose}>
               Cancel
             </Button>
           </ModalFooter>
         </ModalContent>
       </Modal>
-    </Flex>
+    </Box>
   );
 };
 
 export const Categories = () => {
+  const [searchQuery, setSearchQuery] = useState('');
+  const { cityName, categoryName } = useParams();
+
   function capitalizeWords(string) {
     return string
       .split(' ')
@@ -122,32 +122,20 @@ export const Categories = () => {
       .join(' ');
   }
 
-  const { cityName, activityTitle, categoryName } = useParams();
-
-  // Capitalize categoryName
   const capitalizedCategoryName = capitalizeWords(categoryName);
 
   return (
-    <Flex flexDir="column" align="center" width="100%" pl="0">
+    <Flex flexDir="column" align="center" width="100%">
       <Heading size="lg" mb="2rem">
-        {capitalizedCategoryName} to do in {cityName}
+        {capitalizedCategoryName} in {cityName}
       </Heading>
-
+      <Input placeholder="Search activities" width="50%" onChange={(e) => setSearchQuery(e.target.value)} mb="1rem" />
       <Link to={`/city/${cityName}/categories/${categoryName}/activity/activityForm`}>
-        <Button borderRadius="8" size="sm" width="100%" mt="0.5rem" bg="red.300" color="black" _hover={{ bg: 'red', color: 'white' }}>
+        <Button size="sm" width="100%" mt="0.5rem" bg="red.600" color="black" _hover={{ bg: 'red', color: 'white' }}>
           Add an activity
         </Button>
       </Link>
-      {/*to get the right breadcrumb you nee to use good template literals.*/}
-      {<CategoryList />}
+      <CategoryList searchQuery={searchQuery} />
     </Flex>
   );
 };
-
-///-------
-/* <Button size="xs" onClick={() => setSelectedActivity(activity)}>
-            Activity Data
-          </Button>{' '} 
-          {/* <Button size="xs" onClick={() => deleteUser(user.id)}>
-            Delete
-          </Button> */
