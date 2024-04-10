@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { ActivityProvider, useCitiesContext } from './ActivityContext';
+import { useActivityContext } from './ActivityContext';
 import {
   Flex,
   Heading,
@@ -20,7 +20,7 @@ import {
 import { Link } from 'react-router-dom';
 
 const CityList = ({ searchQuery }) => {
-  const { cityList, deleteCity, setSelectedCity } = useCitiesContext();
+  const { cityList, deleteCity, setSelectedCity } = useActivityContext();
   const { isOpen, onOpen, onClose } = useDisclosure();
   const [selectedCityForDelete, setSelectedCityForDelete] = useState(null);
 
@@ -88,31 +88,30 @@ export const Cities = () => {
   const [searchQuery, setSearchQuery] = useState('');
 
   return (
-    <ActivityProvider>
-      <Flex flexDir="column" align="center" width="full">
-        <label htmlFor="city name">
-          <Heading as="b" size="md">
-            Search for a city:
-          </Heading>
-        </label>
+    <Flex flexDir="column" align="center" width="full">
+      <label htmlFor="city name">
+        <Heading as="b" size="md">
+          Search for a city:
+        </Heading>
         <Input width={{ base: '80%', md: '50%' }} placeholder="Search cities" ml="1rem" mt="1rem" onChange={(e) => setSearchQuery(e.target.value)} />
-        <Link to="/cityForm/">
-          <Button
-            borderRadius="8"
-            size="md"
-            width={{ base: '80%' }}
-            mt="2rem"
-            mb="1rem"
-            padding="1.5rem"
-            bg="red.600"
-            color="black"
-            _hover={{ bg: 'red', color: 'white' }}
-          >
-            Add a city
-          </Button>
-        </Link>
-        <CityList searchQuery={searchQuery} />
-      </Flex>
-    </ActivityProvider>
+      </label>
+
+      <Link to="/cityForm/">
+        <Button
+          borderRadius="8"
+          size="md"
+          width={{ base: '80%' }}
+          mt="2rem"
+          mb="1rem"
+          padding="1.5rem"
+          bg="red.600"
+          color="gray.200"
+          _hover={{ bg: 'red', color: 'white' }}
+        >
+          Add a city
+        </Button>
+      </Link>
+      <CityList searchQuery={searchQuery} />
+    </Flex>
   );
 };

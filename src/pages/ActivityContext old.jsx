@@ -1,21 +1,56 @@
 import { createContext, useContext, useState, useEffect } from 'react';
 
-// Creating  a single context for all activities-related data
-const ActivityContext = createContext();
+const CityContext = createContext();
+const CategoryContext = createContext();
+const ActivitiesContext = createContext();
+const SelectedActivityContext = createContext();
+const ActivityDetailsContext = createContext();
 
-export const useActivityContext = () => {
-  const context = useContext(ActivityContext);
+// This is the useCitiesContext custom HOOK:❗
+export const useCitiesContext = () => {
+  // this consume 'context' values: cityList, etc...
+  const context = useContext(CityContext); // what useContext is doing is like saying: "use this context (CityContext) context object  to provide it values: cityList, setCityList, etc to the entire app components". the context variable will represent all the values you give to CityContext.Provider like cityList, setCityList.
   if (!context) {
-    throw new Error('useActivityContext must be used within an ActivityProvider');
+    throw new Error('useCitiesContext must be used within an ActivityContext.Provider');
   }
   return context;
 };
+
+// This is the useCategoryContext custom HOOK:❗
+export const useCategoriesContext = () => {
+  // this consume 'context' values: cityList, etc...
+  const context = useContext(CategoryContext);
+  if (!context) {
+    throw new Error('useCategoryContext must be used within an CategoryContext.Provider');
+  }
+  return context;
+};
+
+// This is the useActivityContext custom HOOK:❗
+export const useActivitiesContext = () => {
+  // this consume 'context' values: cityList, etc...
+  const context = useContext(ActivitiesContext);
+  if (!context) {
+    throw new Error('useActivityContext must be used within an CategoryContext.Provider');
+  }
+  return context;
+};
+
+// This is the useActivityDetailsContext custom HOOK:❗
+export const useActivityDetailsContext = () => {
+  // this consume 'context' values: cityList, etc...
+  const context = useContext(ActivityDetailsContext);
+  if (!context) {
+    throw new Error('useActivityDetailsContext must be used within an CategoryContext.Provider');
+  }
+  return context;
+};
+
 //LOGIC TO CREATE THE GLOBAL ACTIVITY PROVIDER -------------------------------
 export const ActivityProvider = ({ children }) => {
   const [cityList, setCityList] = useState([]);
-  const [selectedCity, setSelectedCity] = useState(null);
+  const [selectedCity, setSelectedCity] = useState('');
   const [categoryList, setCategoryList] = useState([]);
-  const [selectedCategory, setSelectedCategory] = useState(null);
   const [activityList, setActivityList] = useState([]);
   const [selectedActivity, setSelectedActivity] = useState(null);
   const [activityDetails, setActivityDetails] = useState([]);
@@ -508,8 +543,6 @@ export const ActivityProvider = ({ children }) => {
     setSelectedCity,
     categoryList,
     setCategoryList,
-    selectedCategory,
-    setSelectedCategory,
     activityList,
     setActivityList,
     selectedActivity,
@@ -531,3 +564,19 @@ export const ActivityProvider = ({ children }) => {
 
   return <ActivityContext.Provider value={value}>{children}</ActivityContext.Provider>;
 };
+
+//-------------- this is the old return content:---------------
+
+// return (
+//   <CityContext.Provider value={{ useCitiesContext,cityList, setCityList, selectedCity, setSelectedCity }}> {/* the is the cities page */}
+
+//     {/* ✅ Correct context provider for cities */}
+//     <CategoryContext.Provider value={{ useCitiesContext, useCategoriesContext, categoryList, setCategoryList, createCategory, selectedCity, setSelectedCity }}> {/* the is the city page */}
+//       <ActivityContext.Provider
+//         value={{ useCitiesContext,  useActivitiesContext,activityList, setActivityList, selectedActivity, setSelectedActivity, createActivity, selectedCity, setSelectedCity }}
+//       >{/* this is the activities page like Games*/}
+//         <SelectedActivityContext.Provider value={{ selectedActivity, setSelectedActivity }}>{children}</SelectedActivityContext.Provider>{/* this is the selected activity page like Laser Game */}
+//       </ActivityContext.Provider>
+//     </CategoryContext.Provider>
+//   </CityContext.Provider>
+// );

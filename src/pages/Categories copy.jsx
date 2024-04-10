@@ -1,5 +1,5 @@
 import { useState } from 'react';
-import { useActivityContext } from './ActivityContext';
+import { useCitiesContext, useActivitiesContext } from './ActivityContext';
 import { useParams, Link } from 'react-router-dom';
 import {
   Flex,
@@ -13,56 +13,45 @@ import {
   ModalOverlay,
   ModalContent,
   ModalHeader,
-  ModalFooter,
-  ModalBody,
   ModalCloseButton,
+  ModalBody,
+  ModalFooter,
   Input,
 } from '@chakra-ui/react';
-import { EditActivityDetailsForm } from '../components/EditActivityDetailsForm'; // Import the form component
+import { EditActivityDetailsForm } from '../components/EditActivityDetailsForm';
 
 const CategoryList = ({ searchQuery }) => {
-  const { cityList, deleteActivity, updateActivityDetails } = useActivityContext();
-  // const { deleteActivity, updateActivityDetails } = useActivitiesContext();
+  const { cityList, deleteActivity, updateActivityDetails } = useActivitiesContext();
   const { cityName, categoryName } = useParams();
   const { isOpen, onOpen, onClose } = useDisclosure();
-  const [selectedActivityForAction, setSelectedActivityForAction] = useState(null); // For delete or edit
-  const [isEditingDetails, setIsEditingDetails] = useState(false); // To toggle between delete and edit modal
+  const [selectedActivityForAction, setSelectedActivityForAction] = useState(null);
+  const [isEditModal, setIsEditModal] = useState(false);
 
-  if (!cityList || cityList.length === 0) {
-    return <div>Loading...</div>; // Show loading or a message until cityList is available
-  }
-
-  console.log('list of cities:', cityList);
   const selectedCity = cityList.find((city) => city.name === cityName);
-  if (!selectedCity) {
-    console.error('Selected city not found');
-    return <div>City not found</div>; // Handle the case where the city is not found
-  }
-
   const activities = selectedCity ? selectedCity.categories[categoryName][0].activities || [] : [];
 
   const filteredActivities = activities.filter((activity) => activity.title.toLowerCase().includes(searchQuery.toLowerCase()));
 
   const handleDeleteClick = (activity) => {
     setSelectedActivityForAction(activity);
-    setIsEditingDetails(false);
+    setIsEditModal(false);
     onOpen();
   };
 
   const handleEditDetailsClick = (activity) => {
     setSelectedActivityForAction(activity);
-    setIsEditingDetails(true);
+    setIsEditModal(true);
     onOpen();
+  };
+
+  const handleDelete = () => {
+    deleteActivity(cityName, categoryName, selectedActivityForAction.id);
+    onClose();
   };
 
   const getColumnCount = () => {
     const activityCount = filteredActivities.length;
     return activityCount <= 1 ? 1 : activityCount === 2 ? 2 : 3;
-  };
-
-  const confirmDelete = () => {
-    deleteActivity(cityName, categoryName, selectedActivityForAction.id);
-    onClose();
   };
 
   return (
@@ -82,59 +71,69 @@ const CategoryList = ({ searchQuery }) => {
                 bg="red.600"
                 color="black"
                 _hover={{ bg: 'red', color: 'white' }}
-                mt="1rem"
-                mb="1rem"
                 onClick={() => handleDeleteClick(activity)}
               >
                 Delete this activity
               </Button>
-              <Link to={`/city/${cityName}/categories/${categoryName}/activity/${activity.id}/${activity.title}/editActivityForm`}>
-                <Button size="sm" bg="red.600" mb="2rem" color="black" _hover={{ bg: 'red', color: 'white' }}>
-                  Edit this activity
-                </Button>
-              </Link>
-
               <Button
                 size="sm"
-                bg="blue.600"
-                color="white"
-                _hover={{ bg: 'blue', color: 'white' }}
-                mb="2rem"
+                mt="0.5rem"
+                bg="red.600"
+                color="black"
+                _hover={{ bg: 'red', color: 'white' }}
                 onClick={() => handleEditDetailsClick(activity)}
               >
-                Add details to this activity
+                Edit this activity
               </Button>
+              {!activity.details && (
+                <Button
+                  size="sm"
+                  mt="0.5rem"
+                  mb="2rem"
+                  bg="blue.600"
+                  color="white"
+                  _hover={{ bg: 'blue', color: 'white' }}
+                  onClick={() => handleEditDetailsClick(activity)}
+                >
+                  Add this Activity Details
+                </Button>
+              )}
             </Flex>
           </Box>
         ))}
       </SimpleGrid>
 
-      <Modal isOpen={isOpen && !isEditingDetails} onClose={onClose}>
-        <ModalOverlay />
-        <ModalContent>
-          <ModalHeader>Delete activity</ModalHeader>
-          <ModalCloseButton />
-          <ModalBody>Are you sure you want to delete {selectedActivityForAction ? selectedActivityForAction.title : ''}?</ModalBody>
-          <ModalFooter>
-            <Button colorScheme="red" onClick={confirmDelete}>
-              Delete
-            </Button>
-            <Button ml={3} onClick={onClose}>
-              Cancel
-            </Button>
-          </ModalFooter>
-        </ModalContent>
-      </Modal>
-
-      <Modal isOpen={isOpen && isEditingDetails} onClose={onClose}>
-        <ModalOverlay />
-        <ModalContent>
-          <ModalHeader>Add activity details</ModalHeader>
-          <ModalCloseButton />
-          <EditActivityDetailsForm activityDetails={selectedActivityForAction} onClose={onClose} onUpdate={updateActivityDetails} />
-        </ModalContent>
-      </Modal>
-    </Flex>
+      {selectedActivityForAction && (
+        <Modal isOpen={isOpen} onClose={onClose}>
+          <ModalOverlay />
+          <ModalContent>
+            {isEditModal ? (
+              <>
+                <ModalHeader>Edit Activity Details</ModalHeader>
+                <ModalCloseButton />
+                <EditActivityDetailsForm activityDetails={selectedActivityForAction} onClose={onClose} onUpdate={updateActivityDetails} />
+              </>
+            ) : (
+              <>
+                <ModalHeader>Delete Activity</ModalHeader>
+                <ModalCloseButton />
+                <ModalBody>
+                  Are you sure you want to delete {selectedActivityForAction.title}?
+                </ModalBody>
+                <ModalFooter>
+                  <Button colorScheme="red" onClick={handleDelete}>
+                    Delete
+                  </Button>
+                  <Button ml="3" onClick={onClose}>
+                    Cancel
+                  </Button>
+                </ModalFooter>
+              </>
+            )}
+          </ModalContent>
+        </Modal>
+      )}
+    </Flex
   );
 };
 

@@ -1,5 +1,5 @@
 import { useState } from 'react';
-import { useCitiesContext } from '../pages/ActivityContext';
+import { useActivityContext } from '../pages/ActivityContext';
 import { Flex, FormControl, Box, Input, Button, Text } from '@chakra-ui/react';
 import { useNavigate } from 'react-router-dom';
 
@@ -10,7 +10,7 @@ export const CityForm = () => {
   const [image, setImage] = useState('');
   const [countryCode, setCountryCode] = useState('');
 
-  const { createCity } = useCitiesContext(); // Use context to access createCity
+  const { createCity } = useActivityContext(); // Use context to access createCity
 
   // Reset form fields
   const resetFormFields = () => {

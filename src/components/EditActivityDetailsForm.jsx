@@ -1,24 +1,24 @@
 import { useState, useEffect } from 'react';
-import { useActivityDetailsContext } from '../pages/ActivityContext';
+import { useActivityContext } from '../pages/ActivityContext';
 import { Flex, Input, Button, Box, Textarea, Text, FormControl, Select } from '@chakra-ui/react';
 import { useParams } from 'react-router-dom';
 
-export const EditActivityDetailsForm = ({ onClose, onUpdate }) => {
+export const EditActivityDetailsForm = ({ activityDetails, onClose, onUpdate }) => {
   //onUpdate prop = updateActivityDetails function in Activity. Remember: <EditActivityDetailsForm activityDetails={activityDetails} onClose={onClose} onUpdate={updateActivityDetails} /> // const navigate = useNavigate();
   const { cityName, categoryName, activityId } = useParams();
 
   // Initialize state with empty values; these will be updated by useEffect
-  const [title, setTitle] = useState(''); // Initializes state and allows for updating these values
+  const [title, setTitle] = useState(activityDetails?.title || '');
+  const [image, setImage] = useState(activityDetails?.image || '');
   const [description, setDescription] = useState('');
   const [location, setLocation] = useState('');
   const [startTime, setStartTime] = useState('');
   const [endTime, setEndTime] = useState('');
-  const [image, setImage] = useState('');
   const [rating, setRating] = useState(3); // ✅ Added field
   const [userName, setUserName] = useState(''); // ✅ For editedBy
   const [userLastName, setUserLastName] = useState(''); // ✅ For editedBy
 
-  const { createActivityDetails } = useActivityDetailsContext();
+  const { createActivityDetails } = useActivityContext();
 
   useEffect(() => {
     const fetchCityData = async () => {
@@ -129,6 +129,21 @@ export const EditActivityDetailsForm = ({ onClose, onUpdate }) => {
           value={title}
           onChange={(e) => setTitle(e.target.value)} // Update state when the user modifies the title in the form
         />
+        <label htmlFor="Image URL">
+          <Text as="b">Image URL:</Text>
+        </label>
+        <Input
+          bg="gray.200"
+          color="black"
+          id="image"
+          mb="2rem"
+          type="url"
+          required
+          placeholder="URL to image"
+          value={image}
+          onChange={(e) => setImage(e.target.value)}
+          _placeholder={{ color: 'gray.400' }}
+        />
         <label htmlFor="Description">
           <Text as="b">Description:</Text>
         </label>
@@ -185,21 +200,7 @@ export const EditActivityDetailsForm = ({ onClose, onUpdate }) => {
           onChange={(e) => setEndTime(e.target.value)}
           _placeholder={{ color: 'gray.400' }}
         />
-        <label htmlFor="Image URL">
-          <Text as="b">Image URL:</Text>
-        </label>
-        <Input
-          bg="gray.200"
-          color="black"
-          id="image"
-          mb="2rem"
-          type="url"
-          required
-          placeholder="URL to image"
-          value={image}
-          onChange={(e) => setImage(e.target.value)}
-          _placeholder={{ color: 'gray.400' }}
-        />
+
         <label htmlFor="Rating">
           <Text as="b">Give a rating</Text>
         </label>

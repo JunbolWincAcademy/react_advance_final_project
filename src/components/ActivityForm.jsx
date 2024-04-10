@@ -1,5 +1,5 @@
 import { useState, useEffect } from 'react';
-import { useActivitiesContext } from '../pages/ActivityContext';
+import { useActivityContext } from '../pages/ActivityContext';
 import { Flex, FormControl, Input, Button, Box, Text } from '@chakra-ui/react';
 import { useParams, useNavigate } from 'react-router-dom';
 
@@ -12,7 +12,7 @@ export const ActivityForm = () => {
   const { cityName, categoryName } = useParams();
   const navigate = useNavigate();
 
-  const { createActivity } = useActivitiesContext(); // Use context to access createUser
+  const { createActivity } = useActivityContext(); // Use context to access createUser
 
   function capitalizeFirstLetter(string) {
     return string.charAt(0).toUpperCase() + string.slice(1).toLowerCase();
@@ -80,7 +80,7 @@ export const ActivityForm = () => {
           onChange={(e) => setTitle(e.target.value)}
           _placeholder={{ color: 'gray.400' }}
         />
-         <label htmlFor="image url">
+        <label htmlFor="image url">
           <Text as="b">URL to image:</Text>
         </label>
 

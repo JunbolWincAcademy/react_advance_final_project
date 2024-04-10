@@ -1,5 +1,5 @@
 import { useState, useEffect } from 'react';
-import { ActivityProvider, useCategoriesContext } from '../pages/ActivityContext'; //you need to import the customen hook
+import { useActivityContext } from '../pages/ActivityContext'; //you need to import the customen hook
 import { Flex, FormControl, Input, Button, Box } from '@chakra-ui/react';
 import { useParams, useNavigate } from 'react-router-dom';
 
@@ -9,7 +9,7 @@ export const CategoryForm = () => {
   const [name, setName] = useState('');
   const [image, setImage] = useState('');
   //   const { selectedCity } = useCitiesContext(); // Assuming selectedCity is part of your context
-  const { createCategory } = useCategoriesContext();
+  const { createCategory } = useActivityContext();
 
   function capitalizeFirstLetter(string) {
     return string.charAt(0).toUpperCase() + string.slice(1).toLowerCase();

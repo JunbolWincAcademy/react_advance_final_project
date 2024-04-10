@@ -1,5 +1,5 @@
 import { useEffect, useState } from 'react';
-import { useCitiesContext } from './ActivityContext';
+import { useActivityContext } from './ActivityContext';
 import { useParams } from 'react-router-dom';
 import {
   Flex,
@@ -22,12 +22,13 @@ import { EditActivityDetailsForm } from '../components/EditActivityDetailsForm';
 
 export const Activity = () => {
   const { cityName, categoryName, activityId } = useParams();
-  const { cityList } = useCitiesContext();
+  const { cityList, deleteCity, setSelectedCity, deleteCategory } = useActivityContext();
   const [activityDetails, setActivityDetails] = useState(null);
   const [isLoading, setIsLoading] = useState(true);
   const { isOpen, onOpen, onClose: baseOnClose } = useDisclosure(); // Renaming to avoid naming conflict
 
   const updateActivityDetails = (updatedDetails) => {
+    //updateDetails is coming from the EditActivityForm: const updateDetails = createActivityDetails
     setActivityDetails(updatedDetails);
   };
 
@@ -39,19 +40,14 @@ export const Activity = () => {
       setIsLoading(false);
     }
 
-    console.log('city list: ', cityList);
     const city = cityList.find((city) => city.name === cityName);
-    console.log('city: ', city);
-    console.log('category name from Params:', categoryName);
 
     const category = city ? city.categories[categoryName] : null;
-    console.log('category: ', category);
 
     // Ensure that we compare the same type (either both strings or both numbers)
     const activities = category ? category[0].activities : null;
-    console.log('activities: ', activities);
+
     const activity = activities ? activities.find((a) => String(a.id) === activityId) : null; //🐞🚩Converting to string for comparison
-    console.log('activity: ', activity);
 
     if (activity) {
       setActivityDetails(activity);
@@ -73,15 +69,27 @@ export const Activity = () => {
   };
   return (
     <Flex justifyContent="center">
-      <Box maxW="sm" borderWidth="1px" borderRadius="lg" overflow="hidden" align="center">
+      <Box maxW="sm" borderWidth="1px" borderRadius="lg" overflow="hidden" align="center" bg="red.800" color="white">
         <Image src={activityDetails.image} alt={activityDetails.title} />
         <Flex width="80%">
-          <Box display="flex" borderRadius="lg" bg="red" color="white" w="14" h="8" alignItems="center" justifyContent="center" mt="1rem">
+          <Box
+            display="flex"
+            borderRadius="50%"
+            p="2rem"
+            bg="red"
+            color="white"
+            w="14"
+            h="8"
+            alignItems="center"
+            justifyContent="center"
+            mt="1rem"
+            mb="1rem"
+          >
             <Text as="b">New</Text>
           </Box>
         </Flex>
         <Box flexDir="column" align="center">
-          <Heading mt="0.1rem" fontWeight="semibold" as="h5" lineHeight="tight" noOfLines="1">
+          <Heading mt="0.1rem" fontWeight="bold" as="h5" lineHeight="tight" noOfLines="1" mb="1.5rem">
             {activityDetails.title}
           </Heading>
           <Flex flexDir="column" textAlign="left" width="80%">
@@ -100,7 +108,7 @@ export const Activity = () => {
                 .map((_, i) => (
                   <StarIcon key={i} color={i < activityDetails.rating ? 'red' : 'gray.300'} />
                 ))}
-              <Box as="span" ml="2" color="gray.600" fontSize="sm">
+              <Box as="span" ml="2" color="white" fontSize="sm">
                 {activityDetails.reviewCount} reviews
               </Box>
             </Box>
@@ -121,7 +129,7 @@ export const Activity = () => {
             size="sm"
             width="50%"
             mt="1rem"
-            bg="red.300"
+            bg="red.600"
             mb="2rem"
             color="black"
             _hover={{ bg: 'red', color: 'white' }}

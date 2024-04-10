@@ -1,12 +1,12 @@
 import { useState, useEffect } from 'react';
-import { useCitiesContext } from '../pages/ActivityContext';
+import { useActivityContext } from '../pages/ActivityContext';
 import { Flex, FormControl, Input, Button, Box, Text } from '@chakra-ui/react';
 import { useParams, useNavigate } from 'react-router-dom';
 
 export const EditCityForm = () => {
   const navigate = useNavigate();
   const { cityName } = useParams();
-  const { editCityDetails, cityList } = useCitiesContext();
+  const { editCityDetails, cityList } = useActivityContext();
 
   const [name, setName] = useState('');
   const [countryCode, setCountryCode] = useState('');

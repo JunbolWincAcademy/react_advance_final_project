@@ -1,5 +1,5 @@
 import { useState, useEffect } from 'react';
-import { useActivityDetailsContext } from '../pages/ActivityContext';
+import { useActivityContext } from '../pages/ActivityContext';
 import { Flex, Box, Input, Button, Textarea, FormControl, Text } from '@chakra-ui/react';
 import { useParams, useNavigate } from 'react-router-dom';
 
@@ -11,7 +11,7 @@ export const EditActivityForm = () => {
   const [title, setTitle] = useState('');
   const [image, setImage] = useState('');
 
-  const { editActivityDetails } = useActivityDetailsContext();
+  const { editActivityDetails } = useActivityContext();
 
   // ✅ Updated function to capitalize the first letter of each word
   function capitalizeTitle(string) {
