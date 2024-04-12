@@ -32,9 +32,7 @@ export const App = () => {
               <Route path="/city/:cityName/categories/:categoryName/editCategoryForm" element={<EditCategoryForm />} />
               <Route path="/city/:cityName/categories/:categoryName/activity/activityForm" element={<ActivityForm />} />
               <Route path="/city/:cityName/categories/:categoryName/activity/:activityId/:activityTitle" element={<Activity />} />
-              <Route
-                path="/city/:cityName/categories/:categoryName/activity/:activityId/:activityTitle/editActivityForm"
-                element={<EditActivityForm />}
+              <Route path="/city/:cityName/categories/:categoryName/activity/:activityId/:activityTitle/editActivityForm" element={<EditActivityForm />}
               />
               <Route
                 path="/city/:cityName/categories/:categoryName/activity/:activityId/:activityTitle/editActivityDetailsForm"

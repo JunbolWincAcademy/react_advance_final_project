@@ -66,7 +66,7 @@ export const ActivityForm = () => {
         justifyContent="center"
       >
         <label htmlFor="title">
-          <Text as="b">Title:</Text>
+          <Text as="b">Activity Title:</Text>
         </label>
         <Input
           bg="gray.200"

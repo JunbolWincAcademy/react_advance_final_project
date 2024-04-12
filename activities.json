@@ -111,14 +111,23 @@
       "categories": {
         "Sports": [
           {
-            "id": 1712482763486,
+            "id": 1712835826733,
             "name": "Sports",
             "image": "https://s3.eu-west-2.amazonaws.com/ws-activestirling/production/Badminton/_1200x630_crop_center-center_none/Badminton-3.jpg",
             "activities": [
               {
-                "title": "Badmington",
+                "title": "Badmington Best Game",
                 "image": "https://s3.eu-west-2.amazonaws.com/ws-activestirling/production/Badminton/_1200x630_crop_center-center_none/Badminton-3.jpg",
-                "id": 1712483656929
+                "id": 1712836310890,
+                "description": "Nice activiy to do",
+                "location": "City center",
+                "startTime": "2024-04-03T03:50:00.000Z",
+                "endTime": "2024-04-19T03:50:00.000Z",
+                "rating": 3,
+                "editedBy": {
+                  "userName": "John",
+                  "userLastName": "Doe"
+                }
               }
             ]
           }
@@ -384,6 +393,13 @@
           }
         ]
       }
+    },
+    "Athens": {
+      "id": 10,
+      "name": "Athens",
+      "countryCode": "GR",
+      "image": "https://images.unsplash.com/photo-1594048234320-f2caf3dac5c0?q=80&w=1740&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D",
+      "categories": {}
     }
   },
   "users": [

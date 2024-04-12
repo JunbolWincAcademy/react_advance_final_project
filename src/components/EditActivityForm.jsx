@@ -13,20 +13,6 @@ export const EditActivityForm = () => {
 
   const { editActivityDetails } = useActivityContext();
 
-  // ✅ Updated function to capitalize the first letter of each word
-  function capitalizeTitle(string) {
-    return string
-      .split(' ') // Split the string into an array of words. For each word
-      .map(
-        (
-          word // The map() function is used to iterate over each word in the array. For each word, the following operations are performed:
-        ) =>
-          word.charAt(0).toUpperCase() + // Capitalize the first letter of each word
-          word.slice(1).toLowerCase() // Convert the rest of the word to lowercase
-      )
-      .join(' '); // Join the array of words back into a single string
-  }
-
   useEffect(() => {
     const fetchCityData = async () => {
       const url = `http://localhost:3000/cities`;
@@ -71,7 +57,23 @@ export const EditActivityForm = () => {
 
   const handleSubmit = async (event) => {
     event.preventDefault();
-    const capitalizedActivityName = capitalizeTitle(title);
+
+
+    // ✅ Updated function to capitalize the first letter of each word
+    function capitalizeActivityTitle(string) {
+      return string
+        .split(' ') // Split the string into an array of words. For each word
+        .map(
+          (
+            word // The map() function is used to iterate over each word in the array. For each word, the following operations are performed:
+          ) =>
+            word.charAt(0).toUpperCase() + // Capitalize the first letter of each word
+            word.slice(1).toLowerCase() // Convert the rest of the word to lowercase
+        )
+        .join(' '); // Join the array of words back into a single string
+    }
+
+    const capitalizedActivityName = capitalizeActivityTitle(title);
 
     try {
       await editActivityDetails(cityName, categoryName, activityId, {

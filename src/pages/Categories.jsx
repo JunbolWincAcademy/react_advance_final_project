@@ -49,6 +49,15 @@ const CategoryList = ({ searchQuery }) => {
     onOpen();
   };
 
+  const confirmDelete = () => {
+    if (selectedActivityForAction && selectedActivityForAction.id) {
+      deleteActivity(cityName, categoryName, selectedActivityForAction.id); // ✅ Ensure the correct ID is used here
+      onClose();
+    } else {
+      console.error('Error: No activity selected for deletion.');
+    }
+  };
+
   const handleEditDetailsClick = (activity) => {
     setSelectedActivityForAction(activity);
     setIsEditingDetails(true);
@@ -60,16 +69,11 @@ const CategoryList = ({ searchQuery }) => {
     return activityCount <= 1 ? 1 : activityCount === 2 ? 2 : 3;
   };
 
-  const confirmDelete = () => {
-    deleteActivity(cityName, categoryName, selectedActivityForAction.id);
-    onClose();
-  };
-
   return (
     <Flex direction="column" mt="1rem" justifyContent="center" width="100%" padding="4">
       <SimpleGrid columns={getColumnCount()} spacing="4">
         {filteredActivities.map((activity) => (
-          <Box key={activity.id} borderWidth="1px" borderRadius="lg" overflow="hidden" bg="red.800">
+          <Box key={activity.id} borderWidth="1px" borderRadius="lg" overflow="hidden" bg="red.800" align="center">
             <Link to={`/city/${cityName}/categories/${categoryName}/activity/${activity.id}/${activity.title}`}>
               <Image src={activity.image} alt={activity.title} />
               <Heading size="lg" mt="2" mb="2" color="white">

@@ -11,19 +11,6 @@ export const EditCategoryForm = () => {
   const [image, setImage] = useState('');
 
   const { editCategoryDetails } = useActivityContext();
-  // ✅ Updated function to capitalize the first letter of each word
-  function capitalizeTitle(string) {
-    return string
-      .split(' ') // Split the string into an array of words. For each word
-      .map(
-        (
-          word // The map() function is used to iterate over each word in the array. For each word, the following operations are performed:
-        ) =>
-          word.charAt(0).toUpperCase() + // Capitalize the first letter of each word
-          word.slice(1).toLowerCase() // Convert the rest of the word to lowercase
-      )
-      .join(' '); // Join the array of words back into a single string
-  }
 
   useEffect(() => {
     const fetchCategoryData = async () => {
@@ -63,7 +50,28 @@ export const EditCategoryForm = () => {
 
   const handleSubmit = async (event) => {
     event.preventDefault();
-    const capitalizedCategoryName = capitalizeTitle(name);
+
+    // Validate and then capitalize the category name
+    const nameRegex = /^[A-Za-z]+(?: [A-Za-z]+)*$/;
+    if (!nameRegex.test(name)) {
+      alert('Please enter a valid city name (letters only).');
+      return;
+    }
+    // ✅ Updated function to capitalize the first letter of each word
+    function capitalizeCategoryNameLetters(string) {
+      return string
+        .split(' ') // Split the string into an array of words. For each word
+        .map(
+          (
+            word // The map() function is used to iterate over each word in the array. For each word, the following operations are performed:
+          ) =>
+            word.charAt(0).toUpperCase() + // Capitalize the first letter of each word
+            word.slice(1).toLowerCase() // Convert the rest of the word to lowercase
+        )
+        .join(' '); // Join the array of words back into a single string
+    }
+
+    const capitalizedCategoryName = capitalizeCategoryNameLetters(name);
 
     try {
       await editCategoryDetails(cityName, categoryName, {
@@ -86,7 +94,7 @@ export const EditCategoryForm = () => {
     >
       <FormControl display="flex" flexDir="column" p="1rem" m="1.5rem" bg="red.600" color="white" width="100%">
         <label htmlFor="title">
-          <Text as="b">Name:</Text>
+          <Text as="b">Category Name:</Text>
         </label>
 
         <Input

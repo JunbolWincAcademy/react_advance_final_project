@@ -406,7 +406,9 @@ export const ActivityProvider = ({ children }) => {
   };
 
   //lOGIC TO DELETE AN ACTIVITY-------------------------------
-  const deleteActivity = async (cityName, categoryName, activityTitle) => {
+
+  // Logic to delete an activity
+  const deleteActivity = async (cityName, categoryName, activityId) => {
     try {
       const citiesResponse = await fetch('http://localhost:3000/cities');
       if (!citiesResponse.ok) throw new Error('Failed to fetch cities');
@@ -425,10 +427,10 @@ export const ActivityProvider = ({ children }) => {
       }
 
       // Finding the activity by ID and removing it
-      const activityIndex = category[0].activities.findIndex((activity) => activity.title === activityTitle);
+      const activityIndex = category[0].activities.findIndex((activity) => activity.id === activityId);
       if (activityIndex !== -1) {
         // Activity found, now remove it
-        category[0].activities.splice(activityIndex, 1); // 🛠 Remove the activity
+        category[0].activities.splice(activityIndex, 1); // Remove the activity
       } else {
         console.error('Activity does not exist within the category');
         return; // Exit if activity not found
@@ -441,9 +443,9 @@ export const ActivityProvider = ({ children }) => {
         body: JSON.stringify(citiesData),
       });
 
-      // Optionally, update local state to reflect the change
+      // Update local state to reflect the change
       const updatedCityList = Object.values(citiesData);
-      setCityList(updatedCityList); // 🛠 Update local state to reflect the activity deletion
+      setCityList(updatedCityList); // Update local state to reflect the activity deletion
     } catch (error) {
       console.error('Error deleting activity:', error);
     }

@@ -18,16 +18,17 @@ import {
   ModalCloseButton,
 } from '@chakra-ui/react';
 import { StarIcon } from '@chakra-ui/icons';
-import { EditActivityDetailsForm } from '../components/EditActivityDetailsForm';
+import { EditActivityDetailsForm } from '../components/EditActivityDetailsForm'; // Assuming this is the component for editing
 
 export const Activity = () => {
   const { cityName, categoryName, activityId } = useParams();
-  const { cityList } = useActivityContext();
+  const { cityList, deleteCity, setSelectedCity, deleteCategory } = useActivityContext();
   const [activityDetails, setActivityDetails] = useState(null);
   const [isLoading, setIsLoading] = useState(true);
-  const { isOpen, onOpen, onClose: baseOnClose } = useDisclosure();
+  const { isOpen, onOpen, onClose: baseOnClose } = useDisclosure(); // Renaming to avoid naming conflict
 
   const updateActivityDetails = (updatedDetails) => {
+    //updateDetails is coming from the EditActivityForm: const updateDetails = createActivityDetails
     setActivityDetails(updatedDetails);
   };
 
@@ -35,11 +36,14 @@ export const Activity = () => {
     if (cityList.length === 0) {
       setIsLoading(true);
       return;
+    } else {
+      setIsLoading(false);
     }
 
     const selectedCity = cityList.find((city) => city.name === cityName);
     const category = selectedCity?.categories[categoryName];
     const activity = category?.[0].activities.find((a) => String(a.id) === activityId);
+    //🐞🚩Converting to string for comparison
 
     if (activity) {
       setActivityDetails(activity);
@@ -53,16 +57,15 @@ export const Activity = () => {
     return <div>Loading...</div>;
   }
 
-  if (!activityDetails) return <div>Activity not found</div>;
+  if (!activityDetails) return null;
 
-  // 🟢 Extracting userName and userLastName safely. To handle this situation , I can use optional chaining (?.) and nullish coalescing operator (??) to provide default values when properties are not present otherwise I will get a🐞. This approach is more streamlined and avoids the need for extra state variables for userName and lastName.I'm using "?" because I want to prevent immediately an error if editedBy is undefined so it returns an empty string. By using "??" the System stops if the first "?" evaluation  returns undefined,and  continues straight till the end to the "??" which it will return whatever is on the right side of it and in this case is an  empty string
-  const userName = activityDetails.editedBy?.userName ?? ''; // 🟢 Safely extract userName. If `editedBy` is undefined, or if `userName` is not present, default to an empty string.
-  const userLastName = activityDetails.editedBy?.userLastName ?? '';
-
+  // function ActivityCard() {
+  //   // Assume rating is a new field in your activityDetails
+  //   const { rating = 3, reviewCount = 0 } = activityDetails;
   const onClose = () => {
-    baseOnClose();
+    console.log('Closing modal'); // This line will log when onClose is triggered
+    baseOnClose(); // Call the original onClose function from useDisclosure
   };
-
   return (
     <Flex justifyContent="center">
       <Box maxW="sm" borderWidth="1px" borderRadius="lg" overflow="hidden" align="center" bg="red.800" color="white">
@@ -85,7 +88,7 @@ export const Activity = () => {
           </Box>
         </Flex>
         <Box flexDir="column" align="center">
-          <Heading mt="0.1rem" fontWeight="bold" fontSize="3xl" lineHeight="tight" noOfLines="1" mb="1.5rem">
+          <Heading mt="0.1rem" fontWeight="bold" as="h5" lineHeight="tight" noOfLines="1" mb="1.5rem">
             {activityDetails.title}
           </Heading>
           <Flex flexDir="column" textAlign="left" width="80%">
@@ -114,10 +117,10 @@ export const Activity = () => {
             <Flex flexDir="column">
               <Text as="b">Edited by:</Text>
               <Box flexDir="row">
-                <Text as="b">Name:</Text> {userName} {/* 🟢 Use the safe userName */}
+                <Text as="b">Name:</Text> {activityDetails.editedBy.userName}
               </Box>
               <Box flexDir="row">
-                <Text as="b">Lastname:</Text> {userLastName} {/* 🟢 Use the safe userLastName */}
+                <Text as="b">Lastname:</Text> {activityDetails.editedBy.userLastName}
               </Box>
             </Flex>
           </Box>

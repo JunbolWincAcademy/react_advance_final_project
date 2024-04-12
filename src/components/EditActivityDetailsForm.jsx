@@ -18,7 +18,7 @@ export const EditActivityDetailsForm = ({ activityDetails, onClose, onUpdate }) 
   const [userName, setUserName] = useState(''); // ✅ For editedBy
   const [userLastName, setUserLastName] = useState(''); // ✅ For editedBy
 
-  const { createActivityDetails } = useActivityContext();
+  const { editActivityDetails } = useActivityContext(); // 🟢 Ensure editActivityDetails is imported correctly
 
   useEffect(() => {
     const fetchCityData = async () => {
@@ -79,34 +79,96 @@ export const EditActivityDetailsForm = ({ activityDetails, onClose, onUpdate }) 
     setUserLastName('');
   };
 
+  const capitalizeActivityTitle = (string) => {
+    // Trim the string to remove leading/trailing spaces and replace multiple spaces with a single space
+    return string
+      .trim()
+      .replace(/\s\s+/g, ' ') // Replace multiple whitespaces with a single space
+      .split(' ')
+      .map((word) => word.charAt(0).toUpperCase() + word.slice(1).toLowerCase())
+      .join(' ');
+  };
+
+  const handleTitleBlur = (event) => {
+    const { value } = event.target;
+    const capitalizedTitle = capitalizeActivityTitle(value);
+    setTitle(capitalizedTitle);
+  };
+
+  // 🟢 Function to capitalize the first letter of the description
+  const handleDescriptionChange = (event) => {
+    const { value } = event.target;
+    // Capitalize the first letter if there is at least one character
+    const capitalizedDescription = value.length > 0 ? value.charAt(0).toUpperCase() + value.slice(1) : ''; //if there is now input returns an empty string
+    setDescription(capitalizedDescription);
+  };
+  // 🟢 Function to capitalize the first letter of the description
+  const handleLocationChange = (event) => {
+    const { value } = event.target;
+    // Capitalize the first letter if there is at least one character
+    const capitalizedLocation = value.length > 0 ? value.charAt(0).toUpperCase() + value.slice(1) : ''; //if there is now input returns an empty string
+    setLocation(capitalizedLocation);
+  };
+
+  const handleUserNameChange = (event) => {
+    const { value } = event.target;
+    const upperCasedName = value.length > 0 ? value.charAt(0).toUpperCase() + value.slice(1) : ''; // Convert the entire input to uppercase
+    setUserName(upperCasedName); // Set the state with the converted value
+  };
+
+  const handleUserLastNameChange = (event) => {
+    const { value } = event.target;
+    const upperCasedLastName = value.length > 0 ? value.charAt(0).toUpperCase() + value.slice(1) : ''; // Convert the entire input to uppercase
+    setUserLastName(upperCasedLastName); // Set the state with the converted value
+  };
+
   const handleSubmit = async (event) => {
     event.preventDefault();
-    // Convert form datetime to ISO string if necessary for database
-    const startDateTimeISO = new Date(startTime).toISOString(); // ✅
-    const endDateTimeISO = new Date(endTime).toISOString(); // ✅
+    // 🟢 Validate name and lastname fields to contain only letters
+    const nameRegex = /^[A-Za-z]+(?: [A-Za-z]+)*$/; // Regex for validating names (allows spaces between words)
 
-    // On form submit, this gather all form fields to update the activity details:
+    if (!nameRegex.test(userName) || !nameRegex.test(userLastName)) {
+      alert('Name and Lastname must contain only letters.');
+      return; // Stop the form submission
+    }
+
+    const capitalizedActivityName = capitalizeActivityTitle(title); // 🟢 Capitalize only when submitting
+
     try {
-      const updatedDetails = await createActivityDetails(cityName, categoryName, activityId, {
-        title,
-        description,
-        location,
-        startTime: startDateTimeISO,
-        endTime: endDateTimeISO,
+      await editActivityDetails(cityName, categoryName, activityId, {
+        title: capitalizedActivityName,
         image,
-        rating,
-        editedBy: { userName, userLastName },
       });
 
-      resetFormFields();
-      onUpdate(updatedDetails); // Update the updateActivityDetails  function in the Activity component with recent details from the form
+      // Convert form datetime to ISO string if necessary for database
+      const startDateTimeISO = new Date(startTime).toISOString(); // ✅
+      const endDateTimeISO = new Date(endTime).toISOString(); // ✅
 
-      onClose();
+      // On form submit, this gather all form fields to update the activity details:
+      try {
+        const updatedDetails = await editActivityDetails(cityName, categoryName, activityId, {
+          title,
+          description,
+          location,
+          startTime: startDateTimeISO,
+          endTime: endDateTimeISO,
+          image,
+          rating,
+          editedBy: { userName, userLastName },
+        });
 
-      // navigate(`/city/${cityName}/categories/${categoryName}/activity/${activityId}/${title}`); NOT USED ANYMORE BECAUSEIM USING THE MODAL
-      //🚩❓navigate is used to programmatically redirect the user, which should force the component to re-render with the updated URL parameters. The { replace: true } option replaces the current entry in the history stack, so it doesn’t create a new history entry.
+        resetFormFields();
+        onUpdate(updatedDetails); // Update the updateActivityDetails  function in the Activity component with recent details from the form
+
+        onClose();
+
+        // navigate(`/city/${cityName}/categories/${categoryName}/activity/${activityId}/${title}`); NOT USED ANYMORE BECAUSEIM USING THE MODAL
+        //🚩❓navigate is used to programmatically redirect the user, which should force the component to re-render with the updated URL parameters. The { replace: true } option replaces the current entry in the history stack, so it doesn’t create a new history entry.
+      } catch (error) {
+        console.error('Error updating activity details:', error);
+      }
     } catch (error) {
-      console.error('Error updating activity details:', error);
+      console.error('Error editing activity details:', error);
     }
   };
 
@@ -127,7 +189,8 @@ export const EditActivityDetailsForm = ({ activityDetails, onClose, onUpdate }) 
           required
           placeholder="Title"
           value={title}
-          onChange={(e) => setTitle(e.target.value)} // Update state when the user modifies the title in the form
+          onChange={(e) => setTitle(e.target.value)} // Allow normal typing
+          onBlur={handleTitleBlur} // Capitalize when the user exits the field
         />
         <label htmlFor="Image URL">
           <Text as="b">Image URL:</Text>
@@ -151,9 +214,10 @@ export const EditActivityDetailsForm = ({ activityDetails, onClose, onUpdate }) 
           bg="gray.200"
           color="black"
           mb="2rem"
+          required
           placeholder="Description"
           value={description}
-          onChange={(e) => setDescription(e.target.value)}
+          onChange={handleDescriptionChange} // 🟢 Use the new function for handling changes
         />
         <label htmlFor="Location">
           <Text as="b">Location:</Text>
@@ -167,7 +231,7 @@ export const EditActivityDetailsForm = ({ activityDetails, onClose, onUpdate }) 
           required
           placeholder="Location"
           value={location}
-          onChange={(e) => setLocation(e.target.value)}
+          onChange={handleLocationChange} // 🟢 Use the new function for handling changes
           _placeholder={{ color: 'gray.400' }}
         />
         <label htmlFor="Start Time">
@@ -222,24 +286,32 @@ export const EditActivityDetailsForm = ({ activityDetails, onClose, onUpdate }) 
         <label htmlFor="Edited by">
           <Text as="b">Edited by:</Text>
         </label>
+        <label htmlFor="title">
+          <Text as="b">Name:</Text>
+        </label>
         <Input
           bg="gray.200"
           color="black"
           mb="1rem"
           type="text"
+          required
           placeholder="Name"
           value={userName}
-          onChange={(e) => setUserName(e.target.value)}
+          onChange={handleUserNameChange} // Using the handler here
           _placeholder={{ color: 'gray.400' }}
         />
+        <label htmlFor="title">
+          <Text as="b">Lastname:</Text>
+        </label>
         <Input
           bg="gray.200"
           color="black"
           mb="1rem"
           type="text"
+          required
           placeholder="Lastname"
           value={userLastName}
-          onChange={(e) => setUserLastName(e.target.value)}
+          onChange={handleUserLastNameChange}
           _placeholder={{ color: 'gray.400' }}
         />
         <Box display="flex" flexDir="column" alignItems="center" mt="2rem">

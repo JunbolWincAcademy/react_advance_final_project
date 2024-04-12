@@ -22,7 +22,7 @@ export const CityForm = () => {
   const handleSubmit = async (event) => {
     event.preventDefault();
 
-    function capitalizeCityWords(string) {
+    function capitalizeCityName(string) {
       return string
         .split(' ') // Split the string into an array of words
         .map((word) => word.charAt(0).toUpperCase() + word.slice(1).toLowerCase()) // Capitalize the first letter of each word
@@ -33,14 +33,26 @@ export const CityForm = () => {
     const capitalizeCountryLetters = (name) => {
       return name.toUpperCase();
     };
-    // Validate and then capitalize the city name
-    const nameRegex = /^[A-Za-z]+(?: [A-Za-z]+)*$/;
-    if (!nameRegex.test(name)) {
-      alert('Please enter a valid name (letters only, first and last name required).');
-      return;
-    }
-    const capitalizedCityName = capitalizeCityWords(name);
-    const capitalizeCountryCode = capitalizeCountryLetters(countryCode);
+
+   // Validate and then capitalize the city name
+const nameRegex = /^[A-Za-z]+(?: [A-Za-z]+)*$/;
+if (!nameRegex.test(name)) {
+    alert('Please enter a valid city name (letters only).');
+    return;
+}
+
+
+
+// Assuming country code should be 2 or 3 letters, case insensitive
+const countryCodeRegex = /^[A-Za-z]{2,3}$/;
+if (!countryCodeRegex.test(countryCode)) {
+    alert('Please enter a valid country code (2 or 3 letters).');
+    return;
+}
+
+
+    const capitalizedCityName = capitalizeCityName(name);
+    const capitalizeCountryCode = capitalizeCountryLetters  (countryCode);
 
     // Assuming createCity is correctly defined and accessible
     try {

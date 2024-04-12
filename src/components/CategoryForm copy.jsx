@@ -1,14 +1,30 @@
 import { useState, useEffect } from 'react';
-import { useActivityContext } from '../pages/ActivityContext'; // Import the custom hook
-import { Flex, FormControl, Input, Button, Box, Text } from '@chakra-ui/react';
+import { useActivityContext } from '../pages/ActivityContext'; //you need to import the customen hook
+import { Flex, FormControl, Input, Button, Box } from '@chakra-ui/react';
 import { useParams, useNavigate } from 'react-router-dom';
 
 export const CategoryForm = () => {
   const navigate = useNavigate();
-  const { cityName } = useParams(); // Use useParams to get the cityName from the URL
+  const { cityName } = useParams(); // 🟢 Use useParams to get the cityName from the URL
   const [name, setName] = useState('');
   const [image, setImage] = useState('');
-  const { createCategory } = useActivityContext(); // Import the context function
+  //   const { selectedCity } = useCitiesContext(); // Assuming selectedCity is part of your context
+  const { createCategory } = useActivityContext();
+
+  function capitalizeCategoryNameLetters(string) {
+    return string
+      .split(' ') // Split the string into an array of words
+      .map((word) => word.charAt(0).toUpperCase() + word.slice(1).toLowerCase()) // Capitalize the first letter of each word
+      .join(' '); // Join the array back into a single string, then append a comma
+  }
+
+  // Validate and then capitalize the city name
+  const nameRegex = /^[A-Za-z]+(?: [A-Za-z]+)*$/;
+  if (!nameRegex.test(name)) {
+    alert('Please enter a valid city name (letters only).');
+    return;
+  }
+  const capitalizedCategoryName = capitalizeCategoryNameLetters(name);
 
   useEffect(() => {
     if (!cityName) {
@@ -17,19 +33,14 @@ export const CategoryForm = () => {
     }
   }, [cityName, navigate]);
 
+  const resetFormFields = () => {
+    setName('');
+    setImage('');
+  };
+
   const handleSubmit = async (event) => {
     event.preventDefault();
 
-    // Validate the category name
-    const nameRegex = /^[A-Za-z]+(?: [A-Za-z]+)*$/;
-    if (!nameRegex.test(name)) {
-      alert('Please enter a valid category name (letters only).');
-      return;
-    }
-    const capitalizedCategoryName = name
-      .split(' ') // Split the string into an array of words
-      .map((word) => word.charAt(0).toUpperCase() + word.slice(1).toLowerCase()) // Capitalize the first letter of each word
-      .join(' '); // Join the array back into a single string
     try {
       await createCategory(cityName, { name: capitalizedCategoryName, image });
       resetFormFields();
@@ -39,20 +50,26 @@ export const CategoryForm = () => {
     }
   };
 
-  const resetFormFields = () => {
-    setName('');
-    setImage('');
-  };
-
   return (
-    <Flex as="form" onSubmit={handleSubmit} direction="column" m="1.5rem">
-      <FormControl borderRadius="8" p="1rem" bg="red.600" color="white">
-        <label htmlFor="title">
-          <Text as="b">Category Name:</Text>
-        </label>
+    <Flex //🚩🐞to fix the issue of not been able to use FormControl I has to wrap it inside Flex and put the onSubmit here instead
+      as="form"
+      onSubmit={handleSubmit}
+    >
+      <FormControl
+        display="flex"
+        flexDir="column"
+        borderRadius="8"
+        p="1rem"
+        m="1.5rem"
+        bg="red.600"
+        color="white"
+        width="100%"
+        justifyContent="center"
+      >
         <Input
           bg="gray.200"
           color="black"
+          id="location"
           mb="2rem"
           type="text"
           required
@@ -60,12 +77,10 @@ export const CategoryForm = () => {
           value={name}
           onChange={(e) => setName(e.target.value)}
         />
-        <label htmlFor="image url">
-          <Text as="b">URL to image:</Text>
-        </label>
         <Input
           bg="gray.200"
           color="black"
+          id="location"
           mb="2rem"
           type="url"
           required
@@ -73,7 +88,7 @@ export const CategoryForm = () => {
           value={image}
           onChange={(e) => setImage(e.target.value)}
         />
-        <Box display="flex" flexDirection="column" alignItems="center" mt="2rem">
+        <Box display="flex" flexDir="column" alignItems="center" mt="2rem">
           <Button type="submit" width="50%" mb="1rem" color="white" bg="gray" _hover={{ bg: 'white', color: 'black' }}>
             Add Category
           </Button>
