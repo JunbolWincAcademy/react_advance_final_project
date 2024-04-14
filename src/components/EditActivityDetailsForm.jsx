@@ -2,6 +2,7 @@ import { useState, useEffect } from 'react';
 import { useActivityContext } from '../pages/ActivityContext';
 import { Flex, Input, Button, Box, Textarea, Text, FormControl, Select } from '@chakra-ui/react';
 import { useParams } from 'react-router-dom';
+import { useToast } from '@chakra-ui/react';
 
 export const EditActivityDetailsForm = ({ activityDetails, onClose, onUpdate }) => {
   //onUpdate prop = updateActivityDetails function in Activity. Remember: <EditActivityDetailsForm activityDetails={activityDetails} onClose={onClose} onUpdate={updateActivityDetails} /> // const navigate = useNavigate();
@@ -19,54 +20,64 @@ export const EditActivityDetailsForm = ({ activityDetails, onClose, onUpdate }) 
   const [userLastName, setUserLastName] = useState(''); // ✅ For editedBy
 
   const { editActivityDetails } = useActivityContext(); // 🟢 Ensure editActivityDetails is imported correctly
+  const toast = useToast(); // Initialize useToast
+
+  //  // Assuming category is an array and finding the activity
+  //  const activity = category[0].activities.find((a) => a.id === Number(activityId)); //🐞Number was necessary because activityId in the params is a string
 
   useEffect(() => {
     const fetchCityData = async () => {
-      const url = `http://localhost:3000/cities`;
-      const response = await fetch(url);
-      if (!response.ok) {
-        throw new Error(`Failed to fetch city data: ${response.status}`);
+      console.log('Fetching data with', cityName, categoryName, activityId);
+      try {
+        const url = `http://localhost:3000/cities`;
+        const response = await fetch(url);
+        if (!response.ok) {
+          throw new Error(`Failed to fetch city data: ${response.status}`);
+        }
+        const citiesData = await response.json();
+        console.log('Fetched data for activity:', citiesData);
+
+        const cityData = citiesData[cityName];
+        if (!cityData) {
+          throw new Error('City not found');
+        }
+
+        const category = cityData.categories[categoryName];
+        if (!category) {
+          throw new Error('Category not found');
+        }
+
+        const activity = category[0].activities.find((a) => a.id === Number(activityId));
+        if (!activity) {
+          throw new Error('Activity not found');
+        }
+
+        setTitle(activity.title || '');
+        setImage(activity.image || '');
+        setDescription(activity.description || '');
+        setLocation(activity.location || '');
+        setUserName(activity.editedBy?.userName || '');
+        setUserLastName(activity.editedBy?.userLastName || '');
+
+        // 🐞 Handle undefined start and end times, this caused me 2 days to fix. When the form open these values are empty (undefined) causing a Javascript error now they start with and empty string on purpose.
+        setStartTime(activity.startTime ? new Date(activity.startTime).toISOString().slice(0, 16) : '');
+        setEndTime(activity.endTime ? new Date(activity.endTime).toISOString().slice(0, 16) : '');
+      } catch (error) {
+        toast({
+          title: 'Error',
+          description: error.message,
+          status: 'error',
+          duration: 5000,
+          isClosable: true,
+          position: 'top',
+        });
       }
-      const citiesData = await response.json();
-
-      // Assuming citiesData is an object where each key is a city name
-      const cityData = citiesData[cityName];
-
-      if (!cityData) {
-        throw new Error('City not found');
-      }
-
-      const category = cityData.categories[categoryName];
-      if (!category) {
-        throw new Error('Category not found');
-      }
-
-      // Assuming category is an array and finding the activity
-      const activity = category[0].activities.find((a) => a.id === Number(activityId)); //🐞Number was necessary because activityId in the params is a string
-
-      if (!activity) {
-        throw new Error('Activity not found');
-      }
-
-      // Convert ISO date string to local datetime format for form compatibility
-      const startDateTime = new Date(activity.startTime).toISOString().slice(0, 16); // ✅
-      const endDateTime = new Date(activity.endTime).toISOString().slice(0, 16); // ✅
-
-      // When setting the state, use a fallback value like an empty string if the fetched data might be undefined or null
-      setTitle(activity.title || ''); // Fetches existing data for the activity and populates form fields OR give an empty value to prevent errors
-      setImage(activity.image || '');
-      setDescription(activity.description || '');
-      setLocation(activity.location || '');
-      setStartTime(startDateTime);
-      setEndTime(endDateTime);
-      setUserName('');
-      setUserLastName('');
     };
 
     if (activityId) {
       fetchCityData();
     }
-  }, [cityName, categoryName, activityId]);
+  }, [cityName, categoryName, activityId, toast]);
 
   const resetFormFields = () => {
     setTitle('');
@@ -80,7 +91,7 @@ export const EditActivityDetailsForm = ({ activityDetails, onClose, onUpdate }) 
   };
 
   const capitalizeActivityTitle = (string) => {
-    // Trim the string to remove leading/trailing spaces and replace multiple spaces with a single space
+    // Trimming the string to remove leading/trailing spaces and replace multiple spaces with a single space
     return string
       .trim()
       .replace(/\s\s+/g, ' ') // Replace multiple whitespaces with a single space
@@ -139,36 +150,58 @@ export const EditActivityDetailsForm = ({ activityDetails, onClose, onUpdate }) 
         title: capitalizedActivityName,
         image,
       });
-
-      // Convert form datetime to ISO string if necessary for database
-      const startDateTimeISO = new Date(startTime).toISOString(); // ✅
-      const endDateTimeISO = new Date(endTime).toISOString(); // ✅
-
-      // On form submit, this gather all form fields to update the activity details:
-      try {
-        const updatedDetails = await editActivityDetails(cityName, categoryName, activityId, {
-          title,
-          description,
-          location,
-          startTime: startDateTimeISO,
-          endTime: endDateTimeISO,
-          image,
-          rating,
-          editedBy: { userName, userLastName },
-        });
-
-        resetFormFields();
-        onUpdate(updatedDetails); // Update the updateActivityDetails  function in the Activity component with recent details from the form
-
-        onClose();
-
-        // navigate(`/city/${cityName}/categories/${categoryName}/activity/${activityId}/${title}`); NOT USED ANYMORE BECAUSEIM USING THE MODAL
-        //🚩❓navigate is used to programmatically redirect the user, which should force the component to re-render with the updated URL parameters. The { replace: true } option replaces the current entry in the history stack, so it doesn’t create a new history entry.
-      } catch (error) {
-        console.error('Error updating activity details:', error);
-      }
     } catch (error) {
-      console.error('Error editing activity details:', error);
+      toast({
+        // 💚 Show error toast
+        title: 'Error',
+        description: 'Failed to update activity details. Please try again.',
+        status: 'error',
+        duration: 5000,
+        isClosable: true,
+        position: 'top',
+      });
+    }
+
+    // Convert form datetime to ISO string if necessary for database
+    const startDateTimeISO = new Date(startTime).toISOString(); // ✅
+    const endDateTimeISO = new Date(endTime).toISOString(); // ✅
+
+    // On form submit, this gather all form fields to update the activity details:
+    try {
+      const updatedDetails = await editActivityDetails(cityName, categoryName, activityId, {
+        title,
+        description,
+        location,
+        startTime: startDateTimeISO,
+        endTime: endDateTimeISO,
+        image,
+        rating,
+        editedBy: { userName, userLastName },
+      });
+
+      resetFormFields();
+      onUpdate(updatedDetails); // Update the updateActivityDetails  function in the Activity component with recent details from the form
+
+      onClose();
+      toast({
+        // 💚 Show success toast
+        title: 'Activity Updated',
+        description: 'The activity details have been successfully updated.',
+        status: 'success',
+        duration: 5000,
+        isClosable: true,
+        position: 'top',
+      });
+    } catch (error) {
+      toast({
+        // 💚 Show error toast
+        title: 'Error',
+        description: 'Failed to update activity details. Please try again.',
+        status: 'error',
+        duration: 5000,
+        isClosable: true,
+        position: 'top',
+      });
     }
   };
 
@@ -244,7 +277,6 @@ export const EditActivityDetailsForm = ({ activityDetails, onClose, onUpdate }) 
           mb="2rem"
           type="datetime-local"
           required
-          placeholder="Start Time"
           value={startTime}
           onChange={(e) => setStartTime(e.target.value)}
           _placeholder={{ color: 'gray.400' }}
@@ -259,7 +291,6 @@ export const EditActivityDetailsForm = ({ activityDetails, onClose, onUpdate }) 
           mb="2rem"
           type="datetime-local"
           required
-          placeholder="End Time"
           value={endTime}
           onChange={(e) => setEndTime(e.target.value)}
           _placeholder={{ color: 'gray.400' }}

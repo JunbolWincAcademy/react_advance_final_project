@@ -27,11 +27,6 @@ export const EditCategoryForm = () => {
       if (!cityData) {
         throw new Error('City not found');
       }
-      // Access the category object directly
-      /*  const category = cityData.categories[categoryName];
-      if (!category) {
-        throw new Error('Category not found');
-      } */
 
       // Assuming category details are directly accessible in the category object
       setName(cityData.categories[categoryName][0].name || ''); //🚩🐞ONCE AGAIN [0] was the missing code

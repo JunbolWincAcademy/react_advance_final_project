@@ -1,7 +1,6 @@
 import React from 'react';
 import { ChakraProvider } from '@chakra-ui/react';
 import { ActivityProvider } from './pages/ActivityContext';
-import { Navigation } from './components/Navigation';
 import { Cities } from './pages/Cities';
 import { City } from './pages/City';
 import { Categories } from './pages/Categories';

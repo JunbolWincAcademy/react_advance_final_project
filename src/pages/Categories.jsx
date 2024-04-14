@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { useActivityContext } from './ActivityContext';
 import { useParams, Link } from 'react-router-dom';
 import {
@@ -18,107 +18,99 @@ import {
   ModalCloseButton,
   Input,
 } from '@chakra-ui/react';
-import { EditActivityDetailsForm } from '../components/EditActivityDetailsForm'; // Import the form component
+import { EditActivityDetailsForm } from '../components/EditActivityDetailsForm';
 
 const CategoryList = ({ searchQuery }) => {
-  const { cityList, deleteActivity, updateActivityDetails } = useActivityContext();
-  // const { deleteActivity, updateActivityDetails } = useActivitiesContext();
-  const { cityName, categoryName } = useParams();
+  const { cityList, deleteActivity } = useActivityContext();
+  const { cityName, categoryName, activityId } = useParams();
   const { isOpen, onOpen, onClose } = useDisclosure();
-  const [selectedActivityForAction, setSelectedActivityForAction] = useState(null); // For delete or edit
-  const [isEditingDetails, setIsEditingDetails] = useState(false); // To toggle between delete and edit modal
+  const [activityForAction, setActivityForAction] = useState(null); // 🟢 For delete or edit
+  const [modalType, setModalType] = useState(null); // 🟢 Differentiate between edit and delete modals
 
-  if (!cityList || cityList.length === 0) {
-    return <div>Loading...</div>; // Show loading or a message until cityList is available
-  }
-
-  console.log('list of cities:', cityList);
-  const selectedCity = cityList.find((city) => city.name === cityName);
-  if (!selectedCity) {
-    console.error('Selected city not found');
-    return <div>City not found</div>; // Handle the case where the city is not found
-  }
-
-  const activities = selectedCity ? selectedCity.categories[categoryName][0].activities || [] : [];
-
-  const filteredActivities = activities.filter((activity) => activity.title.toLowerCase().includes(searchQuery.toLowerCase()));
-
-  const handleDeleteClick = (activity) => {
-    setSelectedActivityForAction(activity);
-    setIsEditingDetails(false);
-    onOpen();
-  };
-
-  const confirmDelete = () => {
-    if (selectedActivityForAction && selectedActivityForAction.id) {
-      deleteActivity(cityName, categoryName, selectedActivityForAction.id); // ✅ Ensure the correct ID is used here
-      onClose();
-    } else {
-      console.error('Error: No activity selected for deletion.');
+  useEffect(() => {
+    if (cityList.length > 0) {
+      const selectedCity = cityList.find((city) => city.name === cityName);
+      const activities = selectedCity?.categories[categoryName]?.[0]?.activities;
+      if (activities && activities.length > 0) {
+        // Optionally set a default activity or handle no activities logic
+      }
     }
-  };
+  }, [cityList, cityName, categoryName]); // 🟢 Setup initial state based on city list
 
-  const handleEditDetailsClick = (activity) => {
-    setSelectedActivityForAction(activity);
-    setIsEditingDetails(true);
-    onOpen();
-  };
+  // Extract activities from the city and category
+  const selectedCity = cityList.find((city) => city.name === cityName);
+  const activities = selectedCity?.categories[categoryName]?.[0]?.activities || [];
+
+  // Filter activities based on searchQuery
+  const filteredActivities = activities.filter((activity) => activity.title.toLowerCase().includes(searchQuery.toLowerCase()));
 
   const getColumnCount = () => {
     const activityCount = filteredActivities.length;
     return activityCount <= 1 ? 1 : activityCount === 2 ? 2 : 3;
   };
 
+  // Handle opening the delete confirmation modal
+  const handleDeleteActivity = (activity) => {
+    setActivityForAction(activity);
+    onOpen();
+  };
+
+  const confirmDelete = () => {
+    if (activityForAction && activityForAction.id) {
+      deleteActivity(cityName, categoryName, activityForAction.id);
+      onClose();
+    }
+  };
+
+  const updateActivityDetails = (updatedDetails) => {
+    // Optionally, you might want to update something in your state here
+    console.log('Updated Activity Details:', updatedDetails);
+    onClose(); // Close the modal after update
+  };
+  console.log('Passing props to form 1:', activityForAction);
   return (
     <Flex direction="column" mt="1rem" justifyContent="center" width="100%" padding="4">
       <SimpleGrid columns={getColumnCount()} spacing="4">
-        {filteredActivities.map((activity) => (
-          <Box key={activity.id} borderWidth="1px" borderRadius="lg" overflow="hidden" bg="red.800" align="center">
-            <Link to={`/city/${cityName}/categories/${categoryName}/activity/${activity.id}/${activity.title}`}>
-              <Image src={activity.image} alt={activity.title} />
-              <Heading size="lg" mt="2" mb="2" color="white">
-                {activity.title}
-              </Heading>
-            </Link>
-            <Flex direction="column" mt="1rem" align="center">
-              <Button
-                size="sm"
-                bg="red.600"
-                color="black"
-                _hover={{ bg: 'red', color: 'white' }}
-                mt="1rem"
-                mb="1rem"
-                onClick={() => handleDeleteClick(activity)}
-              >
-                Delete this activity
-              </Button>
-              <Link to={`/city/${cityName}/categories/${categoryName}/activity/${activity.id}/${activity.title}/editActivityForm`}>
-                <Button size="sm" bg="red.600" mb="2rem" color="black" _hover={{ bg: 'red', color: 'white' }}>
-                  Edit this activity
-                </Button>
+        {' '}
+        {cityList
+          .find((city) => city.name === cityName)
+          ?.categories[categoryName]?.[0]?.activities.map((activity) => (
+            <Box key={activity.id} borderWidth="1px" borderRadius="lg" overflow="hidden" bg="red.800" align="center">
+              <Link to={`/city/${cityName}/categories/${categoryName}/activity/${activity.id}/${activity.title}`}>
+                <Image src={activity.image} alt={activity.title} />
+                <Heading size="lg" mt="2" mb="2" color="white">
+                  {activity.title}
+                </Heading>
               </Link>
-
-              <Button
-                size="sm"
-                bg="blue.600"
-                color="white"
-                _hover={{ bg: 'blue', color: 'white' }}
-                mb="2rem"
-                onClick={() => handleEditDetailsClick(activity)}
-              >
-                Add details to this activity
-              </Button>
-            </Flex>
-          </Box>
-        ))}
+              <Flex direction="column" mt="1rem" align="center">
+                <Button
+                  size="sm"
+                  bg="red.600"
+                  color="black"
+                  _hover={{ bg: 'red', color: 'white' }}
+                  mt="1rem"
+                  mb="1rem"
+                  onClick={() => handleDeleteActivity(activity)}
+                >
+                  Delete this activity
+                </Button>
+                <Link to={`/city/${cityName}/categories/${categoryName}/activity/${activity.id}/${activity.title}/editActivityForm`}>
+                  <Button size="sm" bg="red.600" mb="2rem" color="black" _hover={{ bg: 'red', color: 'white' }}>
+                    Edit this activity
+                  </Button>
+                </Link>
+              </Flex>
+            </Box>
+          ))}
       </SimpleGrid>
 
-      <Modal isOpen={isOpen && !isEditingDetails} onClose={onClose}>
+      {/* Modal for Deleting Activity */}
+      <Modal isOpen={isOpen} onClose={onClose}>
         <ModalOverlay />
         <ModalContent>
-          <ModalHeader>Delete activity</ModalHeader>
+          <ModalHeader>Delete Activity</ModalHeader>
           <ModalCloseButton />
-          <ModalBody>Are you sure you want to delete {selectedActivityForAction ? selectedActivityForAction.title : ''}?</ModalBody>
+          <ModalBody>Are you sure you want to delete {activityForAction ? activityForAction.title : ''}?</ModalBody>
           <ModalFooter>
             <Button colorScheme="red" onClick={confirmDelete}>
               Delete
@@ -130,12 +122,20 @@ const CategoryList = ({ searchQuery }) => {
         </ModalContent>
       </Modal>
 
-      <Modal isOpen={isOpen && isEditingDetails} onClose={onClose}>
+      {/* Modal for Editing Activity */}
+      <Modal isOpen={isOpen && modalType === 'edit'} onClose={onClose}>
         <ModalOverlay />
         <ModalContent>
-          <ModalHeader>Add activity details</ModalHeader>
+          <ModalHeader>Add Activity Details</ModalHeader>
           <ModalCloseButton />
-          <EditActivityDetailsForm activityDetails={selectedActivityForAction} onClose={onClose} onUpdate={updateActivityDetails} />
+
+          <EditActivityDetailsForm
+            cityName={cityName}
+            categoryName={categoryName}
+            activityId={activityId}
+            onClose={onClose}
+            onUpdate={updateActivityDetails}
+          />
         </ModalContent>
       </Modal>
     </Flex>

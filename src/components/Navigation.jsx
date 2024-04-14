@@ -1,19 +1,45 @@
-import React from 'react';
-import { Flex, Heading, Menu, MenuList, MenuItem, MenuButton, IconButton, Box } from '@chakra-ui/react';
-import { HamburgerIcon } from '@chakra-ui/icons';
+import React, { useState, useEffect } from 'react';
+import { Flex, Heading, Menu, MenuList, MenuItem, MenuButton, IconButton, Text, Fade, Box } from '@chakra-ui/react';
+import { faEarthAmericas } from '@fortawesome/free-solid-svg-icons';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { keyframes } from '@emotion/react';
 import { Link, useParams } from 'react-router-dom';
+import { HamburgerIcon } from '@chakra-ui/icons';
 
 export const Navigation = () => {
-  const { cityName, categoryName } = useParams();
+  const [showIcon, setShowIcon] = useState(false);
 
+  useEffect(() => {
+    //the ice on the cake :)
+    const timer = setTimeout(() => {
+      setShowIcon(true);
+    }, 500); // Triggers the fade-in after 2 seconds
+    return () => clearTimeout(timer);
+  }, []);
+
+  const element = showIcon ? (
+    <Box style={{ opacity: 1, transition: 'opacity 3s ease-in-out' }}>
+      <FontAwesomeIcon icon={faEarthAmericas} fontSize="100%" />
+    </Box>
+  ) : (
+    <Box style={{ opacity: 0 }}>
+      <FontAwesomeIcon icon={faEarthAmericas} fontSize="100%" />
+    </Box>
+  );
+
+  const { cityName, categoryName } = useParams();
   return (
-    // Ensure the Flex container has width set to 100%
     <Flex flexDir="row" alignItems="center" justifyContent="space-between" width="100%" bg="red.600" p="2" mb="1rem">
       <Link to="/">
-        <Heading size="2xl" color="white" m="1rem">
-          Activities around the world {/* ✅ Header title */}
+        <Heading display="flex" flexDir="row" fontSize="150%" color="white" alignItems="center">
+          W
+          <Text display="flex" flexDir="row" alignItems="center" mt="6px" fontSize="55%">
+            {element}
+          </Text>
+          rld's Activities
         </Heading>
       </Link>
+
       <Menu>
         <MenuButton
           as={IconButton}

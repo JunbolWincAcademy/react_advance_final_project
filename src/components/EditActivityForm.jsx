@@ -1,11 +1,11 @@
 import { useState, useEffect } from 'react';
 import { useActivityContext } from '../pages/ActivityContext';
-import { Flex, Box, Input, Button, Textarea, FormControl, Text } from '@chakra-ui/react';
+import { Flex, Box, Input, Button, FormControl, Text } from '@chakra-ui/react';
 import { useParams, useNavigate } from 'react-router-dom';
 
 export const EditActivityForm = () => {
   const navigate = useNavigate();
-  const { cityName, categoryName, activityId, activityTitle } = useParams();
+  const { cityName, categoryName, activityId } = useParams();
 
   // Initialize state with empty values; these will be updated by useEffect
   const [title, setTitle] = useState('');
@@ -57,7 +57,6 @@ export const EditActivityForm = () => {
 
   const handleSubmit = async (event) => {
     event.preventDefault();
-
 
     // ✅ Updated function to capitalize the first letter of each word
     function capitalizeActivityTitle(string) {

@@ -20,9 +20,6 @@ export const ActivityProvider = ({ children }) => {
   const [selectedActivity, setSelectedActivity] = useState(null);
   const [activityDetails, setActivityDetails] = useState([]);
 
-  // const [activityGamesList, setActivityGamesList] = useState([]);
-  // const [userPosts, setUserPosts] = useState([]); // State to hold the posts of the selected user
-
   useEffect(() => {
     const fetchCities = async () => {
       try {
@@ -37,9 +34,6 @@ export const ActivityProvider = ({ children }) => {
   }, []);
 
   //LOGIC TO ADD A NEW CITY-------------------------------
-
-  //https://images.unsplash.com/photo-1502602898657-3e91760cbb34?q=80&w=1746&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D
-
   const createCity = async (userData) => {
     try {
       // First, fetch the current state of the cities object
@@ -58,7 +52,7 @@ export const ActivityProvider = ({ children }) => {
           name: userData.name,
           countryCode: userData.countryCode,
           image: userData.image,
-          categories: {}, // Assuming new cities start with no categories. This is important to add in order to add new categories
+          categories: {}, // 🚩Assuming new cities start with no categories. This is important to add in order to add new categories
         },
       };
 
@@ -80,7 +74,6 @@ export const ActivityProvider = ({ children }) => {
   };
 
   //lOGIC TO EDIT A CITY-------------------------------
-
   const editCityDetails = async (cityId, updatedCityData) => {
     // these props come from the form EditCity.jsx
     try {
@@ -101,7 +94,7 @@ export const ActivityProvider = ({ children }) => {
       const newCityKey = updatedCityData.name; //✅ This  assigns the new city name provided by the user to 'newCityKey'.
       // 'updatedCityData.name' is expected to be the updated name of the city from the form input.
 
-      // T✅his next line creates or updates a key property in 'updatedCitiesData' object with the key as 'newCityKey'.
+      // T✅This next line creates or updates a key property in 'updatedCitiesData' object with the key as 'newCityKey'.
       // It means it's adding or updating the city entry in our database object with the new city name as the key.
       // whatever
       updatedCitiesData[newCityKey] = {
@@ -169,11 +162,8 @@ export const ActivityProvider = ({ children }) => {
       console.error('Error deleting city:', error);
     }
   };
-  // console.log('Selected City in ActivityContext before createCategory been called with setSelectedCity in it in Cities:', selectedCity); //to check if setSelectedCity is doing its work in Cities.jsx
 
   //LOGIC TO CREATE A NEW CATEGORY -----------------------------
-  //https://images.unsplash.com/photo-1633545491399-54a16aa6a871?q=80&w=2072&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D
-
   const createCategory = async (cityName, categoryData) => {
     try {
       const response = await fetch('http://localhost:3000/cities');
@@ -213,7 +203,6 @@ export const ActivityProvider = ({ children }) => {
   };
 
   //lOGIC TO EDIT A CATEGORY-------------------------------
-
   const editCategoryDetails = async (cityName, oldCategoryName, updatedCategoryData) => {
     try {
       const response = await fetch('http://localhost:3000/cities');
@@ -258,7 +247,6 @@ export const ActivityProvider = ({ children }) => {
   };
 
   //lOGIC TO DELETE A CATEGORY-------------------------------
-
   const deleteCategory = async (cityName, categoryName) => {
     try {
       const citiesResponse = await fetch('http://localhost:3000/cities');
@@ -330,9 +318,6 @@ export const ActivityProvider = ({ children }) => {
       };
 
       // Add the new activity to the selected category of the selected city
-      // console.log('Before update - categories:', citiesData[cityName].categories);
-      // console.log('Before update - activities in categoryName:', citiesData[cityName].categories[categoryName]?.activities);
-
       // Correctly calculate updated activities with the new activity added.here was the big 🐞🚩 the addition of the [0] to tell the system to enter the only array that categoryName has. This was the s
       const updatedActivities = citiesData[cityName].categories[categoryName][0].activities
         ? [...citiesData[cityName].categories[categoryName][0].activities, newActivity] // ✅ Correctly access and update activities
@@ -362,7 +347,6 @@ export const ActivityProvider = ({ children }) => {
   };
 
   //lOGIC TO EDIT AN ACTIVITY-------------------------------
-
   const editActivityDetails = async (cityName, categoryName, activityId, updatedActivityData) => {
     try {
       const response = await fetch('http://localhost:3000/cities');
@@ -406,8 +390,6 @@ export const ActivityProvider = ({ children }) => {
   };
 
   //lOGIC TO DELETE AN ACTIVITY-------------------------------
-
-  // Logic to delete an activity
   const deleteActivity = async (cityName, categoryName, activityId) => {
     try {
       const citiesResponse = await fetch('http://localhost:3000/cities');

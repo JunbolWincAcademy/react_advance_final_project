@@ -21,7 +21,7 @@ export const ActivityForm = () => {
   useEffect(() => {
     // 🟢 Using useEffect to handle any initial setup if needed
     // This is where you would fetch existing data if this were an edit form
-    // For now, we don't need to fetch anything, but it's here for consistency and future expansion
+    // For now, I don't need to fetch anything, but it's here for consistency and future expansion
   }, [cityName, categoryName]); // Depend on cityName and categoryName to re-run if these change
 
   // Reset form fields
@@ -50,7 +50,7 @@ export const ActivityForm = () => {
   };
 
   return (
-    <Flex //🚩🐞to fix the issue of not been able to use FormControl I has to wrap it inside Flex and put the onSubmit here instead
+    <Flex //🚩🐞to fix the issue of not been able to use FormControl I had to wrap it inside Flex and put the onSubmit here instead
       as="form"
       onSubmit={handleSubmit}
     >

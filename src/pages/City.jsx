@@ -20,7 +20,7 @@ import {
 } from '@chakra-ui/react';
 
 export const City = () => {
-  const { cityList, deleteCity, setSelectedCity, deleteCategory } = useActivityContext();
+  const { cityList, setSelectedCity, deleteCategory } = useActivityContext();
 
   const { cityName } = useParams();
   const { isOpen, onOpen, onClose } = useDisclosure();
@@ -70,7 +70,7 @@ export const City = () => {
       </Link>
       <SimpleGrid columns={getColumnCount()} spacing="4" width="100%">
         {' '}
-        {/*// ✅🚩 using the getColumnCount function */}
+        {/* ✅🚩 using the getColumnCount function */}
         {filteredCategories.length > 0 &&
           filteredCategories.map((categoryName) => {
             const categoryDetailsArray = selectedCityData.categories[categoryName];

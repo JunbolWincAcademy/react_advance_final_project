@@ -13,8 +13,6 @@ import {
   ModalOverlay,
   ModalContent,
   ModalHeader,
-  ModalFooter,
-  ModalBody,
   ModalCloseButton,
 } from '@chakra-ui/react';
 import { StarIcon } from '@chakra-ui/icons';
@@ -28,6 +26,7 @@ export const Activity = () => {
   const { isOpen, onOpen, onClose: baseOnClose } = useDisclosure();
 
   const updateActivityDetails = (updatedDetails) => {
+    //This updateDetails parameter will receive all the content from the updatedDetails variable in the EditActivityDetailsForm using prop lifting onUpdate(updatedDetails)
     setActivityDetails(updatedDetails);
   };
 
@@ -127,11 +126,11 @@ export const Activity = () => {
             mt="1rem"
             bg="red.600"
             mb="2rem"
-            color="black"
+            color="gray.200"
             _hover={{ bg: 'red', color: 'white' }}
-            onClick={onOpen} // ✅ Open modal on button click
+            onClick={onOpen} // ✅ Open modal on click
           >
-            Edit this Activity Details
+            Edit this activity details
           </Button>
         </Box>
       </Box>
@@ -139,7 +138,7 @@ export const Activity = () => {
       <Modal isOpen={isOpen} onClose={onClose}>
         <ModalOverlay />
         <ModalContent>
-          <ModalHeader>Edit Activity Details</ModalHeader>
+          <ModalHeader>Edit activity details</ModalHeader>
           <ModalCloseButton />
           <EditActivityDetailsForm activityDetails={activityDetails} onClose={onClose} onUpdate={updateActivityDetails} />
         </ModalContent>
