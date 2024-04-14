@@ -23,7 +23,7 @@ const CityList = ({ searchQuery }) => {
   const { cityList, deleteCity, setSelectedCity } = useActivityContext();
   const { isOpen, onOpen, onClose } = useDisclosure();
   const [selectedCityForDelete, setSelectedCityForDelete] = useState(null);
-  const [resizeFlag, setResizeFlag] = useState(false); // State to trigger re-render on window resize
+  const [resizeFlag, setResizeFlag] = useState(false); // State to trigger re-render on window resize. I don't have to worry about never been used
 
   const handleDelete = (cityName) => {
     setSelectedCityForDelete(cityName);
@@ -32,7 +32,7 @@ const CityList = ({ searchQuery }) => {
 
   const filteredCities = cityList.filter((city) => city.name.toLowerCase().includes(searchQuery.toLowerCase()));
 
-  // ✅ 🐞FFunction to dynamically adjust column count based on viewport width and number of cities
+  // ✅ 🐞Function to dynamically adjust column count based on viewport width and number of cities
   const getColumnCount = () => {
     const width = window.innerWidth; // Access viewport width
     const cityCount = filteredCities.length;
@@ -51,7 +51,7 @@ const CityList = ({ searchQuery }) => {
     }
   };
 
-  // You need to update the component or force a rerender when the window size changes
+  //🚩I need to update the component or force a rerender when the window size changes
   // This could be done using a resize event listener or a custom hook
   useEffect(() => {
     const handleResize = () => {
@@ -132,18 +132,12 @@ export const Cities = () => {
 
   return (
     <Flex flexDir="column" align="center" justifyContent="center" alignItems="center" alignContent="center">
-      <Box align="center" width={{ base: '60%', md: '60%' }} >
+      <Box align="center" width={{ base: '60%', md: '60%' }}>
         <label htmlFor="city name">
           <Heading as="b" size="md">
             Search for a city:
           </Heading>
-          <Input
-            width={{ base: '80%', md: '50%' }}
-            placeholder="Search cities"
-        
-            mt="1rem"
-            onChange={(e) => setSearchQuery(e.target.value)}
-          />
+          <Input width={{ base: '80%', md: '50%' }} placeholder="Search cities" mt="1rem" onChange={(e) => setSearchQuery(e.target.value)} />
         </label>
 
         <Link to="/cityForm/">
