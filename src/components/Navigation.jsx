@@ -9,8 +9,8 @@ import { HamburgerIcon } from '@chakra-ui/icons';
 export const Navigation = () => {
   const [showIcon, setShowIcon] = useState(false);
 
+  //--- A bit of magic here: -----------------
   useEffect(() => {
-    //the ice on the cake :)
     const timer = setTimeout(() => {
       setShowIcon(true);
     }, 500); // Triggers the fade-in after 2 seconds
